@@ -30,3 +30,4 @@ This is the client portion of a multiplayer, browser-based WebGL game developed 
 * Create models/animations for weapons
 * Create low-quality models for dropped items
 * Create models for structures (currently they are a bunch of attached planes created in javascript)
+* Greatly improve existing models.
