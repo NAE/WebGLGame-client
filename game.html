@@ -1,0 +1,93 @@
+<html>
+<head>
+
+<style>
+
+html,body {
+	margin: 0;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+</style>
+<script src="js/socket.io/socket.io.js"></script>
+<script src="js/lib/moment.min.js"></script>
+<script type="text/javascript" src="mrdoob-three.js-8707cc2/build/three.min.js"></script>
+<script type="text/javascript" src="mrdoob-three.js-8707cc2/src/core/Projector.js"></script>
+<script type="text/javascript" src="js/lib/ColladaLoader.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script>
+	//stuff to do in between loading libs and my code
+</script>
+<script type="text/javascript" src="js/utils.js"></script>
+<script type="text/javascript" src="js/keys.js"></script>
+<script type="text/javascript" src="js/npcs.js"></script>
+<script type="text/javascript" src="js/players.js"></script>
+<script type="text/javascript" src="js/items.js"></script>
+<script type="text/javascript" src="js/chunks.js"></script>
+<script type="text/javascript" src="js/rendering.js"></script>
+
+<script type="text/javascript" src="js/onload.js"></script>
+
+<script type="text/javascript" src="js/entities.js"></script>
+<script type="text/javascript" src="js/mapobjects.js"></script>
+<script type="text/javascript" src="js/particles.js"></script>
+<script type="text/javascript" src="js/inventory.js"></script>
+<script type="text/javascript" src="js/variables.js"></script>
+<script type="text/javascript" src="js/chat.js"></script>
+<script type="text/javascript" src="js/market.js"></script>
+<script type="text/javascript" src="js/contextmenu.js"></script>
+<script type="text/javascript" src="js/menu.js"></script>
+<script type="text/javascript" src="js/socketevents.js"></script>
+<script type="text/javascript">
+//stuff that has to be done after everything has loaded
+	
+document.onkeydown = checkKey;
+document.onkeyup = checkStop;
+document.onmousedown = onDocumentMouseDown;
+
+//jQuery stuff
+$(document).ready(function(){
+	$(".x").click(function(){
+		$(this).parent().hide();
+	});
+});
+
+</script>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body oncontextmenu="return false">
+<div id="chatContainer">
+<textarea id="chatBox">
+
+</textarea>
+<input type="text" id="message" />
+</div>
+<div id="menu">
+<div id="innerMenu">
+<div id="menuTabContainer">
+
+</div>
+</div>
+</div>
+
+<div id="exchangeContainer">
+<div id="exchangeBox" class="modal-box">
+<div id="exchangeCloseButton" class="x">
+x
+</div>
+<div id="exchangeOfferItemText">
+
+</div>
+<div id="exchangeOfferItem" class="exchangeItemBox">
+
+</div>
+</div>
+</div>
+
+<div id="energyPanel">
+Energy:
+<span id="energy">0</span>
+</div>
+</body>
+</html>
