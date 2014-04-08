@@ -34,3 +34,4 @@ This is the client portion of a multiplayer, browser-based WebGL game developed 
 * Create models for structures (currently they are a bunch of attached planes created in javascript)
 * Greatly improve existing models.
 * Implement bumpy terrain. This needs to remain consistent across server-restart. Was thinking of somehow storing keys in each chunk that generate a different heightmap which is used to generate the terrain.
+* Update three.js to its newest version. It has a variety of issues when doing so, need to work these out.
