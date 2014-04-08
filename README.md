@@ -16,6 +16,8 @@ This is the client portion of a multiplayer, browser-based WebGL game developed 
 * Structures (trees, huts, boxes, paths) on map with rectangular collision detection done on server.
 * Chat system to chat with nearby players
 
+![WebGL game client demo](http://i.imgur.com/pAv3bnz.png "Gameplay")
+
 #### Client Features ####
 * The client only receives events from things that are happening nearby.
  * Map is divided into chunks (theoretically infinite, but the positions of structures must be hand-coded in so an infinite map is currently just a bunch of empty green planes).
@@ -31,3 +33,4 @@ This is the client portion of a multiplayer, browser-based WebGL game developed 
 * Create low-quality models for dropped items
 * Create models for structures (currently they are a bunch of attached planes created in javascript)
 * Greatly improve existing models.
+* Implement bumpy terrain. This needs to remain consistent across server-restart. Was thinking of somehow storing keys in each chunk that generate a different heightmap which is used to generate the terrain.
