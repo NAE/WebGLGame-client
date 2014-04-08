@@ -164,18 +164,18 @@ var hut = function(posX,posY,rot){
 	var size = 70;
 	var SR = 2/3; //size ratio of height of walls to width of walls
 	this.entity = new THREE.Object3D();
-	this.northFace = new flatPlane(size/2,size/2,0,size,size*SR,0,0,Math.PI/2,0x61210B,"/img/textures/cottageDoor1.jpg");
-	this.southFace = new flatPlane(size/2,-size/2,0,size,size*SR,0,0,Math.PI/2,0x61210B,"/img/textures/cottageWall1.jpg");
-	this.eastFace = new flatPlane(-size/2,-size/2,0,size,size*SR,0,0,0,0x61210B,"/img/textures/cottageWall1.jpg");
-	this.westFace = new flatPlane(size/2,-size/2,0,size,size*SR,0,0,0,0x61210B,"/img/textures/cottageWall1.jpg");
+	this.northFace = new flatPlane(size/2,size/2,0,size,size*SR,0,0,Math.PI/2,0x61210B,"img/textures/cottageDoor1.jpg");
+	this.southFace = new flatPlane(size/2,-size/2,0,size,size*SR,0,0,Math.PI/2,0x61210B,"img/textures/cottageWall1.jpg");
+	this.eastFace = new flatPlane(-size/2,-size/2,0,size,size*SR,0,0,0,0x61210B,"img/textures/cottageWall1.jpg");
+	this.westFace = new flatPlane(size/2,-size/2,0,size,size*SR,0,0,0,0x61210B,"img/textures/cottageWall1.jpg");
 	
-	this.northTriangleFace = new triangle(size/2,size/2,size*SR,size,size*(2/3),0,0,Math.PI/2,0x61210B,"/img/textures/triangle1.jpg");
-	this.southTriangleFace = new triangle(size/2,-size/2,size*SR,size,size*(2/3),0,0,Math.PI/2,0x61210B,"/img/textures/triangle1.jpg");
+	this.northTriangleFace = new triangle(size/2,size/2,size*SR,size,size*(2/3),0,0,Math.PI/2,0x61210B,"img/textures/triangle1.jpg");
+	this.southTriangleFace = new triangle(size/2,-size/2,size*SR,size,size*(2/3),0,0,Math.PI/2,0x61210B,"img/textures/triangle1.jpg");
 	
 	var roofHeight = Math.sqrt(Math.pow(size/2,2) + Math.pow(size*SR,2));
 	var roofAngle = Math.PI/2 - Math.asin(size*SR/roofHeight);
-	this.eastRoof = new flatPlane(size/2,-size/2*1.2,size*SR,size*1.2,roofHeight,0,-roofAngle,0,0x190707,"/img/textures/roof1.jpg");
-	this.westRoof = new flatPlane(-size/2,-size/2*1.2,size*SR,size*1.2,roofHeight,0,roofAngle,0,0x190707,"/img/textures/roof1.jpg");
+	this.eastRoof = new flatPlane(size/2,-size/2*1.2,size*SR,size*1.2,roofHeight,0,-roofAngle,0,0x190707,"img/textures/roof1.jpg");
+	this.westRoof = new flatPlane(-size/2,-size/2*1.2,size*SR,size*1.2,roofHeight,0,roofAngle,0,0x190707,"img/textures/roof1.jpg");
 	
 	this.entity.add(this.northFace.entity);
 	this.entity.add(this.southFace.entity);
@@ -209,7 +209,7 @@ var path = function(posX,posY,rot,imgPath){
 }
 
 var cobblePath = function(posX,posY,rot){
-	return new path(posX,posY,rot,"/img/textures/cobblePath2.jpg");
+	return new path(posX,posY,rot,"img/textures/cobblePath2.jpg");
 }
 
 var groundPlane = function(width,height,posX,posY,pathToTexture){
