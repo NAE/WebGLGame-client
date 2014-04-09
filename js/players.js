@@ -204,7 +204,6 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
-	this.entity.position.z = 25;
 	this.entity.rotation.x += Math.PI/2; //make it vertical
 	this.entity.castShadow = false;
 	this.entity.connectionNum = id;

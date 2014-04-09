@@ -118,7 +118,6 @@ var npcPlane = function(bundleData){
 	
 	this.entity.position.x = bundleData.moveObj.moveTo.x;
 	this.entity.position.y = bundleData.moveObj.moveTo.y;
-	this.entity.position.z = 26;
 	this.entity.rotation.x += Math.PI/2; //make it vertical
 	
 	this.moveObj = bundleData.moveObj;
