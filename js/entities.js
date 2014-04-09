@@ -36,10 +36,11 @@ var weapon = function(type){
 		//side: THREE.DoubleSide
 	});
 	this.entity = new THREE.Mesh(new THREE.CubeGeometry(wepProperty.width, wepProperty.length, wepProperty.width, 1, 1, 1, this.materialWeapon), new THREE.MeshFaceMaterial());
-	this.entity.position.z = -5;
+	this.entity.scale.x = this.entity.scale.y = this.entity.scale.z = .25;
 	//this.entity.rotation.z += Math.PI/2;
-	this.entity.position.y = 5;
-	this.entity.position.x = 12;
+	this.entity.position.x = -3.25;
+	this.entity.position.z = 11;
+	this.entity.position.y = -1;
 	this.entity.rotation.y += Math.PI/2;
 	this.entity.rotation.x -= Math.PI/4;
 	this.type = type;

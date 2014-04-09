@@ -223,15 +223,15 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	
 	this.weaponType = weaponType;
 	this.weapon = new weapon(weaponType);
-	this.entity.add(this.weapon.entity);
+	this.colladascene.add(this.weapon.entity);
 	
 	this.changeWeapon = function(newType,itemId){
 		//removes old weapon and replaces with new
 		var newWeapon = new weapon(newType);
 		this.weaponType = newType;
-		this.entity.remove(this.weapon.entity);
+		this.colladascene.remove(this.weapon.entity);
 		this.weapon = newWeapon;
-		this.entity.add(this.weapon.entity);
+		this.colladascene.add(this.weapon.entity);
 		
 		//change wieldBox picture if this is me
 		if(id == connectionNum){
