@@ -17,10 +17,11 @@ textarea {
 #contextMenu{
 	position: absolute;
 	background: #50310D;
+	background-color:rgba(18, 0, 63, 0.5);
 	color: white;
 	font-weight: bold;
 	font-size: 10;
-	border: 1px solid white;
+	border: 1px solid gray;
 	box-shadow: 0.0em 0.0em 0.2em black;
 }
 
@@ -30,6 +31,7 @@ textarea {
 
 .clickableOption:hover{
 	color: cyan;
+	background-color:rgba(18, 0, 63, 0.8);
 }
 
 #chatContainer{
