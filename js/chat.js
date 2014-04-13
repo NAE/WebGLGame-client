@@ -37,6 +37,10 @@ function updateChatBox(message){
 function sendChatMessage(){
 	var chatLine = document.getElementById("message");
 	chatMessage = chatLine.value;
+	if(chatMessage == "" || chatMessage == undefined){
+		//don't send blank messages
+		return;
+	}
 	chatLine.value = "";
 	var ok = checkMessage(chatMessage); //checks for commands
 	if(ok){
