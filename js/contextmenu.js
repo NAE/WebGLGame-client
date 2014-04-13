@@ -5,8 +5,6 @@ function createContextMenu(position, elementClicked, posMoveTo){
 		removeContextMenu();
 		var newContextMenu = document.createElement("div");
 		newContextMenu.id = "contextMenu";
-		newContextMenu.style.height = 40;
-		newContextMenu.style.width = 100;
 		newContextMenu.style.top = position.y;
 		newContextMenu.style.left = position.x;
 		var menuArray = [];
@@ -21,8 +19,6 @@ function createContextMenu(position, elementClicked, posMoveTo){
 	removeContextMenu();
 	var newContextMenu = document.createElement("div");
 	newContextMenu.id = "contextMenu";
-	newContextMenu.style.height = 40;
-	newContextMenu.style.width = 100;
 	newContextMenu.style.top = position.y;
 	newContextMenu.style.left = position.x;
 	//create menu contents

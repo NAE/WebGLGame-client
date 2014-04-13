@@ -20,7 +20,7 @@ function addObjects(objectArray){;
 
 function interactWithClickedObject(mapEntity){
 	//mapEntity is entity, not the object
-	var mapObject = mapObject.correspondingObject;
+	var mapObject = mapEntity.correspondingObject;
 	if(mapObject instanceof tree){
 		var objId = mapObject.id;
 		
