@@ -9,10 +9,21 @@ function addObjects(objectArray){;
 		var typeName = thisObjProperty.name;
 		//make a new object on the map of type typeName
 		var newMapObj = new window[typeName](posX,posY,rot);
+		newMapObj.id = thisObject.id;
+		newMapObj.entity.type = typeName;
+		newMapObj.entity.correspondingObject = newMapObj;
 		scene.add(newMapObj.entity);
 		mapObjectsArray[thisObject.id] = newMapObj;
 		mapObjectsEntityArray[thisObject.id] = newMapObj.entity;
-		console.log(typeName);
+	}
+}
+
+function interactWithClickedObject(mapEntity){
+	//mapEntity is entity, not the object
+	var mapObject = mapObject.correspondingObject;
+	if(mapObject instanceof tree){
+		var objId = mapObject.id;
+		
 	}
 }
 

@@ -27,11 +27,16 @@ function onDocumentMouseDown( event ) {
 		var intersects = ray.intersectObject(worldPlane.entity);
 		//check if it intersects any items on the ground
 		var itemHit = ray.intersectObjects(itemEntityArray);
-		var objectHit = ray.intersectObjects(mapObjectsEntityArray);
+		var objectHit = ray.intersectObjects(mapObjectsEntityArray, true);
 		
 		if(objectHit.length > 0){
 			//object hit takes priority over moving
-			console.log(objectHit);
+			var firstHitObj = objectHit[0].object;
+			//keep checking the parent until we get one with correspondingObject (some things that are hit will be groups of faces, not the object itself)
+			while(!firstHitObj.hasOwnProperty("correspondingObject")){
+				firstHitObj = firstHitObj.parent;
+			}
+			interactWithClickedObject(firstHitObj);
 		}else if ( intersects.length > 0 ) {
 			//set global states for character movement
 			if(whichClick == 1){

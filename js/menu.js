@@ -12,6 +12,7 @@ function loadPanelData(){
 	menuPanels[0] = new menuPanelObj("Bombs",createParticleTab,0,"img/textures/bombTexture.png");
 	menuPanels[1] = new menuPanelObj("Inventory",createInventory,1,"img/textures/packTexture.png");
 	menuPanels[2] = new menuPanelObj("Character",createCharacterTab,2,"img/textures/characterTexture.png");
+	menuPanels[3] = new menuPanelObj("Skills",createSkillsTab,3,"img/textures/skillsTexture.png");
 }
 
 //TAB FUNCTIONS
@@ -60,6 +61,12 @@ function createCharacterTab(){
 	var thisCharacter = otherCharacterList[connectionNum];
 	var wieldedWeaponBox = new wieldedBox(thisCharacter.weaponType);
 	innerMenu.appendChild(wieldedWeaponBox);
+}
+
+function createSkillsTab(){
+	var innerMenu = document.getElementsByClassName('menuPanel')[0];
+	innerMenu.innerHTML = "";
+	
 }
 
 function switchParticleSelection(id){
