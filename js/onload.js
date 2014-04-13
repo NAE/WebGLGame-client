@@ -12,6 +12,9 @@ window.onload = function(){
 		chunkProperties = data.chunkProperties;
 		objectProperties = data.objectProperties;
 		npcProperties = data.npcProperties;
+		
+		mapObjectEventTypes = data.mapObjectEventTypes;
+		
 		MAP_WIDTH = data.mapWidth;
 		MAP_HEIGHT = data.mapHeight;
 		

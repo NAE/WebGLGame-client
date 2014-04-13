@@ -36,8 +36,16 @@ function onDocumentMouseDown( event ) {
 			while(!firstHitObj.hasOwnProperty("correspondingObject")){
 				firstHitObj = firstHitObj.parent;
 			}
-			interactWithClickedObject(firstHitObj);
-		}else if ( intersects.length > 0 ) {
+			
+			if(whichClick == 1){
+				//execute its first 
+				interactWithClickedObject(firstHitObj, 0);
+			}else{
+				//create a contextmenu with the available events for this type of mapobject
+				var menuPosition = {x:event.clientX,y:event.clientY};
+				createObjectContextMenu(menuPosition, firstHitObj.correspondingObject.id);
+			}
+		}else if (intersects.length > 0) {
 			//set global states for character movement
 			if(whichClick == 1){
 				//left click, so move character

@@ -31,6 +31,37 @@ function createContextMenu(position, elementClicked, posMoveTo){
 	document.body.appendChild(newContextMenu);
 }
 
+//creates a contextmenu for a clicked MapObject
+function createObjectContextMenu(position, objectId){
+	removeContextMenu();
+	var mapObjectEntity = mapObjectsEntityArray[objectId];
+	var newContextMenu = document.createElement("div");
+	newContextMenu.id = "contextMenu";
+	newContextMenu.style.top = position.y;
+	newContextMenu.style.left = position.x;
+	var menuArray = [];
+	
+	//load the contextmenu with event options
+	var eventTypes = objectProperties[mapObjectEntity.type].eventTypes;
+	for(var i=0;i<eventTypes.length;i++){
+		var eventType = eventTypes[i];
+		var eventTypeNice = eventType[0].toUpperCase() + eventType.slice(1).toLowerCase();
+		menuArray.push("<div id='mapObjectOption" + eventType +"' data-event='" + eventType + "' data-event-index='" + i + "' data-objectid='" + objectId + "' class='clickableOption mapObjectOption'>" + eventTypeNice + "</div>");
+	}
+	for(var i=0;i<menuArray.length;i++){
+		newContextMenu.innerHTML += (menuArray[i]);
+	}
+	document.body.appendChild(newContextMenu);
+	
+	$(".mapObjectOption").mousedown(function(event){
+		var eventType = $(this).attr("data-event");
+		var eventIndex = $(this).attr("data-event-index");
+		var objId = $(this).attr("data-objectid");
+		var mapObjEntity = mapObjectsEntityArray[objId];
+		interactWithClickedObject(mapObjEntity, eventIndex);
+	});
+}
+
 function removeContextMenu(){
 	var oldMenu = document.getElementById("contextMenu");
 	if(oldMenu != undefined){

@@ -10,7 +10,7 @@ function addObjects(objectArray){;
 		//make a new object on the map of type typeName
 		var newMapObj = new window[typeName](posX,posY,rot);
 		newMapObj.id = thisObject.id;
-		newMapObj.entity.type = typeName;
+		newMapObj.entity.type = objectType;
 		newMapObj.entity.correspondingObject = newMapObj;
 		scene.add(newMapObj.entity);
 		mapObjectsArray[thisObject.id] = newMapObj;
@@ -18,12 +18,25 @@ function addObjects(objectArray){;
 	}
 }
 
-function interactWithClickedObject(mapEntity){
+function interactWithClickedObject(mapEntity, option){
+	//option is the index in the MapObjectProperty to execute
+	if(option == undefined){
+		option = 0; //execute its first option if none specified
+	}
+	//first remove the moveCursor
+	if(moveCursor != undefined && moveCursor.entity != undefined){
+		scene.remove(moveCursor.entity);
+	}
+	
+	var eventType = objectProperties[mapEntity.type].eventTypes[option];
+	
 	//mapEntity is entity, not the object
 	var mapObject = mapEntity.correspondingObject;
 	if(mapObject instanceof tree){
-		var objId = mapObject.id;
 		
+		var objId = mapObject.id;
+		var eventTypeInt = mapObjectEventTypes[eventType];
+		socket.emit("InteractEvent", {objectHitNum: objId, eventType: eventTypeInt});
 	}
 }
 

@@ -67,7 +67,10 @@ var itemProperties;
 var chunkProperties;
 var weaponProperties;
 var objectProperties;
-var npcProperties
+var npcProperties;
+
+//EVENTS
+var mapObjectEventTypes;
 
 //MODELS
 var man;
