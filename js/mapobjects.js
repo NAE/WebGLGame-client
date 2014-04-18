@@ -18,6 +18,11 @@ function addObjects(objectArray){;
 	}
 }
 
+function placeMapObject(x, y, z, rotationCoefficient, type){
+	var sendData = {x: x, y: y, z: z, rotationCoefficient: rotationCoefficient, type: type};
+	socket.emit('MapObjectPlaceEvent', sendData);
+}
+
 function interactWithClickedObject(mapEntity, option){
 	//option is the index in the MapObjectProperty to execute
 	if(option == undefined){

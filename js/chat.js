@@ -91,8 +91,23 @@ function checkMessage(message){
 			var positionString = "x: " + otherCharacterList[connectionNum].entity.position.x + ", y: " + otherCharacterList[connectionNum].entity.position.y;
 			document.getElementById("message").value = positionString;
 			sendChatMessage();
-		}else if(command == 'medit'){
-			socket.emit('MapObjectPlaceEvent', {});
+		}else if(command.indexOf("medit") == 0){
+			//command format: /medit <type> <rotation-coefficient(optional)>
+			//this command will check if a user is admin on the server before performing it
+			//first parse the command and place the given type at the player's current coordinates
+			var separatedCommand = command.split(" ");
+			var type = parseInt(separatedCommand[1]);
+			var rotationCoefficient = .5;
+			if(separatedCommand.length > 2){
+				rotationCoefficient = parseInt(separatedCommand[2]);
+			}
+			
+			var playerMoveObj = otherCharacterList[connectionNum].moveObj;
+			var x = playerMoveObj.currentPosition.x;
+			var y = playerMoveObj.currentPosition.y;
+			var z = 0;
+			
+			placeMapObject(x, y, z, rotationCoefficient, type)
 		}
 		return false;
 	}else{
