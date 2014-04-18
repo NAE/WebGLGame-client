@@ -27,7 +27,20 @@ function onDocumentMouseDown( event ) {
 		var intersects = ray.intersectObject(worldPlane.entity);
 		//check if it intersects any items on the ground
 		var itemHit = ray.intersectObjects(itemEntityArray);
-		var objectHit = ray.intersectObjects(mapObjectsEntityArray, true);
+		
+		//to find intersections of objects, it's possible there will be 'undefined's inside mapObjectsEntityArray
+		//due to the way that objects are loaded into the map. i.e. if objects with ids 0 and 4 are the only ones that are loaded, there
+		//will be 3 undefineds in between those, and this recursive intersectObjects can't handle that.
+		//first, make a new array from mapObjectsEntityArray without the undefineds.
+		var cleanMapObjectsEntityArray = [];
+		for(var i=0;i<mapObjectsEntityArray.length;i++){
+			var thisEntity = mapObjectsEntityArray[i];
+			if(thisEntity != undefined){
+				cleanMapObjectsEntityArray.push(thisEntity);
+			}
+		}
+		
+		var objectHit = ray.intersectObjects(cleanMapObjectsEntityArray, true);
 		
 		if(objectHit.length > 0){
 			//object hit takes priority over moving

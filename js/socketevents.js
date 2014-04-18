@@ -142,6 +142,15 @@ socket.on('otherCharacterChangeWeapon', function(data) {
 	changeOtherCharacterWeapon(data.newType,data.connectionNum);
 });
 
+socket.on('mapObjectAdd', function(data) {
+	var newObjects = data.newObjects;
+	var chunkId = data.chunkId;
+	//add the object
+	addObjects(newObjects);
+	//add it to the chunk
+	getChunk(chunkId).objects.push(newObjects[0]);
+});
+
 socket.on('clientDisconnect', function(data) {
 	removeCharacter(data.connectionNum);
 	updateChatBox(data.chatArray);

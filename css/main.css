@@ -67,7 +67,7 @@ textarea {
 }
 #innerMenu{
 	background: black;
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.7);
 }
 
 #menuTabContainer {
@@ -82,12 +82,10 @@ textarea {
 	height: 100%;
 	width: 20px;
 	display: inline-block;
-	border: 1px solid black;
 }
 
 .selectedTab {
-	border: 1px solid white;
-	box-shadow: inset 0em 0em .2em white;
+	box-shadow: inset 0em 0em .2em 1px white;
 }
 
 .menuPanel {
@@ -114,7 +112,12 @@ textarea {
 }
 
 .inventoryItemQuantity {
-	font-size: 7;
+	font-size: 8;
+	text-shadow:
+    -.5px -.5px 0 #003399,
+    .5px -.5px 0 #003399,
+    -.5px .5px 0 #003399,
+    .5px .5px 0 #003399; 
 	color: yellow;
 }
 

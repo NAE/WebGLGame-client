@@ -32,12 +32,9 @@ function interactWithClickedObject(mapEntity, option){
 	
 	//mapEntity is entity, not the object
 	var mapObject = mapEntity.correspondingObject;
-	if(mapObject instanceof tree){
-		
-		var objId = mapObject.id;
-		var eventTypeInt = mapObjectEventTypes[eventType];
-		socket.emit("InteractEvent", {objectHitNum: objId, eventType: eventTypeInt});
-	}
+	var objId = mapObject.id;
+	var eventTypeInt = mapObjectEventTypes[eventType];
+	socket.emit("InteractEvent", {objectHitNum: objId, eventType: eventTypeInt});
 }
 
 //map objects

@@ -91,6 +91,8 @@ function checkMessage(message){
 			var positionString = "x: " + otherCharacterList[connectionNum].entity.position.x + ", y: " + otherCharacterList[connectionNum].entity.position.y;
 			document.getElementById("message").value = positionString;
 			sendChatMessage();
+		}else if(command == 'medit'){
+			socket.emit('MapObjectPlaceEvent', {});
 		}
 		return false;
 	}else{
