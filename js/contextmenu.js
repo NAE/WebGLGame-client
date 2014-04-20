@@ -48,6 +48,12 @@ function createObjectContextMenu(position, objectId){
 		var eventTypeNice = eventType[0].toUpperCase() + eventType.slice(1).toLowerCase();
 		menuArray.push("<div id='mapObjectOption" + eventType +"' data-event='" + eventType + "' data-event-index='" + i + "' data-objectid='" + objectId + "' class='clickableOption mapObjectOption'>" + eventTypeNice + "</div>");
 	}
+	//if the player is in editmode, add a remove option to the MapObject
+	var me = otherCharacterList[connectionNum];
+	if(me.admin && me.editmode){
+		var eventTypeNice = "Remove";
+		menuArray.push("<div id='mapObjectOptionREMOVE' data-event='REMOVE' data-event-index='" + -1 + "' data-objectid='" + objectId + "' class='clickableOption mapObjectOption'>" + eventTypeNice + "</div>");
+	}
 	for(var i=0;i<menuArray.length;i++){
 		newContextMenu.innerHTML += (menuArray[i]);
 	}

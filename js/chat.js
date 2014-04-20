@@ -108,6 +108,18 @@ function checkMessage(message){
 			var z = 0;
 			
 			placeMapObject(x, y, z, rotationCoefficient, type)
+		}else if(command == "editmode"){
+			//toggle on or off editmode for this player
+			var me = otherCharacterList[connectionNum];
+			if(me.admin){
+				if(me.editmode){
+					me.editmode = false;
+					updateChatBox("Editmode off.");
+				}else{
+					me.editmode = true;
+					updateChatBox("Editmode on.");
+				}
+			}
 		}
 		return false;
 	}else{

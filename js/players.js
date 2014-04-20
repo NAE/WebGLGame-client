@@ -22,6 +22,9 @@ function updateOtherChar(data){
 		character2.state.health = data.state.health;
 		character2.state.maxHealth = data.state.maxHealth;
 		character2.state.energy = data.state.energy;
+		if(data.admin){
+			character2.admin = true;
+		}
 		var thisChunk = getChunk(data.moveObj.currentChunk);
 		if(thisChunk.players.indexOf(otherConnectionNum) < 0){
 			thisChunk.players.push(otherConnectionNum);
@@ -208,6 +211,7 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	this.entity.castShadow = false;
 	this.entity.connectionNum = id;
 	this.id = id;
+	this.editMode = false;
 	//this.entity = new THREE.Mesh(new THREE.PlaneGeometry(28, 56), this.materialChar);
 	
 	

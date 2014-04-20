@@ -1,4 +1,4 @@
-function addObjects(objectArray){;
+function addObjects(objectArray){
 	for(var i=0;i<objectArray.length;i++){
 		var thisObject = objectArray[i];
 		var posX = thisObject.position.x;
@@ -18,6 +18,21 @@ function addObjects(objectArray){;
 	}
 }
 
+function removeObjects(objectIdArray){
+	for(var i=0;i<objectIdArray.length;i++){
+		var thisObjectId = objectIdArray[i];
+		var thisObject = mapObjectsArray[thisObjectId];
+		mapObjectsArray[thisObjectId] = undefined;
+		
+		var thisObjEntity = mapObjectsEntityArray[thisObjectId];
+		mapObjectsEntityArray[thisObjectId] = undefined;
+		
+		if(thisObjEntity != undefined){
+			scene.remove(thisObjEntity);
+		}
+	}
+}
+
 function placeMapObject(x, y, z, rotationCoefficient, type){
 	var sendData = {x: x, y: y, z: z, rotationCoefficient: rotationCoefficient, type: type};
 	socket.emit('MapObjectPlaceEvent', sendData);
@@ -33,7 +48,13 @@ function interactWithClickedObject(mapEntity, option){
 		scene.remove(moveCursor.entity);
 	}
 	
-	var eventType = objectProperties[mapEntity.type].eventTypes[option];
+	var eventType;
+	if(option != -1){
+		eventType = objectProperties[mapEntity.type].eventTypes[option];
+	}else{
+		//-1 constititues a REMOVE
+		eventType = "REMOVE";
+	}
 	
 	//mapEntity is entity, not the object
 	var mapObject = mapEntity.correspondingObject;

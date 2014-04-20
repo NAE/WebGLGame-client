@@ -151,6 +151,15 @@ socket.on('mapObjectAdd', function(data) {
 	getChunk(chunkId).objects.push(newObjects[0]);
 });
 
+socket.on('mapObjectRemove', function(data) {
+	removeObjects(data.removedObjectIds);
+	var chunkId = data.chunkId;
+	var chunk = getChunk(chunkId);
+	var chunkObjs = chunk.objects;
+	var indexOfObjId = chunkObjs.indexOf(data.removedObjectIds[0]);
+	chunkObjs.splice(indexOfObjId,1);
+});
+
 socket.on('clientDisconnect', function(data) {
 	removeCharacter(data.connectionNum);
 	updateChatBox(data.chatArray);
