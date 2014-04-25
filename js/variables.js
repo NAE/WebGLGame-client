@@ -26,6 +26,10 @@ var characterInventory = new Array();
 var worldPlane;
 var currentlyLoadedChunks = new Array(); //holds physical planes
 
+//MAP OBJECT VARS
+var zVariation = 20;
+var chunkSplits = 50;
+
 //GAME STATE/OPTIONS VARIABLES
 var MPF = 17; // TODO - Load this value from server in case it changes for some reason
 var mapSize;

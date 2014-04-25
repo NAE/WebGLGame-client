@@ -123,6 +123,11 @@ function moveAllCharacters(){
 					oMoveObj.currentPosition.y += oMoveObj.moveDistEach.y;
 					otherCharacter.entity.position.x = oMoveObj.currentPosition.x;
 					otherCharacter.entity.position.y = oMoveObj.currentPosition.y;
+					
+					//move the z position of the character to match the terrain
+					var groundVertex = getVertexFromPosition(otherCharacter.entity.position);
+					otherCharacter.entity.position.z = groundVertex.z;
+					
 					oMoveObj.numStepsSoFar++;
 					var nextFrame = otherCharacter.lastFrame + 1;
 					if(nextFrame >= otherCharacter.totalFrames){

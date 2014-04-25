@@ -270,9 +270,7 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 		ambient: 0x6CAFE3
 	});
 	
-	var geometry = new THREE.PlaneGeometry(width, height, 50, 50);
-	
-	var zVariation = 20;
+	var geometry = new THREE.PlaneGeometry(width, height, chunkSplits, chunkSplits);
 	
 	var verts = geometry.vertices;
 	var minPoint = width / 2 * -1;
@@ -291,7 +289,7 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 	
 	//attempt at coloring vertices:
 	
-	var faceIndices = [ 'a', 'b', 'c', 'd' ];
+	var faceIndices = ['a','b','c','d'];
 	for(var i=0;i<geometry.faces.length;i++){
 		var f = geometry.faces[i];
 		var n = ( f instanceof THREE.Face3 ) ? 3 : 4;

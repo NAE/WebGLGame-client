@@ -13,6 +13,43 @@ function getChunk(chunkId){
 	return newChunk;
 }
 
+function getChunkId(chunkX, chunkY){
+	return (chunkY * MAP_WIDTH) + (chunkX);
+}
+
+function getChunkIdFromPosition(position){
+	var chunkSize = chunkProperties[0][0].CHUNK_SIZE;
+	var chunkX = parseInt(Math.floor(position.x / chunkSize));
+	var chunkY = parseInt(Math.floor(position.y / chunkSize));
+	return getChunkId(chunkX, chunkY);
+}
+
+function getVertexFromPosition(position){
+	var chunkSize = chunkProperties[0][0].CHUNK_SIZE;
+	var chunkId = getChunkIdFromPosition(position);
+	var chunk = getChunk(chunkId);
+	var chunkPlane = currentlyLoadedChunks[chunkId];
+	if(chunkPlane == undefined){
+		//chunk isn't loaded so there is no vertex to return
+		return undefined;
+	}
+	
+	var spaceBetweenVertex = chunkSize / chunkSplits;
+	//find out where in the chunk the position is
+	var chunkOffsetX = chunk.chunkX * chunkSize;
+	var chunkOffsetY = chunk.chunkY * chunkSize;
+	
+	//find the difference between the position and the chunkOffsets
+	var innerChunkX = position.x - chunkOffsetX;
+	var innerChunkY = position.y - chunkOffsetY;
+	
+	//now get the closest vertex to that point in the chunk
+	//0 -> chunkSplits will keep the same y, but go down in x
+	//then for each next 50, subtract 1 spaceBetweenVertex from y and continue
+	var index = Math.floor(innerChunkX / spaceBetweenVertex) + Math.floor(innerChunkY / spaceBetweenVertex) * chunkSplits;
+	return chunkPlane.entity.geometry.vertices[index];
+}
+
 function loadCurrentChunks(chunkId){
 	var thisChunkNums = getChunkNums(chunkId);
 	var parentChunk = chunkProperties[thisChunkNums.chunkY][thisChunkNums.chunkX];
