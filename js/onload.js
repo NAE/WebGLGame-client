@@ -51,7 +51,8 @@ window.onload = function(){
 		worldPlane = new invisiblePlane(MAP_WIDTH*chunkSize,MAP_HEIGHT*chunkSize,worldPlaneX,worldPlaneY);
 		scene.add(worldPlane.entity);
 		
-		loadCurrentChunks(0);
+		//issue right here...
+		loadCurrentChunks(data.moveEvents[connectionNum].moveObj.currentChunk);
 		
 		transferNPCData(data.npcArray);
 		

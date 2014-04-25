@@ -105,7 +105,9 @@ function moveAllCharacters(){
 				//the other character is moving
 				var timeRequired = oMoveObj.numStepsRequired * 20;
 				var timeNow = new Date().getTime();
-				if(oMoveObj.numStepsSoFar < oMoveObj.numStepsRequired && (oMoveObj.time + timeRequired) > timeNow){
+				//this line was previously: if(oMoveObj.numStepsSoFar < oMoveObj.numStepsRequired && (oMoveObj.time + timeRequired) > timeNow)
+				//removed because latency was causing the time to be delayed, and so moving would complete way too early.
+				if(oMoveObj.numStepsSoFar < oMoveObj.numStepsRequired){
 					//keep moving
 					//change character's rotation first
 					var deltaX = oMoveObj.moveTo.x - oMoveObj.currentPosition.x;

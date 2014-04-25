@@ -269,18 +269,72 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 		map: texture,
 		ambient: 0x6CAFE3
 	});
-
+	
+	var geometry = new THREE.PlaneGeometry(width, height, 50, 50);
+	
+	var zVariation = 20;
+	
+	var verts = geometry.vertices;
+	var minPoint = width / 2 * -1;
+	var maxPoint = width / 2;
+	for(var i=0;i<verts.length;i++){
+		//prevent the edges of the chunks from being elevated.
+		var vert = verts[i];
+		if(vert.x == minPoint || vert.x == maxPoint){
+			continue;
+		}
+		if(vert.y == minPoint || vert.y == maxPoint){
+			continue;
+		}
+		vert.z = Math.floor(Math.random() * zVariation);
+	}
+	
+	//attempt at coloring vertices:
+	
+	var faceIndices = [ 'a', 'b', 'c', 'd' ];
+	for(var i=0;i<geometry.faces.length;i++){
+		var f = geometry.faces[i];
+		var n = ( f instanceof THREE.Face3 ) ? 3 : 4;
+		for(var j=0;j<n;j++){
+			var vertexIndex = f[ faceIndices[ j ] ];
+			var p = geometry.vertices[ vertexIndex ];
+			//based on p's z value, give it a different color
+			color = new THREE.Color( 0xffffff );
+			
+			var red = .15;
+			var green = .15;
+			var blue = 0;
+			
+			var z = p.z;
+			var zAboveZero = z + zVariation;
+			var increaseAmount = (zAboveZero + .01) / (zVariation * 2);
+			red += increaseAmount;
+			green += increaseAmount;
+			blue += increaseAmount;
+			//color.setRGB(Math.random(),Math.random(),Math.random());
+			color.setRGB(red,green,blue);
+			
+			f.vertexColors[ j ] = color;
+		}
+	}
+	var planeMaterial = new THREE.MeshBasicMaterial( 
+    { ambient: 0x6CAFE3, shading: THREE.SmoothShading, 
+    vertexColors: THREE.VertexColors, map: texture } );
+	geometry.materials.push(planeMaterial);
+	for( var i in geometry.faces ) {
+		var face = geometry.faces[i];
+		face.materialIndex = i%geometry.materials.length;
+	}
+	
 	//for vertices/heightmap, add more params to three.planegeometry
-	this.entity = new THREE.Mesh(new THREE.PlaneGeometry(width, height), materialPlane);
+	var material = new THREE.MeshFaceMaterial();
+	this.entity = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial([material]));
+	this.entity.geometry.needsUpdate = true;
 	this.entity.overdraw = true;
 	this.entity.receiveShadow = true;
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
 	
-	//var verts = this.entity.geometry.vertices;
-	//for(var i=0;i<verts.length;i++){
-	//	verts[i].z = Math.floor(Math.random() * 50);
-	//}
 }
 
 var invisiblePlane = function(width,height,posX,posY){
