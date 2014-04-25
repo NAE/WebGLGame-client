@@ -24,7 +24,7 @@ function getChunkIdFromPosition(position){
 	return getChunkId(chunkX, chunkY);
 }
 
-function getVertexFromPosition(position){
+function getZFromPosition(position){
 	var chunkSize = chunkProperties[0][0].CHUNK_SIZE;
 	var chunkId = getChunkIdFromPosition(position);
 	var chunk = getChunk(chunkId);
@@ -46,8 +46,27 @@ function getVertexFromPosition(position){
 	//now get the closest vertex to that point in the chunk
 	//0 -> chunkSplits will keep the same y, but go down in x
 	//then for each next 50, subtract 1 spaceBetweenVertex from y and continue
-	var index = Math.floor(innerChunkX / spaceBetweenVertex) + Math.floor(innerChunkY / spaceBetweenVertex) * chunkSplits;
-	return chunkPlane.entity.geometry.vertices[index];
+	var xDivision = innerChunkX / spaceBetweenVertex;
+	var yDivision = innerChunkY / spaceBetweenVertex * chunkSplits;
+	var index0 = Math.floor(xDivision) + Math.floor(yDivision);
+	var index1 = Math.ceil(xDivision) + Math.floor(yDivision);
+	var index2 = Math.floor(xDivision) + Math.ceil(yDivision);
+	var index3 = Math.ceil(xDivision) + Math.ceil(yDivision);
+	
+	var verts = chunkPlane.entity.geometry.vertices;
+	var z0 = verts[index0].z;
+	var z1 = verts[index1].z;
+	var z2 = verts[index2].z;
+	var z3 = verts[index3].z;
+	
+	console.log(index0);
+	console.log(index1);
+	console.log(index2);
+	console.log(index3);
+	console.log(verts);
+	
+	var avg = (z0 + z1 + z2 + z3) / 4;
+	return avg;
 }
 
 function loadCurrentChunks(chunkId){

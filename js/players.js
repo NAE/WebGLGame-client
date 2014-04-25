@@ -125,8 +125,8 @@ function moveAllCharacters(){
 					otherCharacter.entity.position.y = oMoveObj.currentPosition.y;
 					
 					//move the z position of the character to match the terrain
-					var groundVertex = getVertexFromPosition(otherCharacter.entity.position);
-					otherCharacter.entity.position.z = groundVertex.z;
+					var zPos = getZFromPosition(otherCharacter.entity.position);
+					otherCharacter.entity.position.z = zPos;
 					
 					oMoveObj.numStepsSoFar++;
 					var nextFrame = otherCharacter.lastFrame + 1;
@@ -144,6 +144,11 @@ function moveAllCharacters(){
 					oMoveObj.currentPosition.y = oMoveObj.currentPosition.y;
 					otherCharacter.entity.position.x = oMoveObj.currentPosition.x;
 					otherCharacter.entity.position.y = oMoveObj.currentPosition.y;
+					
+					//move the z position of the character to match the terrain
+					var zPos = getZFromPosition(otherCharacter.entity.position);
+					otherCharacter.entity.position.z = zPos;
+					
 					if(i == connectionNum){
 						//if we're moving my character, remove the moveCursor from the screen
 						if(moveCursor != undefined && moveCursor.entity != undefined){
