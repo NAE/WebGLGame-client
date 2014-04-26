@@ -46,8 +46,9 @@ function getZFromPosition(position){
 	//now get the closest vertex to that point in the chunk
 	//0 -> chunkSplits will keep the same y, but go down in x
 	//then for each next 50, subtract 1 spaceBetweenVertex from y and continue
-	var xDivision = innerChunkX / spaceBetweenVertex;
-	var yDivision = innerChunkY / spaceBetweenVertex * chunkSplits;
+	var totalLength = (chunkSplits + 1) * (chunkSplits + 1) - 1;
+	var xDivision = innerChunkX / spaceBetweenVertex + 1;
+	var yDivision = totalLength - (innerChunkY / spaceBetweenVertex * (chunkSplits + 2));
 	var index0 = Math.floor(xDivision) + Math.floor(yDivision);
 	var index1 = Math.ceil(xDivision) + Math.floor(yDivision);
 	var index2 = Math.floor(xDivision) + Math.ceil(yDivision);
@@ -59,11 +60,6 @@ function getZFromPosition(position){
 	var z2 = verts[index2].z;
 	var z3 = verts[index3].z;
 	
-	console.log(index0);
-	console.log(index1);
-	console.log(index2);
-	console.log(index3);
-	console.log(verts);
 	
 	var avg = (z0 + z1 + z2 + z3) / 4;
 	return avg;
