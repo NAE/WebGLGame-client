@@ -27,7 +27,7 @@ var worldPlane;
 var currentlyLoadedChunks = new Array(); //holds physical planes
 
 //MAP OBJECT VARS
-var zVariation = 20;
+var zVariation = 5;
 var chunkSplits = 50;
 
 //GAME STATE/OPTIONS VARIABLES

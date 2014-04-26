@@ -12,6 +12,7 @@ function addObjects(objectArray){
 		newMapObj.id = thisObject.id;
 		newMapObj.entity.type = objectType;
 		newMapObj.entity.correspondingObject = newMapObj;
+		newMapObj.entity.position.z += getZFromPosition(newMapObj.entity.position);
 		scene.add(newMapObj.entity);
 		mapObjectsArray[thisObject.id] = newMapObj;
 		mapObjectsEntityArray[thisObject.id] = newMapObj.entity;
@@ -287,7 +288,7 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 		vert.z = Math.floor(Math.random() * zVariation);
 	}
 	
-	//attempt at coloring vertices:
+	//color vertices (darker for lower, lighter for higher)
 	
 	var faceIndices = ['a','b','c','d'];
 	for(var i=0;i<geometry.faces.length;i++){

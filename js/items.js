@@ -50,4 +50,5 @@ var item = function(type,position,id,chunkId){
 	this.entity.position.x = this.position.x;
 	this.entity.position.y = this.position.y;
 	this.entity.position.z = 2;
+	this.entity.position.z += getZFromPosition(position);
 }

@@ -24,7 +24,7 @@ function getChunkIdFromPosition(position){
 	return getChunkId(chunkX, chunkY);
 }
 
-function getZFromPosition(position){
+function getZExact(position){
 	var chunkSize = chunkProperties[0][0].CHUNK_SIZE;
 	var chunkId = getChunkIdFromPosition(position);
 	var chunk = getChunk(chunkId);
@@ -50,19 +50,35 @@ function getZFromPosition(position){
 	var xDivision = innerChunkX / spaceBetweenVertex + 1;
 	var yDivision = totalLength - (innerChunkY / spaceBetweenVertex * (chunkSplits + 2));
 	var index0 = Math.floor(xDivision) + Math.floor(yDivision);
-	var index1 = Math.ceil(xDivision) + Math.floor(yDivision);
-	var index2 = Math.floor(xDivision) + Math.ceil(yDivision);
-	var index3 = Math.ceil(xDivision) + Math.ceil(yDivision);
+	
+	if(index0 > totalLength){
+		index0 = totalLength;
+	}
 	
 	var verts = chunkPlane.entity.geometry.vertices;
 	var z0 = verts[index0].z;
-	var z1 = verts[index1].z;
-	var z2 = verts[index2].z;
-	var z3 = verts[index3].z;
+	return z0;
+}
+
+function getZFromPosition(position){
+	var chunkSize = chunkProperties[0][0].CHUNK_SIZE;
+	var spaceBetween = chunkSize / chunkSplits;
+	//take the point, then the space between vertexes, and find each point
+	//so if a position is (20,20), then find the z for (0,0), (0+spaceBetween), (), ()
+	var pos0 = {x:position.x, y:position.y};
+	var pos1 = {x:position.x + spaceBetween, y:position.y};
+	var pos2 = {x:position.x, y:position.y + spaceBetween};
+	var pos3 = {x:position.x + spaceBetween, y:position.y + spaceBetween};
 	
+	var z0 = getZExact(pos0);
+	var z1 = getZExact(pos1);
+	var z2 = getZExact(pos2);
+	var z3 = getZExact(pos3);
 	
-	var avg = (z0 + z1 + z2 + z3) / 4;
-	return avg;
+	//var avg = (z0 + z1 + z2 + z3) / 4;
+	//return avg;
+	var max = Math.max(z0, z1, z2, z3);
+	return max;
 }
 
 function loadCurrentChunks(chunkId){
