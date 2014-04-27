@@ -29,6 +29,11 @@ var currentlyLoadedChunks = new Array(); //holds physical planes
 //MAP OBJECT VARS
 var zVariation = 5;
 var chunkSplits = 50;
+var maxPeaks = 50;
+var maxPeakHeight = 10;
+var extremePeakHeight = 60;
+var minPeakHeight = -5;
+var peakSlope = .01;
 
 //GAME STATE/OPTIONS VARIABLES
 var MPF = 17; // TODO - Load this value from server in case it changes for some reason

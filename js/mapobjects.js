@@ -276,6 +276,26 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 	var verts = geometry.vertices;
 	var minPoint = width / 2 * -1;
 	var maxPoint = width / 2;
+	
+	var chunkSize = chunkProperties[0][0].CHUNK_SIZE;
+	
+	//first choose where the peaks are going to be in the chunk
+	//setting the seed will keep this map the same all the time
+	Math.seed = getChunkIdFromPosition({x:posX, y:posY});
+	var numPeaks = Math.floor(Math.seededRandom(1, maxPeaks));
+	var peaks = [];
+	for(var i=0;i<numPeaks;i++){
+		//choose a peak height and location
+		var peakHeight = Math.seededRandom(minPeakHeight, maxPeakHeight);
+		//choose a random coordinate between chunk coords
+		var randomX = Math.seededRandom(minPoint, maxPoint);
+		var randomY = Math.seededRandom(minPoint, maxPoint);
+		var peakObj = {x:randomX, y:randomY, z:peakHeight};
+		peaks[i] = peakObj;
+	}
+	
+	console.log(peaks);
+	
 	for(var i=0;i<verts.length;i++){
 		//prevent the edges of the chunks from being elevated.
 		var vert = verts[i];
@@ -285,7 +305,30 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 		if(vert.y == minPoint || vert.y == maxPoint){
 			continue;
 		}
-		vert.z = Math.floor(Math.random() * zVariation);
+		
+		//calculate distances to all the peaks
+		var distancesToPeaks = [];
+		var nearestDistance;
+		var heightOfNearestPeak;
+		
+		for(var n=0;n<peaks.length;n++){
+			var thisPeak = peaks[n];
+			var peakPosX = thisPeak.x;
+			var peakPosY = thisPeak.y;
+			var peakPosZ = thisPeak.z;
+			//use distance formula to calculate distance between these points
+			var dist = Math.sqrt(Math.pow((peakPosX - vert.x),2) + Math.pow((peakPosY - vert.y),2));
+			distancesToPeaks[n] = dist;
+		}
+		
+		
+		var smallestDist = Array.min(distancesToPeaks);
+		var heightOfNearestPeak = peaks[distancesToPeaks.indexOf(smallestDist)].z;
+		
+		vert.z = heightOfNearestPeak - (peakSlope * smallestDist);
+		if(vert.z < minPeakHeight){
+			vert.z = minPeakHeight;
+		}
 	}
 	
 	//color vertices (darker for lower, lighter for higher)
@@ -299,9 +342,9 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 			var p = geometry.vertices[ vertexIndex ];
 			//based on p's z value, give it a different color
 			color = new THREE.Color( 0xffffff );
-			
-			var red = .15;
-			var green = .15;
+			//possibly change the colors based on how far north it is?
+			var red = .6;
+			var green = .6;
 			var blue = 0;
 			
 			var z = p.z;

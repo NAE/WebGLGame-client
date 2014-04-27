@@ -118,3 +118,7 @@ function toScreenXY (objectPosition){
 	vector.y = - (vector.y * heightHalf) + heightHalf;
 	return { x: vector.x, y: vector.y };
 }
+
+Array.min = function( array ){
+    return Math.min.apply( Math, array );
+};
