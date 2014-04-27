@@ -12,8 +12,9 @@ function addObjects(objectArray){
 		newMapObj.id = thisObject.id;
 		newMapObj.entity.type = objectType;
 		newMapObj.entity.correspondingObject = newMapObj;
-		newMapObj.entity.position.z += getZFromPosition(newMapObj.entity.position);
 		scene.add(newMapObj.entity);
+		newMapObj.entity.position.z = getZFromPosition(newMapObj.entity.position);
+		console.log(newMapObj.entity.position);
 		mapObjectsArray[thisObject.id] = newMapObj;
 		mapObjectsEntityArray[thisObject.id] = newMapObj.entity;
 	}

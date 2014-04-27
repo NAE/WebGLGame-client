@@ -12,6 +12,7 @@ function moveAllNPCs(){
 				npcMoveObj.currentPosition.y += npcMoveObj.moveDistEach.y;
 				npc.entity.position.x = npcMoveObj.currentPosition.x;
 				npc.entity.position.y = npcMoveObj.currentPosition.y;
+				npc.entity.position.z = getZFromPosition(npc.entity.position);
 				npcMoveObj.numStepsSoFar++;
 				
 				if(npc.colladascene != undefined){
