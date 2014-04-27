@@ -294,8 +294,6 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 		peaks[i] = peakObj;
 	}
 	
-	console.log(peaks);
-	
 	for(var i=0;i<verts.length;i++){
 		//prevent the edges of the chunks from being elevated.
 		var vert = verts[i];
@@ -332,7 +330,7 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 	}
 	
 	//color vertices (darker for lower, lighter for higher)
-	
+	THREE.GeometryUtils.triangulateQuads( geometry );
 	var faceIndices = ['a','b','c','d'];
 	for(var i=0;i<geometry.faces.length;i++){
 		var f = geometry.faces[i];

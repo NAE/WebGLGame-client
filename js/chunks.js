@@ -24,7 +24,7 @@ function getChunkIdFromPosition(position){
 	return getChunkId(chunkX, chunkY);
 }
 
-function getZExact(position){
+function getZFromPosition(position){
 	var chunkSize = chunkProperties[0][0].CHUNK_SIZE;
 	var chunkId = getChunkIdFromPosition(position);
 	var chunk = getChunk(chunkId);
@@ -34,51 +34,18 @@ function getZExact(position){
 		return undefined;
 	}
 	
-	var spaceBetweenVertex = chunkSize / chunkSplits;
-	//find out where in the chunk the position is
-	var chunkOffsetX = chunk.chunkX * chunkSize;
-	var chunkOffsetY = chunk.chunkY * chunkSize;
-	
-	//find the difference between the position and the chunkOffsets
-	var innerChunkX = position.x - chunkOffsetX;
-	var innerChunkY = position.y - chunkOffsetY;
-	
-	//now get the closest vertex to that point in the chunk
-	//0 -> chunkSplits will keep the same y, but go down in x
-	//then for each next 50, subtract 1 spaceBetweenVertex from y and continue
-	var totalLength = (chunkSplits + 1) * (chunkSplits + 1) - 1;
-	var xDivision = innerChunkX / spaceBetweenVertex + 1;
-	var yDivision = totalLength - (innerChunkY / spaceBetweenVertex * (chunkSplits + 2));
-	var index0 = Math.floor(xDivision) + Math.floor(yDivision);
-	
-	if(index0 > totalLength){
-		index0 = totalLength;
-	}
-	
-	var verts = chunkPlane.entity.geometry.vertices;
-	var z0 = verts[index0].z;
-	return z0;
-}
+	var ray = new THREE.Ray();
+	ray.origin.z = 10000;
+	ray.direction = new THREE.Vector3( 0, 0, -1);
 
-function getZFromPosition(position){
-	var chunkSize = chunkProperties[0][0].CHUNK_SIZE;
-	var spaceBetween = chunkSize / chunkSplits;
-	//take the point, then the space between vertexes, and find each point
-	//so if a position is (20,20), then find the z for (0,0), (0+spaceBetween), (), ()
-	var pos0 = {x:position.x, y:position.y};
-	var pos1 = {x:position.x + spaceBetween, y:position.y};
-	var pos2 = {x:position.x, y:position.y + spaceBetween};
-	var pos3 = {x:position.x + spaceBetween, y:position.y + spaceBetween};
+	ray.origin.x = position.x;
+	ray.origin.y = position.y;
 	
-	var z0 = getZExact(pos0);
-	var z1 = getZExact(pos1);
-	var z2 = getZExact(pos2);
-	var z3 = getZExact(pos3);
+	var intersects = ray.intersectObject( chunkPlane.entity );
 	
-	//var avg = (z0 + z1 + z2 + z3) / 4;
-	//return avg;
-	var max = Math.max(z0, z1, z2, z3);
-	return max;
+	if(intersects.length > 0){
+		return intersects[0].point.z;
+	}
 }
 
 function loadCurrentChunks(chunkId){
