@@ -58,7 +58,11 @@ window.onload = function(){
 		
 		itemProperties = data.itemProperties;
 		updateDroppedItems(data.itemArray, new Date().getTime());
-		addObjects(data.objectArray);
+		
+		//wait to add objects, otherwise it won't be able to find the correct z coordinate for them
+		setTimeout(function(){
+			addObjects(data.objectArray);
+		}, 500);
 
 		//create the player's character
 		//character = new characterPlane(currentPosition.x,currentPosition.y,'img/characters/nilepic.png',connectionNum,0);

@@ -13,8 +13,7 @@ function addObjects(objectArray){
 		newMapObj.entity.type = objectType;
 		newMapObj.entity.correspondingObject = newMapObj;
 		scene.add(newMapObj.entity);
-		newMapObj.entity.position.z = getZFromPosition(newMapObj.entity.position);
-		console.log(newMapObj.entity.position);
+		newMapObj.entity.position.z += getZFromPosition(newMapObj.entity.position);
 		mapObjectsArray[thisObject.id] = newMapObj;
 		mapObjectsEntityArray[thisObject.id] = newMapObj.entity;
 	}
@@ -89,8 +88,7 @@ var crate = function(posX,posY,rot,size){
 	this.entity = new THREE.Mesh(new THREE.CubeGeometry(size, size, size, 1, 1, 1, materialBox), new THREE.MeshFaceMaterial());
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
-	this.entity.position.z = 10;
-	
+	this.entity.position.z = size/2;
 	this.entity.rotation.z = rot;
 }
 
@@ -253,7 +251,7 @@ var path = function(posX,posY,rot,imgPath){
 	this.entity = new THREE.Mesh(new THREE.PlaneGeometry(50,50),this.material);
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
-	this.entity.position.z = 1;
+	this.entity.position.z = 5;
 	this.entity.rotation.z = rot;	
 }
 

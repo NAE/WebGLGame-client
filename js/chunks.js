@@ -52,7 +52,7 @@ function getZFromPosition(position){
 	if(intersects.length > 0){
 		return intersects[0].point.z;
 	}else{
-		console.log(position);
+		console.log('err');
 		return 0;
 	}
 }
