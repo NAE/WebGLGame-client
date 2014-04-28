@@ -16,7 +16,7 @@ This is the client portion of a multiplayer, browser-based WebGL game developed 
 * Structures (trees, huts, boxes, paths) on map with rectangular collision detection done on server.
 * Chat system to chat with nearby players
 
-![WebGL game client demo](http://i.imgur.com/pyRWa4g.jpg "Gameplay")
+![WebGL game client demo](http://i.imgur.com/PxOU8eP.jpg "Gameplay")
 
 
 #### Client Features ####
