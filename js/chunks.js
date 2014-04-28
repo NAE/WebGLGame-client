@@ -25,6 +25,7 @@ function getChunkIdFromPosition(position){
 }
 
 function getZFromPosition(position){
+	//THIS FAILS A LOT RIGHT AT CHUNK BOUNDARIES. FIX. TODO.
 	var chunkSize = chunkProperties[0][0].CHUNK_SIZE;
 	var chunkId = getChunkIdFromPosition(position);
 	var chunk = getChunk(chunkId);
@@ -32,6 +33,11 @@ function getZFromPosition(position){
 	if(chunkPlane == undefined){
 		//chunk isn't loaded so there is no vertex to return
 		return undefined;
+	}
+	
+	if(position.x % chunkSize == 0){
+		//chunk boundary at x
+		
 	}
 	
 	var ray = new THREE.Ray();
