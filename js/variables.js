@@ -64,6 +64,7 @@ var currentPosition = {x:0,y:0};
 
 //CHAT VARIABLES
 var chatMessage = "";
+var chatDisappearDelay = 20000;
 
 //SELECTION VARIABLES
 var particleSelectionList = new Array();

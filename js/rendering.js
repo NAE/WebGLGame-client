@@ -46,6 +46,10 @@ function rotate(){
 		}
 	}
 	
+	if(rotating != 0){
+		updateChatBoxPositions();
+	}
+	
 	//physically move camera
 	worldCamera.entity.position.x = rotationRadius * Math.cos( theta ) + otherCharacterList[connectionNum].moveObj.currentPosition.x;
 	worldCamera.entity.position.y = -rotationRadius * Math.sin( theta ) + otherCharacterList[connectionNum].moveObj.currentPosition.y;

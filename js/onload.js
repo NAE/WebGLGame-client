@@ -78,6 +78,12 @@ window.onload = function(){
 		
 		var light = new directionalLight(100,75,300,1);
 		scene.add(light.entity);
+		
+		var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+		hemiLight.color.setHSV( 0,0,0 );
+		hemiLight.groundColor.setHSV( 0.095, 0.5, 0.5 );
+		hemiLight.position.set( 0, 500, 0 );
+		scene.add( hemiLight );
  
 		// create an object to carry some items to the animate method
 		var three = {

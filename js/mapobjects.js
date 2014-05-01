@@ -15,7 +15,10 @@ function addObjects(objectArray){
 		scene.add(newMapObj.entity);
 		newMapObj.entity.position.z += getZFromPosition(newMapObj.entity.position);
 		mapObjectsArray[thisObject.id] = newMapObj;
-		mapObjectsEntityArray[thisObject.id] = newMapObj.entity;
+		//only put objects into mapObjectsEntityArray if they are solid
+		if(thisObjProperty.solid){
+			mapObjectsEntityArray[thisObject.id] = newMapObj.entity;
+		}
 	}
 }
 

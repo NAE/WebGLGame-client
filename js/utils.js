@@ -108,11 +108,12 @@ function rotateAroundWorldAxis(object, axis, radians) {
 }
 
 function toScreenXY (objectPosition){
+	var clonedPosition = {x:objectPosition.x, y:objectPosition.y, z:objectPosition.z};
 	var widthHalf = window.innerWidth / 2;
 	var heightHalf = window.innerHeight / 2;
 
 	var projector = new THREE.Projector();
-	var vector = projector.projectVector(objectPosition, worldCamera.entity);
+	var vector = projector.projectVector(clonedPosition, worldCamera.entity);
 
 	vector.x = (vector.x * widthHalf) + widthHalf;
 	vector.y = - (vector.y * heightHalf) + heightHalf;

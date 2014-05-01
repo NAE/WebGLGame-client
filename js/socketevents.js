@@ -48,7 +48,15 @@ socket.on('npcUpdate',function(data) {
 });
 
 socket.on('chatUpdate', function(data) {
-	updateChatBox(data.message);
+	if(data.sender != undefined){
+		//show the message above the player's head
+		addChatToPlayer(data.message, data.sender);
+		//show the chat in the form of name: message
+		updateChatBox("Client " + data.sender + ": " + data.message);
+	}else{
+		//just print the message
+		updateChatBox(data.message);
+	}
 });
 
 socket.on('inventoryUpdate', function(data) {

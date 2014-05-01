@@ -162,6 +162,14 @@ function moveAllCharacters(){
 						otherCharacter.skin.morphTargetInfluences[0] = 1;
 					}
 				}
+				//update everyone's chatbox position if i'm the character that's moving
+				if(i == connectionNum){
+					//updatin everyone's
+					updateChatBoxPositions();
+				}else{
+					//update only this character's
+					updateChatBoxPosition(i);
+				}
 			}else{
 				oMoveObj.currentPosition.x = oMoveObj.moveTo.x;
 				oMoveObj.currentPosition.y = oMoveObj.moveTo.y;
@@ -224,6 +232,7 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	this.entity.connectionNum = id;
 	this.id = id;
 	this.editMode = false;
+	this.chatElemId = "";
 	//this.entity = new THREE.Mesh(new THREE.PlaneGeometry(28, 56), this.materialChar);
 	
 	

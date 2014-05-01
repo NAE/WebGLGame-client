@@ -198,3 +198,12 @@ textarea {
 	width: 120px;
 	font-variant:small-caps;
 }
+
+.chatText {
+	font-variant: small-caps;
+	position: absolute;
+	color: white;
+	text-shadow: .1em .1em 0em black;
+	max-width: 400px;
+	text-align: center;
+}

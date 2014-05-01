@@ -119,10 +119,84 @@ function checkMessage(message){
 					me.editmode = true;
 					updateChatBox("Editmode on.");
 				}
+			}else{
+				updateChatBox("You don't have permission to perform that command.");
+			}
+		}else if(command == "createpath"){
+			//creates a path between 2 points
+			var me = otherCharacterList[connectionNum];
+			if(me.admin){
+				//TODO
+			}else{
+				updateChatBox("You don't have permission to perform that command.");
 			}
 		}
 		return false;
 	}else{
 		return true;
+	}
+}
+
+function addChatToPlayer(message, playerId){
+	//uncapitalize everything in the message
+	message = message.toLowerCase();
+	var senderPlayer = otherCharacterList[playerId];
+	if(senderPlayer != undefined){
+		//first remove their old chatElem if there is one
+		if(senderPlayer.chatElemId != undefined && senderPlayer.chatElemId != ""){
+			var oldChatElem = document.getElementById(senderPlayer.chatElemId);
+			if(oldChatElem != undefined){
+				oldChatElem.parentNode.removeChild(oldChatElem);
+			}
+		}
+		
+		var screenPos = toScreenXY(senderPlayer.entity.position);
+		var chatElem = document.createElement("div");
+		chatElem.innerHTML = message;
+		chatElem.className = "chatText";
+		chatElem.id = "chat-" + Math.random().toString(36).substring(7);
+		chatElem.style.top = screenPos.y;
+		chatElem.style.left = screenPos.x;
+		document.body.appendChild(chatElem);
+		senderPlayer.chatElemId = chatElem.id
+		setTimeout(function(){
+			//remove the chat after chatDisappearDelay milliseconds
+			removeChatFromPlayer(playerId, chatElem.id);
+		},chatDisappearDelay);
+	}
+}
+
+function removeChatFromPlayer(playerId, chatId){
+	//if chatId is given, the chat div above the player's head must have that id or it will not be removed.
+	//if chatId is not given, it immediately removes it.
+	var senderPlayer = otherCharacterList[playerId];
+	if(senderPlayer != undefined){
+		if(senderPlayer.chatElemId != chatId){
+			return;
+		}
+		var chatElem = document.getElementById(chatId);
+		if(chatElem != undefined){
+			chatElem.parentNode.removeChild(chatElem);
+		}
+	}
+}
+
+function updateChatBoxPositions(){
+	//updates positions of chat elements for all players on the screen
+	for(var i=0;i<otherCharacterList.length;i++){
+		updateChatBoxPosition(i);
+	}
+}
+
+function updateChatBoxPosition(playerId){
+	//updates position of the given player's chat element
+	var thisCharacter = otherCharacterList[playerId];
+	if(thisCharacter != undefined && thisCharacter.chatElemId != undefined && thisCharacter.chatElemId != ""){
+		var chatElem = document.getElementById(thisCharacter.chatElemId);
+		if(chatElem != undefined){
+			var newScreenPos = toScreenXY(thisCharacter.entity.position);
+			chatElem.style.left = newScreenPos.x;
+			chatElem.style.top = newScreenPos.y;
+		}
 	}
 }
