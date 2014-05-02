@@ -6,6 +6,7 @@ var connectionNum;
 
 //IMPORTANT VARIABLES
 var renderer;
+var cssRenderer;
 var scene;
 var worldCamera;
 var controls;
@@ -25,6 +26,8 @@ var mapObjectsEntityArray = new Array();
 var characterInventory = new Array();
 var worldPlane;
 var currentlyLoadedChunks = new Array(); //holds physical planes
+
+var pendingObjects;
 
 //MAP OBJECT VARS
 var zVariation = 5;

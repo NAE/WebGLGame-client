@@ -139,7 +139,7 @@ function checkMessage(message){
 
 function addChatToPlayer(message, playerId){
 	//uncapitalize everything in the message
-	message = message.toLowerCase();
+	//message = message.toLowerCase();
 	var senderPlayer = otherCharacterList[playerId];
 	if(senderPlayer != undefined){
 		//first remove their old chatElem if there is one

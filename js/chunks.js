@@ -1,4 +1,7 @@
 function getChunkNums(chunkId){
+	if(!isValidChunkId(chunkId)){
+		return undefined;
+	}
 	//returns the vertical and horizontal numbers for this chunkId
 	var chunkNums = { chunkX: 0, chunkY: 0 };
 	chunkNums.chunkY = Math.floor(chunkId / MAP_HEIGHT);
@@ -8,7 +11,13 @@ function getChunkNums(chunkId){
 
 function getChunk(chunkId){
 	//gets the chunk with a specific id
+	if(!isValidChunkId(chunkId)){
+		return undefined;
+	}
 	var chunkNums = getChunkNums(chunkId);
+	if(chunkNums == undefined){
+		return undefined;
+	}
 	var newChunk = chunkProperties[chunkNums.chunkY][chunkNums.chunkX];
 	return newChunk;
 }
@@ -24,15 +33,29 @@ function getChunkIdFromPosition(position){
 	return getChunkId(chunkX, chunkY);
 }
 
+function isValidChunkId(chunkId){
+	//returns true if the given chunkId is a valid chunkId,
+	//false if not
+	if(chunkId >= 0 && chunkId < MAP_HEIGHT * MAP_WIDTH){
+		return true;
+	}else{
+		return false;
+	}
+}
+
 function getZFromPosition(position){
 	//THIS FAILS A LOT RIGHT AT CHUNK BOUNDARIES. FIX. TODO.
 	var chunkSize = chunkProperties[0][0].CHUNK_SIZE;
 	var chunkId = getChunkIdFromPosition(position);
+	if(!isValidChunkId(chunkId)){
+		//return z of 0
+		return 0;
+	}
 	var chunk = getChunk(chunkId);
 	var chunkPlane = currentlyLoadedChunks[chunkId];
 	if(chunkPlane == undefined){
-		//chunk isn't loaded so there is no vertex to return
-		return undefined;
+		//chunk isn't loaded so there is no vertex to return, return z of 0
+		return 0;
 	}
 	
 	if(position.x % chunkSize == 0){

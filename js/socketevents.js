@@ -87,7 +87,6 @@ socket.on('charEnterChunk',function(data) {
 	loadCharacters(data.sendMoveEvents,true);
 	transferNPCData(data.sendNPCs);
 	updateDroppedItems(data.sendItems,new Date().getTime());
-	addObjects(data.sendObjects);
 	//take out stuff that we don't need anymore
 	var leavingChunks = data.leavingChunks;
 	for(var i=0;i<leavingChunks.length;i++){
@@ -144,6 +143,13 @@ socket.on('charEnterChunk',function(data) {
 			}
 		}
 	}
+	//objects need to be loaded after the chunk planes are loaded.
+	//wait 500ms for chunk to be loaded, then add objects.
+	setTimeout(function(){
+		addObjects(data.sendObjects);
+	},500);
+	//add it to a pending objects list that will be updated when we receive a move event.
+	pendingObjects = data.sendObjects;
 });
 
 socket.on('otherCharacterChangeWeapon', function(data) {
