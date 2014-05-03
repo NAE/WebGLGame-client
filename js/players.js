@@ -35,10 +35,12 @@ function updateOtherChar(data){
 		otherCharEntityList[otherConnectionNum] = character2.entity;
 	}else{
 		//just update current character
-		otherCharacterList[otherConnectionNum].moveObj = data.moveObj;
-		otherCharacterList[otherConnectionNum].state.health = data.state.health;
-		otherCharacterList[otherConnectionNum].state.maxHealth = data.state.maxHealth;
-		otherCharacterList[otherConnectionNum].state.energy = data.state.energy;
+		var otherCharacter = otherCharacterList[otherConnectionNum];
+		otherCharacter.moveObj = data.moveObj;
+		otherCharacter.state.health = data.state.health;
+		otherCharacter.state.maxHealth = data.state.maxHealth;
+		otherCharacter.state.energy = data.state.energy;
+		otherCharacter.healthPlane.remainingEntity.scale.x = otherCharacter.state.health/otherCharacter.state.maxHealth;
 		var thisChunk = getChunk(data.moveObj.currentChunk);
 		if(thisChunk.players.indexOf(otherConnectionNum) < 0){
 			thisChunk.players.push(otherConnectionNum);
