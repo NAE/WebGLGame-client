@@ -6,7 +6,6 @@ var connectionNum;
 
 //IMPORTANT VARIABLES
 var renderer;
-var cssRenderer;
 var scene;
 var worldCamera;
 var controls;
@@ -26,8 +25,7 @@ var mapObjectsEntityArray = new Array();
 var characterInventory = new Array();
 var worldPlane;
 var currentlyLoadedChunks = new Array(); //holds physical planes
-
-var pendingObjects;
+var previouslyLoadedChunks = new Array(); //holds old groundPlanes
 
 //MAP OBJECT VARS
 var zVariation = 5;
@@ -67,7 +65,9 @@ var currentPosition = {x:0,y:0};
 
 //CHAT VARIABLES
 var chatMessage = "";
+var chatFontSize = 14;
 var chatDisappearDelay = 20000;
+var chatVisibleDistance = 3000;
 
 //SELECTION VARIABLES
 var particleSelectionList = new Array();

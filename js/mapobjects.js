@@ -128,10 +128,6 @@ var darkTree = function(posX,posY,rot){
 	return new tree(posX,posY,rot,0x2A1B0A,0x071907,100);
 }
 
-var htmlPlane = function(posX,posY,posZ,width,height,rotX,rotY,rotZ,color,url){
-	
-}
-
 var flatPlane = function(posX,posY,posZ,width,height,rotX,rotY,rotZ,color,imgPath){
 	var geom = new THREE.Geometry(); 
 	var v1 = new THREE.Vector3(0,0,0);

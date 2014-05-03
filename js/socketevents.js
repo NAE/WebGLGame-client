@@ -100,6 +100,7 @@ socket.on('charEnterChunk',function(data) {
 		var physicalChunk = currentlyLoadedChunks[thisChunkId];
 		if(physicalChunk != undefined){
 			scene.remove(physicalChunk.entity);
+			previouslyLoadedChunks[thisChunkId] = physicalChunk;
 			currentlyLoadedChunks[thisChunkId] = undefined;
 		}
 		var npcsInThisChunk = thisChunk.npcs;
@@ -148,8 +149,6 @@ socket.on('charEnterChunk',function(data) {
 	setTimeout(function(){
 		addObjects(data.sendObjects);
 	},500);
-	//add it to a pending objects list that will be updated when we receive a move event.
-	pendingObjects = data.sendObjects;
 });
 
 socket.on('otherCharacterChangeWeapon', function(data) {
@@ -176,7 +175,6 @@ socket.on('mapObjectRemove', function(data) {
 
 socket.on('clientDisconnect', function(data) {
 	removeCharacter(data.connectionNum);
-	updateChatBox(data.chatArray);
 });
 
 socket.on('consoleLog',function(data) {

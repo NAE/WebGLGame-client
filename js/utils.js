@@ -120,6 +120,14 @@ function toScreenXY (objectPosition){
 	return { x: vector.x, y: vector.y };
 }
 
+function getDist(position1, position2){
+	//calculate and return distance between these 2 given positions (z not factored in)
+	var distX = Math.abs(position1.x - position2.x);
+	var distY = Math.abs(position1.y - position2.y);
+	var dist = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
+	return dist;
+}
+
 Array.min = function( array ){
     return Math.min.apply( Math, array );
 };

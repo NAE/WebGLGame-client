@@ -149,8 +149,7 @@ function addChatToPlayer(message, playerId){
 				oldChatElem.parentNode.removeChild(oldChatElem);
 			}
 		}
-		
-		var screenPos = toScreenXY(senderPlayer.entity.position);
+		var screenPos = toScreenXY(senderPlayer.healthPlane.entity.matrixWorld.getPosition());
 		var chatElem = document.createElement("div");
 		chatElem.innerHTML = message;
 		chatElem.className = "chatText";
@@ -158,7 +157,12 @@ function addChatToPlayer(message, playerId){
 		chatElem.style.top = screenPos.y;
 		chatElem.style.left = screenPos.x;
 		document.body.appendChild(chatElem);
-		senderPlayer.chatElemId = chatElem.id
+		setChatFontSize(senderPlayer, chatElem);
+		var chatWidth = chatElem.offsetWidth;
+		var realPosLeft = screenPos.x - (chatWidth / 2);
+		chatElem.style.left = realPosLeft;
+		
+		senderPlayer.chatElemId = chatElem.id;
 		setTimeout(function(){
 			//remove the chat after chatDisappearDelay milliseconds
 			removeChatFromPlayer(playerId, chatElem.id);
@@ -188,14 +192,29 @@ function updateChatBoxPositions(){
 	}
 }
 
+function setChatFontSize(player, chatElem){
+	//calculate and set the appropriate font size
+	var me = otherCharacterList[connectionNum];
+	var distAway = getDist(player.entity.position, me.entity.position);
+	var deductionFraction = (distAway / chatVisibleDistance) / 2;
+	if(distAway > chatVisibleDistance){
+		deductionFraction = 1;
+	}
+	var newFontSize = chatFontSize * (1 - deductionFraction);
+	chatElem.style.fontSize = newFontSize;
+}
+
 function updateChatBoxPosition(playerId){
 	//updates position of the given player's chat element
 	var thisCharacter = otherCharacterList[playerId];
 	if(thisCharacter != undefined && thisCharacter.chatElemId != undefined && thisCharacter.chatElemId != ""){
 		var chatElem = document.getElementById(thisCharacter.chatElemId);
 		if(chatElem != undefined){
-			var newScreenPos = toScreenXY(thisCharacter.entity.position);
-			chatElem.style.left = newScreenPos.x;
+			var newScreenPos = toScreenXY(thisCharacter.healthPlane.entity.matrixWorld.getPosition());
+			setChatFontSize(thisCharacter, chatElem);
+			var chatWidth = chatElem.offsetWidth;
+			var realPosLeft = newScreenPos.x - (chatWidth / 2);
+			chatElem.style.left = realPosLeft;
 			chatElem.style.top = newScreenPos.y;
 		}
 	}

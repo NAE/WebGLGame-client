@@ -68,11 +68,13 @@ function addCharacterMoveEvent(pointObj,itemHit){
 }
 
 function removeCharacter(conn){
-	console.log("removing character " + conn);
-	var charObj = otherCharEntityList[conn];
+	var playerObj = otherCharacterList[conn];
+	var playerEntityObj = otherCharEntityList[conn];
+	//first attempt to remove its chat element
+	removeChatFromPlayer(conn, playerObj.chatElemId);
 	otherCharacterList[conn] = undefined;
 	otherCharEntityList[conn] = undefined;
-	scene.remove(charObj);
+	scene.remove(playerEntityObj);
 }
 
 function loadCharacters(moveEvents,allFalse){
@@ -245,6 +247,7 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	
 	this.healthPlane = new healthPlane(100,100);
 	this.entity.add(this.healthPlane.entity);
+	this.healthPlane.entity.position.y += 35;
 	
 	this.weaponType = weaponType;
 	this.weapon = new weapon(weaponType);

@@ -92,7 +92,17 @@ function loadCurrentChunks(chunkId){
 			var thisChunk = chunkProperties[chunkNums.chunkY][chunkNums.chunkX];
 			var planePosX = thisChunk.position.x + (thisChunk.CHUNK_SIZE/2);
 			var planePosY = thisChunk.position.y + (thisChunk.CHUNK_SIZE/2);
-			var thisPlane = new groundPlane(thisChunk.CHUNK_SIZE,thisChunk.CHUNK_SIZE,planePosX,planePosY,'img/regularGround.jpg',true);
+			//first check if we have already made this chunk in the past
+			var previouslyLoadedChunk = previouslyLoadedChunks[adjacentChunks[i]];
+			var thisPlane;
+			if(previouslyLoadedChunk != undefined){
+				//load the chunk we have previously loaded
+				thisPlane = previouslyLoadedChunk;
+				previouslyLoadedChunks[adjacentChunks[i]] = undefined;
+			}else{
+				//create a new chunk
+				thisPlane = new groundPlane(thisChunk.CHUNK_SIZE,thisChunk.CHUNK_SIZE,planePosX,planePosY,'img/regularGround.jpg',true);
+			}
 			scene.add(thisPlane.entity);
 			//we really don't need to remove old planes, I think it would take more proecessing power than to just leave them there
 			//set this chunk as having been loaded so that we don't load it again
