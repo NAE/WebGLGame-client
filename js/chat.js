@@ -97,7 +97,7 @@ function checkMessage(message){
 			//first parse the command and place the given type at the player's current coordinates
 			var separatedCommand = command.split(" ");
 			var type = parseInt(separatedCommand[1]);
-			var rotationCoefficient = .5;
+			var rotationCoefficient = 0;
 			if(separatedCommand.length > 2){
 				rotationCoefficient = parseInt(separatedCommand[2]);
 			}

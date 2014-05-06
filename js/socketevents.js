@@ -48,6 +48,8 @@ socket.on('npcUpdate',function(data) {
 });
 
 socket.on('chatUpdate', function(data) {
+	//strip tags
+	data.message = message = jQuery('<p>' + data.message + '</p>').text();
 	if(data.sender != undefined){
 		//show the message above the player's head
 		addChatToPlayer(data.message, data.sender);
