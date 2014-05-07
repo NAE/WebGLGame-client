@@ -88,3 +88,4 @@ var mapObjectEventTypes;
 //MODELS
 var man;
 var dog;
+var objs = ["man","dog"];

@@ -4,7 +4,21 @@ window.onload = function(){
 	loadPanelData();
 	loadModels();
 	socket.on('connectionInfo', function (data) {
-		onLoad(data);
+		//check if all the models are loaded
+		var loadedObjCount = 0;
+		while(loadedObjCount != objs.length){
+			loadedObjCount = 0;
+			for(var i=0;i<objs.length;i++){
+				if(window[objs[i]] != undefined){
+					//means this variable has been assigned, so its loaded
+					loadedObjCount++;
+				}
+			}
+			if(loadedObjCount == objs.length){
+				//then perform onload
+				onLoad(data);
+			}
+		}
 	});
 };
 
@@ -101,7 +115,6 @@ function onLoad(data){
 function loadModels(){
 		
 	//load all the required models asynchronously
-	var objs = ["man","dog"];
 	var i = 0;
 	objs.forEach(function(str){
 		var obj = window[str];
