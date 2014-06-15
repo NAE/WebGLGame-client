@@ -8,6 +8,7 @@ var connectionNum;
 var renderer;
 var scene;
 var worldCamera;
+var worldLight;
 var controls;
 var holdingCtrl = false;
 var loader = new THREE.ColladaLoader();
@@ -31,9 +32,9 @@ var previouslyLoadedChunks = new Array(); //holds old groundPlanes
 var zVariation = 5;
 var chunkSplits = 50;
 var maxPeaks = 50;
-var maxPeakHeight = 10;
+var maxPeakHeight = 20;
 var extremePeakHeight = 60;
-var minPeakHeight = -5;
+var minPeakHeight = -10;
 var peakSlope = .01;
 
 //GAME STATE/OPTIONS VARIABLES

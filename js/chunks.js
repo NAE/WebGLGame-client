@@ -63,14 +63,14 @@ function getZFromPosition(position){
 		
 	}
 	
-	var ray = new THREE.Ray();
-	ray.origin.z = 10000;
-	ray.direction = new THREE.Vector3( 0, 0, -1);
+	var raycaster = new THREE.Raycaster();
+	raycaster.ray.origin.z = 10000;
+	raycaster.ray.direction = new THREE.Vector3( 0, 0, -1);
 
-	ray.origin.x = position.x;
-	ray.origin.y = position.y;
+	raycaster.ray.origin.x = position.x;
+	raycaster.ray.origin.y = position.y;
 	
-	var intersects = ray.intersectObject( chunkPlane.entity );
+	var intersects = raycaster.intersectObject( chunkPlane.entity );
 	
 	if(intersects.length > 0){
 		return intersects[0].point.z;

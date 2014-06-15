@@ -63,6 +63,7 @@ function addCharacterMoveEvent(pointObj,itemHit){
 		scene.remove(moveCursor.entity);
 	}
 	moveCursor = new rectangle(destination.x,destination.y,0,2,2,75,0x660000);
+	moveCursor.entity.position.z = getZFromPosition(moveCursor.entity.position);
 	scene.add(moveCursor.entity);
 	
 	var sendData = { destination: destination, itemHitNum: itemHitNum};
@@ -216,7 +217,7 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 		camel.entity.add(collada.scene);
 	});*/
 	//this.colladascene = man.colladascene.clone();
-	this.colladascene = THREE.SceneUtils.cloneObject(man.colladascene);
+	this.colladascene = man.colladascene.clone();
 	//this.skin = THREE.SceneUtils.cloneObject(man.skin);
 	this.skin = this.colladascene.children[3];
 	this.lastFrame = 0;

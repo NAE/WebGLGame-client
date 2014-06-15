@@ -17,11 +17,11 @@ function rotate(){
 	var angleChanged;
 	if(rotating == 1){
 		theta -= angleChange;
-		rotateAroundWorldAxis(worldCamera.entity, new THREE.Vector3(0,0,1), angleChange);
+		worldCamera.entity.rotateAroundWorldAxis(new THREE.Vector3(0,0,1), angleChange);
 		angleChanged = angleChange;
 	}else if(rotating == 2){
 		theta += angleChange;
-		rotateAroundWorldAxis(worldCamera.entity, new THREE.Vector3(0,0,1), -angleChange);
+		worldCamera.entity.rotateAroundWorldAxis(new THREE.Vector3(0,0,1), -angleChange);
 		angleChanged = -angleChange;
 	}
 	
@@ -31,7 +31,7 @@ function rotate(){
 			var thisCharacter = otherCharacterList[i];
 			if(thisCharacter != undefined){
 				if(thisCharacter.id == connectionNum){
-					rotateAroundWorldAxis(thisCharacter.healthPlane.entity, new THREE.Vector3(0,1,0), angleChanged);
+					thisCharacter.healthPlane.entity.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), angleChanged);
 				}else{
 					thisCharacter.healthPlane.entity.rotation.setEulerFromRotationMatrix(otherCharacterList[connectionNum].healthPlane.entity.matrix);
 				}
@@ -53,7 +53,10 @@ function rotate(){
 	//physically move camera
 	worldCamera.entity.position.x = rotationRadius * Math.cos( theta ) + otherCharacterList[connectionNum].moveObj.currentPosition.x;
 	worldCamera.entity.position.y = -rotationRadius * Math.sin( theta ) + otherCharacterList[connectionNum].moveObj.currentPosition.y;
-	
+	if(otherCharacterList[connectionNum].entity.position){
+		worldLight.entity.position.x = otherCharacterList[connectionNum].entity.position.x;
+		worldLight.entity.position.y = otherCharacterList[connectionNum].entity.position.y;
+	}
 }
 
 function animate(lastTime, angularSpeed, three){
@@ -141,9 +144,9 @@ var directionalCamera = function(posX,posY,posZ){
 
 var directionalLight = function(posX,posY,posZ,intensity){
 	//originally 0xCCCCCC
-	this.entity = new THREE.DirectionalLight(fogColor, 1);
+	this.entity = new THREE.DirectionalLight(0xffffff, 1);
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
-	this.entity.position.z = posZ;
-	this.entity.intensity = intensity;
+	this.entity.position.z = 100;
+	this.entity.intensity = .5;
 }

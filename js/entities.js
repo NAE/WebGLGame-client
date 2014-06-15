@@ -30,12 +30,15 @@ function createMoveEvent(pointObj){
 var weapon = function(type){
 	var wepProperty = weaponProperties[type];
 	this.weaponTexture = THREE.ImageUtils.loadTexture(wepProperty.texture);
-	this.materialWeapon = new THREE.MeshLambertMaterial({
+	this.materialWeapon = new THREE.MeshBasicMaterial({
+		side: THREE.DoubleSide,
 		map: this.weaponTexture,
 		//transparent: true,
 		//side: THREE.DoubleSide
 	});
-	this.entity = new THREE.Mesh(new THREE.CubeGeometry(wepProperty.width, wepProperty.length, wepProperty.width, 1, 1, 1, this.materialWeapon), new THREE.MeshFaceMaterial());
+	
+	this.entity = new THREE.Mesh(new THREE.CubeGeometry(wepProperty.width, wepProperty.length, wepProperty.width, 1, 1, 1), this.materialWeapon);
+	
 	this.entity.scale.x = this.entity.scale.y = this.entity.scale.z = .25;
 	//this.entity.rotation.z += Math.PI/2;
 	this.entity.position.x = -3.25;
@@ -43,6 +46,7 @@ var weapon = function(type){
 	this.entity.position.y = -1;
 	this.entity.rotation.y += Math.PI/2;
 	this.entity.rotation.x -= Math.PI/4;
+	this.entity.poop = 6;
 	this.type = type;
 }
 

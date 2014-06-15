@@ -1,4 +1,6 @@
 To make the collada models here:
 
+http://blenderartists.org/forum/showthread.php?199383-how-to-change-the-position-of-the-center-point-of-an-object
+
 Created in blender 2.49b. Move center point using F9 - Center cursor to the origin point. Apply visual transform to objects (select all, ctrl-a) - sometimes need to do this...
 Exported in blender 2.68 as collada, before this select all and do Ctrl - a Apply position. Must do this part in 2.68.

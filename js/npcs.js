@@ -98,15 +98,17 @@ var npcPlane = function(bundleData){
 	//determine type
 	var name = npcProperties[bundleData.type].name;
 	var cloneRef = man;
+	var idx = 3;
 	if(name == "dog"){
 		cloneRef = dog;
 	}else if(name == "man"){
 		cloneRef = man;
+		idx = 3;
 	}
 	
-	this.colladascene = THREE.SceneUtils.cloneObject(cloneRef.colladascene);
+	this.colladascene = cloneRef.colladascene.clone();
 	//this.skin = THREE.SceneUtils.cloneObject(man.skin);
-	this.skin = this.colladascene.children[3];
+	this.skin = this.colladascene.children[idx];
 	this.lastFrame = 0;
 	this.totalFrames = this.skin.morphTargetInfluences.length;
 	this.skin.morphTargetInfluences[this.lastFrame] = 0;

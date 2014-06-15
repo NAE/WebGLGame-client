@@ -69,11 +69,11 @@ function interactWithClickedObject(mapEntity, option){
 
 //map objects
 var rectangle = function(posX,posY,posZ,length,width,height,color){
-	var materialBox = new THREE.MeshLambertMaterial({
-		ambient: color
+	var materialBox = new THREE.MeshBasicMaterial({
+		color: color
 	});
 	
-	this.entity = new THREE.Mesh(new THREE.CubeGeometry(length, width, height, 1, 1, 1, materialBox), new THREE.MeshFaceMaterial());
+	this.entity = new THREE.Mesh(new THREE.CubeGeometry(length, width, height, 1, 1, 1), materialBox);
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
 	this.entity.position.z = posZ;
@@ -83,12 +83,12 @@ var rectangle = function(posX,posY,posZ,length,width,height,color){
 
 var crate = function(posX,posY,rot,size){
 	size = size || 20;
-	var materialBox = new THREE.MeshLambertMaterial({
+	var materialBox = new THREE.MeshBasicMaterial({
 		map: THREE.ImageUtils.loadTexture('img/crate.jpg'),
-		ambient: 0x2A120A
+		color: 0x2A120A
 	});
 	
-	this.entity = new THREE.Mesh(new THREE.CubeGeometry(size, size, size, 1, 1, 1, materialBox), new THREE.MeshFaceMaterial());
+	this.entity = new THREE.Mesh(new THREE.CubeGeometry(size, size, size, 1, 1, 1), materialBox);
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
 	this.entity.position.z = size/2;
@@ -144,10 +144,10 @@ var flatPlane = function(posX,posY,posZ,width,height,rotX,rotY,rotZ,color,imgPat
 	
 	//required for textures
 	geom.faceVertexUvs[ 0 ].push( [
-		new THREE.UV(0,0),
-		new THREE.UV(0,1),
-		new THREE.UV(1,1),
-		new THREE.UV(1,0)
+		new THREE.Vector2(0,0),
+		new THREE.Vector2(0,1),
+		new THREE.Vector2(1,1),
+		new THREE.Vector2(1,0)
 	] );
 	
 	//need for lighting
@@ -155,7 +155,7 @@ var flatPlane = function(posX,posY,posZ,width,height,rotX,rotY,rotZ,color,imgPat
 	geom.computeFaceNormals();
 	geom.computeVertexNormals();
 	
-	this.material = new THREE.MeshLambertMaterial({
+	this.material = new THREE.MeshBasicMaterial({
 		side: THREE.DoubleSide,
 		shading: THREE.FlatShading,
 		map: THREE.ImageUtils.loadTexture(imgPath)
@@ -184,10 +184,10 @@ var triangle = function(posX,posY,posZ,width,height,rotX,rotY,rotZ,color,imgPath
 	
 	//required for textures
 	geom.faceVertexUvs[ 0 ].push( [
-		new THREE.UV(0,0),
-		new THREE.UV(0,1),
-		new THREE.UV(1,1),
-		new THREE.UV(1,0)
+		new THREE.Vector2(0,0),
+		new THREE.Vector2(0,1),
+		new THREE.Vector2(1,1),
+		new THREE.Vector2(1,0)
 	] );
 	
 	//need for lighting
@@ -195,7 +195,7 @@ var triangle = function(posX,posY,posZ,width,height,rotX,rotY,rotZ,color,imgPath
 	geom.computeFaceNormals();
 	geom.computeVertexNormals();
 
-	this.material = new THREE.MeshLambertMaterial({
+	this.material = new THREE.MeshBasicMaterial({
 		side: THREE.DoubleSide,
 		shading: THREE.FlatShading,
 		map: THREE.ImageUtils.loadTexture(imgPath)
@@ -246,7 +246,7 @@ var path = function(posX,posY,rot,imgPath){
 	this.texture = THREE.ImageUtils.loadTexture(imgPath);
 	this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping;
 	this.texture.repeat.set(1,1);
-	this.material = new THREE.MeshLambertMaterial({
+	this.material = new THREE.MeshBasicMaterial({
 		map: this.texture,
 		ambient: 0x3C2F2F
 	});
@@ -359,24 +359,23 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 			f.vertexColors[ j ] = color;
 		}
 	}
-	var planeMaterial = new THREE.MeshBasicMaterial( 
-    { ambient: 0x6CAFE3, shading: THREE.SmoothShading, 
+	var planeMaterial = new THREE.MeshLambertMaterial( 
+    { shading: THREE.SmoothShading, 
     vertexColors: THREE.VertexColors, map: texture } );
-	geometry.materials.push(planeMaterial);
-	for( var i in geometry.faces ) {
+	//geometry.materials.push(planeMaterial);
+	/*for( var i in geometry.faces ) {
 		var face = geometry.faces[i];
 		face.materialIndex = i%geometry.materials.length;
-	}
+	}*/
 	
 	//for vertices/heightmap, add more params to three.planegeometry
-	var material = new THREE.MeshFaceMaterial();
-	this.entity = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial([material]));
+	this.entity = new THREE.Mesh(geometry, planeMaterial);
 	this.entity.geometry.needsUpdate = true;
 	this.entity.overdraw = true;
 	this.entity.receiveShadow = true;
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
-	
+	this.entity.poop = 5;
 }
 
 var invisiblePlane = function(width,height,posX,posY){

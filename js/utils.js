@@ -11,7 +11,7 @@ function onDocumentMouseDown( event ) {
 		var projector = new THREE.Projector();
 		projector.unprojectVector(vector,worldCamera.entity);
 
-		var ray = new THREE.Ray( worldCamera.entity.position,vector.subSelf( worldCamera.entity.position ).normalize() );
+		var raycaster = new THREE.Raycaster( worldCamera.entity.position,vector.sub( worldCamera.entity.position ).normalize() );
 
 		//first see if ray intersects any characters - OLD
 		/*var intersectsChars = ray.intersectObjects(otherCharEntityList);
@@ -24,9 +24,9 @@ function onDocumentMouseDown( event ) {
 		}*/
 		
 		//see if the ray intersects the ground if it did not intersect any characters
-		var intersects = ray.intersectObject(worldPlane.entity);
+		var intersects = raycaster.intersectObject(worldPlane.entity);
 		//check if it intersects any items on the ground
-		var itemHit = ray.intersectObjects(itemEntityArray);
+		var itemHit = raycaster.intersectObjects(itemEntityArray);
 		
 		//to find intersections of objects, it's possible there will be 'undefined's inside mapObjectsEntityArray
 		//due to the way that objects are loaded into the map. i.e. if objects with ids 0 and 4 are the only ones that are loaded, there
@@ -40,7 +40,7 @@ function onDocumentMouseDown( event ) {
 			}
 		}
 		
-		var objectHit = ray.intersectObjects(cleanMapObjectsEntityArray, true);
+		var objectHit = raycaster.intersectObjects(cleanMapObjectsEntityArray, true);
 		
 		if(objectHit.length > 0){
 			//object hit takes priority over moving
@@ -95,6 +95,13 @@ function onDocumentMouseDown( event ) {
 var rotWorldMatrix;
 // Rotate an object around an arbitrary axis in world space       
 function rotateAroundWorldAxis(object, axis, radians) {
+	THREE.Object3D._matrixAux = new THREE.Matrix4();
+	THREE.Object3D._matrixAux.makeRotationAxis(axis, radians);
+    this.matrix.multiplyMatrices(THREE.Object3D._matrixAux,this.matrix); // r56
+    THREE.Object3D._matrixAux.extractRotation(this.matrix);
+    this.rotation.setEulerFromRotationMatrix(THREE.Object3D._matrixAux, this.eulerOrder ); 
+    this.position.getPositionFromMatrix( this.matrix );
+	/*
 	rotWorldMatrix = new THREE.Matrix4();
 	rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
 	rotWorldMatrix.multiplySelf(object.matrix);        // pre-multiply
@@ -102,9 +109,21 @@ function rotateAroundWorldAxis(object, axis, radians) {
 
 	// new code for Three.js v50+
 	object.rotation.setEulerFromRotationMatrix(object.matrix);
-
+*/
 	// old code for Three.js v49:
 	// object.rotation.getRotationFromMatrix(object.matrix, object.scale);
+}
+
+THREE.Object3D._matrixAux = new THREE.Matrix4(); // global auxiliar variable
+// Warnings: 1) axis is assumed to be normalized. 
+//  2) matrix must be updated. If not, call object.updateMatrix() first  
+//  3) this assumes we are not using quaternions
+THREE.Object3D.prototype.rotateAroundWorldAxis = function(axis, radians) { 
+    THREE.Object3D._matrixAux.makeRotationAxis(axis, radians);
+    this.matrix.multiplyMatrices(THREE.Object3D._matrixAux,this.matrix); // r56
+    THREE.Object3D._matrixAux.extractRotation(this.matrix);
+    this.rotation.setEulerFromRotationMatrix(THREE.Object3D._matrixAux, this.eulerOrder ); 
+    this.position.getPositionFromMatrix( this.matrix );
 }
 
 function toScreenXY (objectPosition){

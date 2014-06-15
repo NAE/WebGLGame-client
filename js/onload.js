@@ -44,15 +44,15 @@ function onLoad(data){
 	var angularSpeed = 0.2;
 	var lastTime = 0;
 
-	// camera
-	worldCamera = new directionalCamera(0,-450,250);
-	worldCamera.entity.rotation.x = 65 * (Math.PI / 180);
-
 	//create renderer
 	createRenderer();
 
 	// scene
 	scene = new THREE.Scene();
+	
+	// camera
+	worldCamera = new directionalCamera(0,-450,250);
+	worldCamera.entity.rotation.x = 65 * (Math.PI / 180);
 	
 	//now that scene has been initialized, can load other characters into scene
 	loadCharacters(data.moveEvents);
@@ -95,14 +95,8 @@ function onLoad(data){
 	var ambientLight = new THREE.AmbientLight(0xffffff);
 	scene.add(ambientLight);
 	
-	var light = new directionalLight(100,75,300,1);
-	scene.add(light.entity);
-	
-	var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
-	hemiLight.color.setHSV( 0,0,0 );
-	hemiLight.groundColor.setHSV( 0.095, 0.5, 0.5 );
-	hemiLight.position.set( 0, 500, 0 );
-	scene.add( hemiLight );
+	worldLight = new directionalLight(1, 1, 1, 1);
+	scene.add(worldLight.entity);
 
 	// create an object to carry some items to the animate method
 	var three = {
@@ -126,6 +120,7 @@ function loadModels(){
 		//IT WILL STILL WORK.
 		var thisLoader = new THREE.ColladaLoader();
 		thisLoader.load("models/" + str + ".dae", function colladaReady(collada){
+			console.log(collada.scene);
 			var colladascene = collada.scene;
 			thisRef.colladascene = colladascene;
 			thisRef.skin = collada.skins [ 0 ];
