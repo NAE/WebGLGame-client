@@ -1,20 +1,98 @@
-//wait for incoming charInfo
-/*socket.on('charInfo', function (data) {
-		//update or load in new characters
-		loadOtherCharacters(data);
-		updateChatBox(data.chatArray);
-});*/
+/* TODO
+ * Socket events here are being received prior to everything being loaded.
+ * Implement a sort of 'queue' to retain the data that has been received
+ * but not do anything with it until everything has been loaded (loaded == true)
+ */
 
 socket.on('otherCharMove', function(data) {
-	updateOtherChar(data.player);
+	socketOtherCharMove(data);
 });
 
 socket.on('globalParticleUpdate', function(data) {
-	var system = makeParticleSystem(data.particles);
-	particleSystemList.push(system);
+	socketGlobalParticleUpdate(data);
 });
 
 socket.on('particleHits', function(data) {
+	socketParticleHits(data);
+});
+
+socket.on('npcUpdate',function(data) {
+	socketNpcUpdate(data);
+});
+
+socket.on('chatUpdate', function(data) {
+	socketChatUpdate(data);
+});
+
+socket.on('inventoryUpdate', function(data) {
+	socketInventoryUpdate(data);
+});
+
+socket.on('droppedItems', function(data) {
+	socketDroppedItems(data);
+});
+
+socket.on('charLeaveChunk',function(data) {
+	socketCharLeaveChunk(data);
+});
+
+socket.on('charEnterChunk',function(data) {
+	socketCharEnterChunk(data);
+});
+
+socket.on('otherCharacterChangeWeapon', function(data) {
+	socketOtherCharacterChangeWeapon(data);
+});
+
+socket.on('mapObjectAdd', function(data) {
+	socketMapObjectAdd(data);
+});
+
+socket.on('mapObjectRemove', function(data) {
+	socketMapObjectRemove(data);
+});
+
+socket.on('clientDisconnect', function(data) {
+	socketClientDisconnect(data);
+});
+
+socket.on('consoleLog',function(data) {
+	socketConsoleLog(data);
+});
+
+/* Socket functions handle the data retrieved from the socket */
+
+function socketOtherCharMove(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketOtherCharMove(data);
+		}, loadRetryTime);
+		return;
+	}
+	
+	updateOtherChar(data.player);
+}
+
+function socketGlobalParticleUpdate(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketGlobalParticleUpdate(data);
+		}, loadRetryTime);
+		return;
+	}
+	
+	var system = makeParticleSystem(data.particles);
+	particleSystemList.push(system);
+}
+
+function socketParticleHits(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketParticleHits(data);
+		}, loadRetryTime);
+		return;
+	}
+	
 	var playersHit = data.playersHit;
 	var players = data.players;
 	if(data.firer == connectionNum && data.firerType == PLAYER_CONST){
@@ -41,13 +119,27 @@ socket.on('particleHits', function(data) {
 			}
 		}
 	}
-});
+}
 
-socket.on('npcUpdate',function(data) {
+function socketNpcUpdate(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketNpcUpdate(data);
+		}, loadRetryTime);
+		return;
+	}
+	
 	transferNPCData(data.npcArray);
-});
+}
 
-socket.on('chatUpdate', function(data) {
+function socketChatUpdate(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketChatUpdate(data);
+		}, loadRetryTime);
+		return;
+	}
+	
 	//strip tags
 	data.message = message = jQuery('<p>' + data.message + '</p>').text();
 	if(data.sender != undefined){
@@ -59,17 +151,38 @@ socket.on('chatUpdate', function(data) {
 		//just print the message
 		updateChatBox(data.message);
 	}
-});
+}
 
-socket.on('inventoryUpdate', function(data) {
+function socketInventoryUpdate(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketInventoryUpdate(data);
+		}, loadRetryTime);
+		return;
+	}
+	
 	updateInventory(data.playerInventory.inventory);
-});
+}
 
-socket.on('droppedItems', function(data) {
+function socketDroppedItems(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketDroppedItems(data);
+		}, loadRetryTime);
+		return;
+	}
+	
 	updateDroppedItems(data.itemArray,data.timeNow);
-});
+}
 
-socket.on('charLeaveChunk',function(data) {
+function socketCharLeaveChunk(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketCharLeaveChunk(data);
+		}, loadRetryTime);
+		return;
+	}
+	
 	//check if we should not render him anymore, compare his newChunk with my adjacent chunks
 	var myAdjacents = getChunk(otherCharacterList[connectionNum].moveObj.currentChunk).adjacentChunks;
 	var oldChunkId = data.oldChunk;
@@ -82,9 +195,16 @@ socket.on('charLeaveChunk',function(data) {
 	if(myAdjacents.indexOf(data.newChunk) < 0 && data.connectionNum != connectionNum){
 		removeCharacter(data.connectionNum);
 	}
-});
+}
 
-socket.on('charEnterChunk',function(data) {
+function socketCharEnterChunk(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketCharEnterChunk(data);
+		}, loadRetryTime);
+		return;
+	}
+	
 	//data from the chunk that we entered, setting state of all moveObj's to false in order to prevent double movement
 	loadCharacters(data.sendMoveEvents,true);
 	transferNPCData(data.sendNPCs);
@@ -151,34 +271,69 @@ socket.on('charEnterChunk',function(data) {
 	setTimeout(function(){
 		addObjects(data.sendObjects);
 	},500);
-});
+}
 
-socket.on('otherCharacterChangeWeapon', function(data) {
+function socketOtherCharacterChangeWeapon(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketOtherCharacterChangeWeapon(data);
+		}, loadRetryTime);
+		return;
+	}
+	
 	changeOtherCharacterWeapon(data.newType,data.connectionNum);
-});
+}
 
-socket.on('mapObjectAdd', function(data) {
+function socketMapObjectAdd(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketMapObjectAdd(data);
+		}, loadRetryTime);
+		return;
+	}
+	
 	var newObjects = data.newObjects;
 	var chunkId = data.chunkId;
 	//add the object
 	addObjects(newObjects);
 	//add it to the chunk
 	getChunk(chunkId).objects.push(newObjects[0]);
-});
+}
 
-socket.on('mapObjectRemove', function(data) {
+function socketMapObjectRemove(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketMapObjectRemove(data);
+		}, loadRetryTime);
+		return;
+	}
+	
 	removeObjects(data.removedObjectIds);
 	var chunkId = data.chunkId;
 	var chunk = getChunk(chunkId);
 	var chunkObjs = chunk.objects;
 	var indexOfObjId = chunkObjs.indexOf(data.removedObjectIds[0]);
 	chunkObjs.splice(indexOfObjId,1);
-});
+}
 
-socket.on('clientDisconnect', function(data) {
+function socketClientDisconnect(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketClientDisconnect(data);
+		}, loadRetryTime);
+		return;
+	}
+	
 	removeCharacter(data.connectionNum);
-});
+}
 
-socket.on('consoleLog',function(data) {
+function socketConsoleLog(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketConsoleLog(data);
+		}, loadRetryTime);
+		return;
+	}
+	
 	console.log(data);
-});
+}

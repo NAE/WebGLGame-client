@@ -1,33 +1,29 @@
 var modelsLoaded = false;
+var loaded = false;
 
 window.onload = function(){
 	loadPanelData();
 	loadModels();
 	socket.on('connectionInfo', function (data) {
 		//check if all the models are loaded
-		var loadedObjCount = 0;
-		console.log(modelsLoaded);
-		onLoad(data);
-		
-		/* This doesn't seem to work
-		while(loadedObjCount != objs.length){
-			loadedObjCount = 0;
-			for(var i=0;i<objs.length;i++){
-				if(window[objs[i]] != undefined){
-					//means this variable has been assigned, so its loaded
-					loadedObjCount++;
-				}
-			}
-			if(loadedObjCount == objs.length){
-				//then perform onload
-				onLoad(data);
-			}
-		}*/
+		waitForLoad(data);
 	});
 };
 
+function waitForLoad(data){
+	if(modelsLoaded){
+		setTimeout(function(){
+			onLoad(data);
+		}, 3000);
+	}else{
+		setTimeout(function(){
+			console.log("waiting once");
+			waitForLoad(data);
+		}, loadRetryTime);
+	}
+}
+
 function onLoad(data){
-	console.log(modelsLoaded);
 	mapSize = data.mapSize;
 	particleProperties = data.particleProperties;
 	weaponProperties = data.weaponProperties;
@@ -85,6 +81,8 @@ function onLoad(data){
 	//wait to add objects, otherwise it won't be able to find the correct z coordinate for them
 	setTimeout(function(){
 		addObjects(data.objectArray);
+		//set loaded to true to indicate that we are all done loading
+		loaded = true;
 	}, 500);
 
 	//create the player's character
@@ -113,32 +111,32 @@ function onLoad(data){
 function loadModels(){
 		
 	//load all the required models asynchronously
-	var i = 0;
+	var z = 0;
 	objs.forEach(function(str){
-		var obj = window[str];
-		obj = new Object();
-		window[str] = obj;
-		obj.entity = new THREE.Object3D();
-		var thisRef = obj;
+		
 		//NEED TO MAKE A COMPLETELY NEW LOADER SO THAT WHEN IT IS LOADING MULTIPLE MODELS AT THE SAME TIME,
 		//IT WILL STILL WORK.
 		var thisLoader = new THREE.ColladaLoader();
 		thisLoader.load("models/" + str + ".dae", function colladaReady(collada){
 			console.log(collada);
+			var obj = window[str];
+			obj = new Object();
+			window[str] = obj;
+			obj.entity = new THREE.Object3D();
 			var colladascene = collada.scene;
 			colladascene.updateMatrix();
-			thisRef.colladascene = colladascene;
+			obj.colladascene = colladascene;
 			
-			thisRef.skin = collada.skins[0];
-			thisRef.lastFrame = 0;
-			thisRef.totalFrames = thisRef.skin.morphTargetInfluences.length;
-			thisRef.skin.morphTargetInfluences[thisRef.lastFrame] = 0;
+			obj.skin = collada.skins[0];
+			obj.lastFrame = 0;
+			obj.totalFrames = obj.skin.morphTargetInfluences.length;
+			obj.skin.morphTargetInfluences[obj.lastFrame] = 0;
 			colladascene.scale.x = colladascene.scale.y = colladascene.scale.z = 3.5;
 			colladascene.updateMatrix();
-			thisRef.entity.add(collada.scene);
+			obj.entity.add(collada.scene);
 			
-			i++;
-			if(i == objs.length){
+			z++;
+			if(z == objs.length){
 				//models are done loading
 				modelsLoaded = true;
 			}

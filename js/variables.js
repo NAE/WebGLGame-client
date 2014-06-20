@@ -3,6 +3,7 @@
 //CONNECTION VARIABLES
 var socket = io.connect('http://' + document.domain + ':3000');
 var connectionNum;
+var loadRetryTime = 500;
 
 //IMPORTANT VARIABLES
 var renderer;

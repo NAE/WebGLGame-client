@@ -92,28 +92,6 @@ function onDocumentMouseDown( event ) {
 	}
 }
 
-var rotWorldMatrix;
-// Rotate an object around an arbitrary axis in world space       
-function rotateAroundWorldAxis(object, axis, radians) {
-	THREE.Object3D._matrixAux = new THREE.Matrix4();
-	THREE.Object3D._matrixAux.makeRotationAxis(axis, radians);
-    this.matrix.multiplyMatrices(THREE.Object3D._matrixAux,this.matrix); // r56
-    THREE.Object3D._matrixAux.extractRotation(this.matrix);
-    this.rotation.setEulerFromRotationMatrix(THREE.Object3D._matrixAux, this.eulerOrder ); 
-    this.position.getPositionFromMatrix( this.matrix );
-	/*
-	rotWorldMatrix = new THREE.Matrix4();
-	rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
-	rotWorldMatrix.multiplySelf(object.matrix);        // pre-multiply
-	object.matrix = rotWorldMatrix;
-
-	// new code for Three.js v50+
-	object.rotation.setEulerFromRotationMatrix(object.matrix);
-*/
-	// old code for Three.js v49:
-	// object.rotation.getRotationFromMatrix(object.matrix, object.scale);
-}
-
 THREE.Object3D._matrixAux = new THREE.Matrix4(); // global auxiliar variable
 // Warnings: 1) axis is assumed to be normalized. 
 //  2) matrix must be updated. If not, call object.updateMatrix() first  
@@ -122,11 +100,9 @@ THREE.Object3D.prototype.rotateAroundWorldAxis = function(axis, radians) {
     THREE.Object3D._matrixAux.makeRotationAxis(axis, radians);
     this.matrix.multiplyMatrices(THREE.Object3D._matrixAux,this.matrix); // r56
     THREE.Object3D._matrixAux.extractRotation(this.matrix);
-    this.rotation.setFromRotationMatrix(THREE.Object3D._matrixAux, this.eulerOrder ); 
+    this.rotation.setFromRotationMatrix(THREE.Object3D._matrixAux, this.rotation.order ); 
     this.position.getPositionFromMatrix( this.matrix );
 }
-
-
 
 function toScreenXY (objectPosition){
 	var clonedPosition = {x:objectPosition.x, y:objectPosition.y, z:objectPosition.z};
