@@ -33,7 +33,7 @@ function rotate(){
 				if(thisCharacter.id == connectionNum){
 					thisCharacter.healthPlane.entity.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), angleChanged);
 				}else{
-					thisCharacter.healthPlane.entity.rotation.setEulerFromRotationMatrix(otherCharacterList[connectionNum].healthPlane.entity.matrix);
+					thisCharacter.healthPlane.entity.rotation.setFromRotationMatrix(otherCharacterList[connectionNum].healthPlane.entity.matrix);
 				}
 			}
 		}
@@ -41,7 +41,7 @@ function rotate(){
 			var thisNpc = npcArray[i];
 			if(thisNpc != undefined){
 				//rotateAroundWorldAxis(thisNpc.healthPlane.entity, new THREE.Vector3(0,1,0), angleChanged);
-				thisNpc.healthPlane.entity.rotation.setEulerFromRotationMatrix(otherCharacterList[connectionNum].healthPlane.entity.matrix);
+				thisNpc.healthPlane.entity.rotation.setFromRotationMatrix(otherCharacterList[connectionNum].healthPlane.entity.matrix);
 			}
 		}
 	}
@@ -133,6 +133,14 @@ function createRenderer(){
 	//shadow stuff end
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
+	window.addEventListener( 'resize', onWindowResize, false );
+}
+
+function onWindowResize(event) {
+	renderer.setSize(window.innerWidth, window.innerHeight);
+
+	worldCamera.entity.aspect = window.innerWidth / window.innerHeight;
+	worldCamera.entity.updateProjectionMatrix();
 }
 
 var directionalCamera = function(posX,posY,posZ){
@@ -148,5 +156,5 @@ var directionalLight = function(posX,posY,posZ,intensity){
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
 	this.entity.position.z = 100;
-	this.entity.intensity = .5;
+	this.entity.intensity = .1;
 }

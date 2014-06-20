@@ -6,6 +6,10 @@ window.onload = function(){
 	socket.on('connectionInfo', function (data) {
 		//check if all the models are loaded
 		var loadedObjCount = 0;
+		console.log(modelsLoaded);
+		onLoad(data);
+		
+		/* This doesn't seem to work
 		while(loadedObjCount != objs.length){
 			loadedObjCount = 0;
 			for(var i=0;i<objs.length;i++){
@@ -18,7 +22,7 @@ window.onload = function(){
 				//then perform onload
 				onLoad(data);
 			}
-		}
+		}*/
 	});
 };
 
@@ -120,16 +124,19 @@ function loadModels(){
 		//IT WILL STILL WORK.
 		var thisLoader = new THREE.ColladaLoader();
 		thisLoader.load("models/" + str + ".dae", function colladaReady(collada){
-			console.log(collada.scene);
+			console.log(collada);
 			var colladascene = collada.scene;
+			colladascene.updateMatrix();
 			thisRef.colladascene = colladascene;
-			thisRef.skin = collada.skins [ 0 ];
+			
+			thisRef.skin = collada.skins[0];
 			thisRef.lastFrame = 0;
 			thisRef.totalFrames = thisRef.skin.morphTargetInfluences.length;
 			thisRef.skin.morphTargetInfluences[thisRef.lastFrame] = 0;
 			colladascene.scale.x = colladascene.scale.y = colladascene.scale.z = 3.5;
 			colladascene.updateMatrix();
 			thisRef.entity.add(collada.scene);
+			
 			i++;
 			if(i == objs.length){
 				//models are done loading

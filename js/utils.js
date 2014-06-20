@@ -122,9 +122,11 @@ THREE.Object3D.prototype.rotateAroundWorldAxis = function(axis, radians) {
     THREE.Object3D._matrixAux.makeRotationAxis(axis, radians);
     this.matrix.multiplyMatrices(THREE.Object3D._matrixAux,this.matrix); // r56
     THREE.Object3D._matrixAux.extractRotation(this.matrix);
-    this.rotation.setEulerFromRotationMatrix(THREE.Object3D._matrixAux, this.eulerOrder ); 
+    this.rotation.setFromRotationMatrix(THREE.Object3D._matrixAux, this.eulerOrder ); 
     this.position.getPositionFromMatrix( this.matrix );
 }
+
+
 
 function toScreenXY (objectPosition){
 	var clonedPosition = {x:objectPosition.x, y:objectPosition.y, z:objectPosition.z};
@@ -145,6 +147,19 @@ function getDist(position1, position2){
 	var distY = Math.abs(position1.y - position2.y);
 	var dist = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
 	return dist;
+}
+
+function getSkinIndex(colladascene){
+	//returns the index of the child of colladascene that is an instance of SkinnedMesh, else returns -1
+	var children = colladascene.children;
+	if(children == undefined || children.length == 0){
+		return -1;
+	}
+	for(var i=0;i<children.length;i++){
+		if(children[i] instanceof THREE.SkinnedMesh){
+			return i;
+		}
+	}
 }
 
 Array.min = function( array ){

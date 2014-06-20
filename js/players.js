@@ -134,6 +134,7 @@ function moveAllCharacters(){
 					otherCharacter.entity.position.z = zPos;
 					
 					oMoveObj.numStepsSoFar++;
+					
 					var nextFrame = otherCharacter.lastFrame + 1;
 					if(nextFrame >= otherCharacter.totalFrames){
 						nextFrame = 0;
@@ -141,6 +142,8 @@ function moveAllCharacters(){
 					otherCharacter.skin.morphTargetInfluences[otherCharacter.lastFrame] = 0;
 					otherCharacter.skin.morphTargetInfluences[nextFrame] = 1;
 					otherCharacter.lastFrame = nextFrame;
+					
+					
 					//camera is automatically removed in the rotate method
 				}else{
 					//we reached the destination
@@ -201,25 +204,8 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	});
 	
 	this.entity = new THREE.Object3D();
-	/*var camel = this;
-	loader.load('models/dog.dae',function colladaReady(collada){
-		var colladascene = collada.scene;
-		camel.colladascene = colladascene;
-		camel.skin = collada.skins [ 0 ];
-		camel.lastFrame = 0;
-		camel.totalFrames = camel.skin.morphTargetInfluences.length;
-		camel.skin.morphTargetInfluences[camel.lastFrame] = 0;
-		colladascene.scale.x = colladascene.scale.y = colladascene.scale.z = 3.5;
-		colladascene.rotation.x -= Math.PI/2;
-		colladascene.rotation.z = Math.PI/2;
-		camel.baseRotationZ = Math.PI/2;
-		colladascene.updateMatrix();
-		camel.entity.add(collada.scene);
-	});*/
-	//this.colladascene = man.colladascene.clone();
 	this.colladascene = man.colladascene.clone();
-	//this.skin = THREE.SceneUtils.cloneObject(man.skin);
-	this.skin = this.colladascene.children[3];
+	this.skin = man.skin.clone();
 	this.lastFrame = 0;
 	this.totalFrames = this.skin.morphTargetInfluences.length;
 	this.skin.morphTargetInfluences[this.lastFrame] = 0;
@@ -238,7 +224,6 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	this.id = id;
 	this.editMode = false;
 	this.chatElemId = "";
-	//this.entity = new THREE.Mesh(new THREE.PlaneGeometry(28, 56), this.materialChar);
 	
 	
 	this.materialHat = THREE.ImageUtils.loadTexture('img/clothing/hat.png');
