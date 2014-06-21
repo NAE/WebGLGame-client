@@ -105,7 +105,8 @@ THREE.Object3D.prototype.rotateAroundWorldAxis = function(axis, radians) {
 }
 
 function toScreenXY (objectPosition){
-	var clonedPosition = {x:objectPosition.x, y:objectPosition.y, z:objectPosition.z};
+	//var clonedPosition = {x:objectPosition.x, y:objectPosition.y, z:objectPosition.z};
+	var clonedPosition = new THREE.Vector3(objectPosition.x, objectPosition.y, objectPosition.z);
 	var widthHalf = window.innerWidth / 2;
 	var heightHalf = window.innerHeight / 2;
 
