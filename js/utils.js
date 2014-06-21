@@ -101,7 +101,7 @@ THREE.Object3D.prototype.rotateAroundWorldAxis = function(axis, radians) {
     this.matrix.multiplyMatrices(THREE.Object3D._matrixAux,this.matrix); // r56
     THREE.Object3D._matrixAux.extractRotation(this.matrix);
     this.rotation.setFromRotationMatrix(THREE.Object3D._matrixAux, this.rotation.order ); 
-    this.position.getPositionFromMatrix( this.matrix );
+    this.position.setFromMatrixPosition( this.matrix );
 }
 
 function toScreenXY (objectPosition){

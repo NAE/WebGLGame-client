@@ -37,7 +37,7 @@ var weapon = function(type){
 		//side: THREE.DoubleSide
 	});
 	
-	this.entity = new THREE.Mesh(new THREE.CubeGeometry(wepProperty.width, wepProperty.length, wepProperty.width, 1, 1, 1), this.materialWeapon);
+	this.entity = new THREE.Mesh(new THREE.BoxGeometry(wepProperty.width, wepProperty.length, wepProperty.width, 1, 1, 1), this.materialWeapon);
 	
 	this.entity.scale.x = this.entity.scale.y = this.entity.scale.z = .25;
 	//this.entity.rotation.z += Math.PI/2;

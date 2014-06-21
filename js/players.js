@@ -209,7 +209,8 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	this.lastFrame = 0;
 	this.totalFrames = this.skin.morphTargetInfluences.length;
 	this.skin.morphTargetInfluences[this.lastFrame] = 0;
-	this.colladascene.scale.x = this.colladascene.scale.y = this.colladascene.scale.z = 3.5;
+	//this.colladascene.scale.x = this.colladascene.scale.y = this.colladascene.scale.z = 3.5;
+	this.colladascene.scale.x = this.colladascene.scale.y = this.colladascene.scale.z = .05;
 	this.colladascene.rotation.x -= Math.PI/2;
 	this.colladascene.rotation.z = Math.PI/2;
 	this.baseRotationZ = Math.PI/2;

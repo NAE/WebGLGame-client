@@ -73,7 +73,7 @@ var rectangle = function(posX,posY,posZ,length,width,height,color){
 		color: color
 	});
 	
-	this.entity = new THREE.Mesh(new THREE.CubeGeometry(length, width, height, 1, 1, 1), materialBox);
+	this.entity = new THREE.Mesh(new THREE.BoxGeometry(length, width, height, 1, 1, 1), materialBox);
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
 	this.entity.position.z = posZ;
@@ -88,7 +88,7 @@ var crate = function(posX,posY,rot,size){
 		color: 0x2A120A
 	});
 	
-	this.entity = new THREE.Mesh(new THREE.CubeGeometry(size, size, size, 1, 1, 1), materialBox);
+	this.entity = new THREE.Mesh(new THREE.BoxGeometry(size, size, size, 1, 1, 1), materialBox);
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
 	this.entity.position.z = size/2;
@@ -333,7 +333,7 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 	}
 	
 	//color vertices (darker for lower, lighter for higher)
-	THREE.GeometryUtils.triangulateQuads( geometry );
+	//THREE.GeometryUtils.triangulateQuads( geometry );
 	var faceIndices = ['a','b','c','d'];
 	for(var i=0;i<geometry.faces.length;i++){
 		var f = geometry.faces[i];
