@@ -149,7 +149,7 @@ function addChatToPlayer(message, playerId){
 				oldChatElem.parentNode.removeChild(oldChatElem);
 			}
 		}
-		var screenPos = toScreenXY(senderPlayer.healthPlane.entity.matrixWorld.getPosition());
+		var screenPos = toScreenXY(new THREE.Vector3().getPositionFromMatrix(senderPlayer.healthPlane.entity.matrixWorld));
 		var chatElem = document.createElement("div");
 		chatElem.innerHTML = message;
 		chatElem.className = "chatText";
@@ -210,7 +210,7 @@ function updateChatBoxPosition(playerId){
 	if(thisCharacter != undefined && thisCharacter.chatElemId != undefined && thisCharacter.chatElemId != ""){
 		var chatElem = document.getElementById(thisCharacter.chatElemId);
 		if(chatElem != undefined){
-			var newScreenPos = toScreenXY(thisCharacter.healthPlane.entity.matrixWorld.getPosition());
+			var newScreenPos = toScreenXY(new THREE.Vector3().getPositionFromMatrix(thisCharacter.healthPlane.entity.matrixWorld));
 			setChatFontSize(thisCharacter, chatElem);
 			var chatWidth = chatElem.offsetWidth;
 			var realPosLeft = newScreenPos.x - (chatWidth / 2);
