@@ -12,9 +12,7 @@ window.onload = function(){
 
 function waitForLoad(data){
 	if(modelsLoaded){
-		setTimeout(function(){
-			onLoad(data);
-		}, 3000);
+		onLoad(data);
 	}else{
 		setTimeout(function(){
 			console.log("waiting once");
@@ -115,7 +113,7 @@ function loadModels(){
 	objs.forEach(function(str){
 		
 		//NEED TO MAKE A COMPLETELY NEW LOADER SO THAT WHEN IT IS LOADING MULTIPLE MODELS AT THE SAME TIME,
-		//IT WILL STILL WORK.
+		//IT WILL STILL WORK. <--not doing this right now
 		var thisLoader = new THREE.ColladaLoader();
 		thisLoader.load("models/" + str + ".dae", function colladaReady(collada){
 			console.log(collada);

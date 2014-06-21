@@ -129,31 +129,30 @@ var darkTree = function(posX,posY,rot){
 }
 
 var flatPlane = function(posX,posY,posZ,width,height,rotX,rotY,rotZ,color,imgPath){
-	var geom = new THREE.Geometry(); 
+	var square = new THREE.Geometry();
+	
 	var v1 = new THREE.Vector3(0,0,0);
 	var v2 = new THREE.Vector3(0,width,0);
 	var v3 = new THREE.Vector3(0,width,height);
 	var v4 = new THREE.Vector3(0,0,height);
 
-	geom.vertices.push(v1);
-	geom.vertices.push(v2);
-	geom.vertices.push(v3);
-	geom.vertices.push(v4);
-
-	geom.faces.push( new THREE.Face4( 0, 1, 2, 3 ) );
+	square.vertices.push(v1);
+	square.vertices.push(v2);
+	square.vertices.push(v3);
+	square.vertices.push(v4);
 	
-	//required for textures
-	geom.faceVertexUvs[ 0 ].push( [
-		new THREE.Vector2(0,0),
-		new THREE.Vector2(0,1),
-		new THREE.Vector2(1,1),
-		new THREE.Vector2(1,0)
-	] );
+	square.faces.push(new THREE.Face3(0,1,2));
+	square.faces.push(new THREE.Face3(0,3,2));
 	
-	//need for lighting
-	geom.computeCentroids();
-	geom.computeFaceNormals();
-	geom.computeVertexNormals();
+	var uvs = [];
+	uvs.push(new THREE.Vector2(0,0));
+	uvs.push(new THREE.Vector2(0,1));
+	uvs.push(new THREE.Vector2(1,0));
+	uvs.push(new THREE.Vector2(1,1));
+	
+	//define texture uvs
+	square.faceVertexUvs[0].push([uvs[0], uvs[1], uvs[3]]);
+	square.faceVertexUvs[0].push([uvs[1], uvs[3], uvs[2]]);
 	
 	this.material = new THREE.MeshBasicMaterial({
 		side: THREE.DoubleSide,
@@ -161,7 +160,7 @@ var flatPlane = function(posX,posY,posZ,width,height,rotX,rotY,rotZ,color,imgPat
 		map: THREE.ImageUtils.loadTexture(imgPath)
 	});
 	
-	this.entity = new THREE.Mesh(geom, this.material);
+	this.entity = new THREE.Mesh(square, this.material);
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
 	this.entity.position.z = posZ;
@@ -191,9 +190,11 @@ var triangle = function(posX,posY,posZ,width,height,rotX,rotY,rotZ,color,imgPath
 	] );
 	
 	//need for lighting
+	/*
 	geom.computeCentroids();
 	geom.computeFaceNormals();
 	geom.computeVertexNormals();
+	* */
 
 	this.material = new THREE.MeshBasicMaterial({
 		side: THREE.DoubleSide,
