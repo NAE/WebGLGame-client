@@ -10,40 +10,9 @@ var moveObj = function(){
 }
 
 function createMoveEvent(pointObj){
-		//creates a new destination based on character's current position and the destination given by pointObj
-		
+	//creates a new destination based on character's current position and the destination given by pointObj
 	var destination = {x: pointObj.point.x, y: pointObj.point.y};
 	return destination;
-	
-	/* var newMove = new moveObj();
-	newMove.moving = true;
-	newMove.moveTo = {x: pointObj.point.x,y: pointObj.point.y};
-	
-	newMove.distX = newMove.moveTo.x - otherCharacterList[connectionNum].moveObj.currentPosition.x;
-	newMove.distY = newMove.moveTo.y - otherCharacterList[connectionNum].moveObj.currentPosition.y;
-	
-	newMove.numStepsSoFar = 0;
-	newMove.currentPosition = {x: otherCharacterList[connectionNum].moveObj.currentPosition.x,y: otherCharacterList[connectionNum].moveObj.currentPosition.y};
-	return newMove; */
-}
-
-var livingEntity = function(){
-	this.entity = new THREE.Object3D();
-	this.skin;
-	this.oldRot = 0;
-	
-	this.lookAt = function(position){
-		var deltaX = position.x - this.entity.position.x;
-		var deltaY = position.y - this.entity.position.y;
-		var newRot = Math.atan(deltaY/deltaX);
-		if(deltaX < 0){
-			newRot += Math.PI;
-		}
-		//otherCharacter.skin.rotation.z = newRot + otherCharacter.baseRotationZ;
-		var diff = newRot - this.oldRot;
-		this.oldRot = newRot;
-		this.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
-	}
 }
 
 var weapon = function(type){
@@ -60,10 +29,26 @@ var weapon = function(type){
 	
 	this.entity.scale.x = this.entity.scale.y = this.entity.scale.z = .25;
 	this.entity.rotateAroundWorldAxis(new THREE.Vector3(0,0,1), Math.PI/2);
-	this.entity.position.y = 11;
+	this.entity.position.y = 12;
 	this.entity.position.z = 3;
 	this.entity.position.x = 3;
+	this.entity.rotation.z += Math.PI/8;
+	this.baseRotationZ = this.entity.rotation.z;
 	this.type = type;
+	
+	this.cock = function(){
+		var cockDistance = Math.PI/8;
+		//only cock if its not already cocked
+		if(this.entity.rotation.z == this.baseRotationZ){
+			this.entity.position.y = 14;
+			this.entity.rotation.z += cockDistance;
+			var wepRef = this;
+			setTimeout(function(){
+				wepRef.entity.position.y = 12;
+				wepRef.entity.rotation.z = wepRef.baseRotationZ;
+			},200);
+		}
+	}
 }
 
 var healthPlane = function(health,maxHealth){
