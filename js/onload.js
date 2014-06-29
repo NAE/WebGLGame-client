@@ -106,6 +106,7 @@ function onLoad(data){
 	animate(lastTime, angularSpeed, three);
 }
 
+/*
 function loadModels(){
 		
 	//load all the required models asynchronously
@@ -115,17 +116,16 @@ function loadModels(){
 		//NEED TO MAKE A COMPLETELY NEW LOADER SO THAT WHEN IT IS LOADING MULTIPLE MODELS AT THE SAME TIME,
 		//IT WILL STILL WORK. <--not doing this right now
 		var thisLoader = new THREE.ColladaLoader();
-		loader.options.convertUpAxis = true;
 		thisLoader.load("models/" + str + ".dae", function colladaReady(collada){
 			console.log(collada);
 			var obj = window[str];
 			obj = new Object();
 			window[str] = obj;
 			obj.entity = new THREE.Object3D();
-			var colladascene = collada.scene;
+			var colladascene = collada.scene.clone();
 			colladascene.updateMatrix();
 			obj.colladascene = colladascene;
-			
+			obj.dae = collada.dae;
 			obj.skin = collada.skins[0];
 			obj.lastFrame = 0;
 			obj.totalFrames = obj.skin.morphTargetInfluences.length;
@@ -134,6 +134,28 @@ function loadModels(){
 			colladascene.updateMatrix();
 			obj.entity.add(collada.scene);
 			
+			z++;
+			if(z == objs.length){
+				//models are done loading
+				modelsLoaded = true;
+			}
+		});
+	});
+}
+*/
+
+function loadModels(){
+	var z = 0;
+	objs.forEach(function(str){
+		var thisLoader = new THREE.JSONLoader();
+		thisLoader.load("models/" + str + ".js", function(geometry, materials){
+			var skinnedMesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials));
+			window[str] = skinnedMesh;
+			var materials = skinnedMesh.material.materials;
+			for(var k in materials){
+				materials[k].skinning = true;
+			}
+			console.log(skinnedMesh);
 			z++;
 			if(z == objs.length){
 				//models are done loading

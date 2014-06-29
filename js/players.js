@@ -121,7 +121,11 @@ function moveAllCharacters(){
 					if(deltaX < 0){
 						newRot += Math.PI;
 					}
-					otherCharacter.colladascene.rotation.z = newRot + otherCharacter.baseRotationZ;
+					//otherCharacter.skin.rotation.z = newRot + otherCharacter.baseRotationZ;
+					var oldRot = otherCharacter.oldRot;
+					var diff = newRot - oldRot;
+					otherCharacter.oldRot = newRot;
+					otherCharacter.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
 					
 					//then move
 					oMoveObj.currentPosition.x += oMoveObj.moveDistEach.x;
@@ -134,15 +138,6 @@ function moveAllCharacters(){
 					otherCharacter.entity.position.z = zPos;
 					
 					oMoveObj.numStepsSoFar++;
-					
-					var nextFrame = otherCharacter.lastFrame + 1;
-					if(nextFrame >= otherCharacter.totalFrames){
-						nextFrame = 0;
-					}
-					otherCharacter.skin.morphTargetInfluences[otherCharacter.lastFrame] = 0;
-					otherCharacter.skin.morphTargetInfluences[nextFrame] = 1;
-					otherCharacter.lastFrame = nextFrame;
-					
 					
 					//camera is automatically removed in the rotate method
 				}else{
@@ -163,12 +158,6 @@ function moveAllCharacters(){
 							scene.remove(moveCursor.entity);
 						}
 					}
-					if(otherCharacter.skin != undefined){
-						//it can be undefined while loading at the beginning sometimes
-						otherCharacter.skin.morphTargetInfluences[otherCharacter.lastFrame] = 0;
-						otherCharacter.lastFrame = 0;
-						otherCharacter.skin.morphTargetInfluences[0] = 1;
-					}
 				}
 				//update everyone's chatbox position if i'm the character that's moving
 				if(i == connectionNum){
@@ -183,12 +172,6 @@ function moveAllCharacters(){
 				oMoveObj.currentPosition.y = oMoveObj.moveTo.y;
 				otherCharacter.entity.position.x = oMoveObj.currentPosition.x;
 				otherCharacter.entity.position.y = oMoveObj.currentPosition.y;
-				if(otherCharacter.skin != undefined){
-					//it can be undefined while loading at the beginning sometimes
-					otherCharacter.skin.morphTargetInfluences[otherCharacter.lastFrame] = 0;
-					otherCharacter.lastFrame = 0;
-					otherCharacter.skin.morphTargetInfluences[0] = 1;
-				}
 			}
 		}
 	}
@@ -204,18 +187,14 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	});
 	
 	this.entity = new THREE.Object3D();
-	this.colladascene = man.colladascene.clone();
-	this.skin = man.skin.clone();
-	this.lastFrame = 0;
-	this.totalFrames = this.skin.morphTargetInfluences.length;
-	this.skin.morphTargetInfluences[this.lastFrame] = 0;
-	//this.colladascene.scale.x = this.colladascene.scale.y = this.colladascene.scale.z = 3.5;
-	this.colladascene.scale.x = this.colladascene.scale.y = this.colladascene.scale.z = .05;
-	this.colladascene.rotation.x -= Math.PI/2;
-	this.colladascene.rotation.z = Math.PI/2;
-	this.baseRotationZ = Math.PI/2;
-	this.colladascene.updateMatrix();
-	this.entity.add(this.colladascene);
+	this.skin = man.clone();
+	this.entity.add(this.skin);
+	this.skin.scale.x = this.skin.scale.y = this.skin.scale.z = 3.5;
+	this.oldRot = 0;
+	
+	THREE.AnimationHandler.add(this.skin.geometry.animations[0]);
+	var animation = new THREE.Animation(this.skin, "Action", THREE.AnimationHandler.CATMULLROM);
+	animation.play();
 	
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
@@ -225,7 +204,6 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	this.id = id;
 	this.editMode = false;
 	this.chatElemId = "";
-	
 	
 	this.materialHat = THREE.ImageUtils.loadTexture('img/clothing/hat.png');
 	this.hat = new THREE.Mesh(new THREE.PlaneGeometry(28,32), this.materialHat);
@@ -240,15 +218,15 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	
 	this.weaponType = weaponType;
 	this.weapon = new weapon(weaponType);
-	this.colladascene.add(this.weapon.entity);
+	this.entity.add(this.weapon.entity);
 	
 	this.changeWeapon = function(newType,itemId){
 		//removes old weapon and replaces with new
 		var newWeapon = new weapon(newType);
 		this.weaponType = newType;
-		this.colladascene.remove(this.weapon.entity);
+		this.entity.remove(this.weapon.entity);
 		this.weapon = newWeapon;
-		this.colladascene.add(this.weapon.entity);
+		this.entity.add(this.weapon.entity);
 		
 		//change wieldBox picture if this is me
 		if(id == connectionNum){

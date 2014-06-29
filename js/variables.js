@@ -13,6 +13,7 @@ var worldLight;
 var controls;
 var holdingCtrl = false;
 var loader = new THREE.ColladaLoader();
+var JSONLoader = new THREE.JSONLoader();
 
 //IN-GAME OBJECTS
 var character;

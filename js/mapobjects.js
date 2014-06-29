@@ -16,7 +16,7 @@ function addObjects(objectArray){
 		newMapObj.entity.position.z += getZFromPosition(newMapObj.entity.position);
 		mapObjectsArray[thisObject.id] = newMapObj;
 		//only put objects into mapObjectsEntityArray if they are solid
-		if(thisObjProperty.solid){
+		if(thisObjProperty){
 			mapObjectsEntityArray[thisObject.id] = newMapObj.entity;
 		}
 	}
@@ -333,7 +333,6 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 	}
 	
 	//color vertices (darker for lower, lighter for higher)
-	//THREE.GeometryUtils.triangulateQuads( geometry );
 	var faceIndices = ['a','b','c','d'];
 	for(var i=0;i<geometry.faces.length;i++){
 		var f = geometry.faces[i];

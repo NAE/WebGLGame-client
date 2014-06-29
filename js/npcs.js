@@ -15,31 +15,18 @@ function moveAllNPCs(){
 				npc.entity.position.z = getZFromPosition(npc.entity.position);
 				npcMoveObj.numStepsSoFar++;
 				
-				if(npc.colladascene != undefined){
-					var deltaX = npcMoveObj.moveTo.x - npcMoveObj.currentPosition.x;
-					var deltaY = npcMoveObj.moveTo.y - npcMoveObj.currentPosition.y;
-					var newRot = Math.atan(deltaY/deltaX);
-					if(deltaX < 0){
-						newRot += Math.PI;
-					}
-					npc.colladascene.rotation.z = newRot + npc.baseRotationZ;
-					
-					var nextFrame = npc.lastFrame + 1;
-					if(nextFrame >= npc.totalFrames){
-						nextFrame = 0;
-					}
-					npc.skin.morphTargetInfluences[npc.lastFrame] = 0;
-					npc.skin.morphTargetInfluences[nextFrame] = 1;
-					npc.lastFrame = nextFrame;
+				var deltaX = npcMoveObj.moveTo.x - npcMoveObj.currentPosition.x;
+				var deltaY = npcMoveObj.moveTo.y - npcMoveObj.currentPosition.y;
+				var newRot = Math.atan(deltaY/deltaX);
+				if(deltaX < 0){
+					newRot += Math.PI;
 				}
+				var oldRot = npc.oldRot;
+				var diff = newRot - oldRot;
+				npc.oldRot = newRot;
+				npc.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
 			}else{
 				npcMoveObj.moving = false;
-				if(npc.skin != undefined){
-					//it can be undefined while loading at the beginning sometimes
-					npc.skin.morphTargetInfluences[npc.lastFrame] = 0;
-					npc.lastFrame = 0;
-					npc.skin.morphTargetInfluences[0] = 1;
-				}
 			}
 		}
 	}
@@ -79,38 +66,14 @@ var npcPlane = function(bundleData){
 	//this.entity = new THREE.Mesh(new THREE.PlaneGeometry(bundleData.imgDimens.x, bundleData.imgDimens.y), this.materialChar);
 	this.entity = new THREE.Object3D();
 	
-	/*var thisRef = this;
-	loader.load(bundleData.model,function colladaReady(collada){
-		var colladascene = collada.scene;
-		thisRef.colladascene = colladascene;
-		thisRef.skin = collada.skins [ 0 ];
-		thisRef.lastFrame = 0;
-		thisRef.totalFrames = thisRef.skin.morphTargetInfluences.length;
-		thisRef.skin.morphTargetInfluences[thisRef.lastFrame] = 0;
-		colladascene.scale.x = colladascene.scale.y = colladascene.scale.z = 3.5;
-		colladascene.rotation.x -= Math.PI/2;
-		colladascene.rotation.z = Math.PI/2;
-		thisRef.baseRotationZ = Math.PI/2;
-		colladascene.updateMatrix();
-		thisRef.entity.add(collada.scene);
-	});*/
-	
 	//determine type
 	var name = npcProperties[bundleData.type].name;
-	var cloneRef = man;
+	var cloneRef = window[name];
 	
-	this.colladascene = cloneRef.colladascene.clone();
-	//this.skin = THREE.SceneUtils.cloneObject(man.skin);
-	this.skin = cloneRef.skin.clone();
-	this.lastFrame = 0;
-	this.totalFrames = this.skin.morphTargetInfluences.length;
-	this.skin.morphTargetInfluences[this.lastFrame] = 0;
-	this.colladascene.scale.x = this.colladascene.scale.y = this.colladascene.scale.z = .05;
-	this.colladascene.rotation.x -= Math.PI/2;
-	this.colladascene.rotation.z = Math.PI/2;
-	this.baseRotationZ = Math.PI/2;
-	this.colladascene.updateMatrix();
-	this.entity.add(this.colladascene);
+	this.skin = cloneRef.clone();
+	this.entity.add(this.skin);
+	this.skin.scale.x = this.skin.scale.y = this.skin.scale.z = 3.5;
+	this.oldRot = 0;
 	
 	this.entity.position.x = bundleData.moveObj.moveTo.x;
 	this.entity.position.y = bundleData.moveObj.moveTo.y;

@@ -78,7 +78,7 @@ var particleSystem = function(moveObj,rad,color){
 	this.particles = new THREE.Geometry();
 	this.pMaterial = new THREE.ParticleBasicMaterial({
 		color: color,
-		size: 20,
+		size: 25,
 		map: particleTexture,
 		blending: THREE.AdditiveBlending,
 		depthTest: false,

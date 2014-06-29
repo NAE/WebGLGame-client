@@ -42,6 +42,7 @@ function onDocumentMouseDown( event ) {
 		
 		var objectHit = raycaster.intersectObjects(cleanMapObjectsEntityArray, true);
 		
+		var stillDoMove = false;
 		if(objectHit.length > 0){
 			//object hit takes priority over moving
 			var firstHitObj = objectHit[0].object;
@@ -50,15 +51,25 @@ function onDocumentMouseDown( event ) {
 				firstHitObj = firstHitObj.parent;
 			}
 			
+			var isSolid = objectProperties[firstHitObj.type].solid;
 			if(whichClick == 1){
-				//execute its first 
-				interactWithClickedObject(firstHitObj, 0);
+				//execute its first, if it's solid
+				if(isSolid){
+					interactWithClickedObject(firstHitObj, 0);
+				}else{
+					//move on top of the solid object
+					stillDoMove = true;
+				}
 			}else{
 				//create a contextmenu with the available events for this type of mapobject
 				var menuPosition = {x:event.clientX,y:event.clientY};
 				createObjectContextMenu(menuPosition, firstHitObj.correspondingObject.id);
 			}
-		}else if (intersects.length > 0) {
+		}else{
+			stillDoMove = true;
+		}
+		
+		if (intersects.length > 0 && stillDoMove) {
 			//set global states for character movement
 			if(whichClick == 1){
 				//left click, so move character
