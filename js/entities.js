@@ -27,6 +27,25 @@ function createMoveEvent(pointObj){
 	return newMove; */
 }
 
+var livingEntity = function(){
+	this.entity = new THREE.Object3D();
+	this.skin;
+	this.oldRot = 0;
+	
+	this.lookAt = function(position){
+		var deltaX = position.x - this.entity.position.x;
+		var deltaY = position.y - this.entity.position.y;
+		var newRot = Math.atan(deltaY/deltaX);
+		if(deltaX < 0){
+			newRot += Math.PI;
+		}
+		//otherCharacter.skin.rotation.z = newRot + otherCharacter.baseRotationZ;
+		var diff = newRot - this.oldRot;
+		this.oldRot = newRot;
+		this.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
+	}
+}
+
 var weapon = function(type){
 	var wepProperty = weaponProperties[type];
 	this.weaponTexture = THREE.ImageUtils.loadTexture(wepProperty.texture);
@@ -40,13 +59,10 @@ var weapon = function(type){
 	this.entity = new THREE.Mesh(new THREE.BoxGeometry(wepProperty.width, wepProperty.length, wepProperty.width, 1, 1, 1), this.materialWeapon);
 	
 	this.entity.scale.x = this.entity.scale.y = this.entity.scale.z = .25;
-	//this.entity.rotation.z += Math.PI/2;
-	this.entity.position.x = -3.25;
-	this.entity.position.z = 11;
-	this.entity.position.y = -1;
-	this.entity.rotation.y += Math.PI/2;
-	this.entity.rotation.x -= Math.PI/4;
-	this.entity.poop = 6;
+	this.entity.rotateAroundWorldAxis(new THREE.Vector3(0,0,1), Math.PI/2);
+	this.entity.position.y = 11;
+	this.entity.position.z = 3;
+	this.entity.position.x = 3;
 	this.type = type;
 }
 

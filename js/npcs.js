@@ -15,16 +15,7 @@ function moveAllNPCs(){
 				npc.entity.position.z = getZFromPosition(npc.entity.position);
 				npcMoveObj.numStepsSoFar++;
 				
-				var deltaX = npcMoveObj.moveTo.x - npcMoveObj.currentPosition.x;
-				var deltaY = npcMoveObj.moveTo.y - npcMoveObj.currentPosition.y;
-				var newRot = Math.atan(deltaY/deltaX);
-				if(deltaX < 0){
-					newRot += Math.PI;
-				}
-				var oldRot = npc.oldRot;
-				var diff = newRot - oldRot;
-				npc.oldRot = newRot;
-				npc.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
+				npc.lookAt(npcMoveObj.moveTo);
 			}else{
 				npcMoveObj.moving = false;
 			}
@@ -91,4 +82,17 @@ var npcPlane = function(bundleData){
 	
 	this.healthPlane = new healthPlane(this.state.health,this.state.maxHealth);
 	this.entity.add(this.healthPlane.entity);
+	
+	this.lookAt = function(position){
+		var deltaX = position.x - this.moveObj.currentPosition.x;
+		var deltaY = position.y - this.moveObj.currentPosition.y;
+		var newRot = Math.atan(deltaY/deltaX);
+		if(deltaX < 0){
+			newRot += Math.PI;
+		}
+		//otherCharacter.skin.rotation.z = newRot + otherCharacter.baseRotationZ;
+		var diff = newRot - this.oldRot;
+		this.oldRot = newRot;
+		this.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
+	}
 }

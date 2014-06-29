@@ -115,17 +115,7 @@ function moveAllCharacters(){
 				if(oMoveObj.numStepsSoFar < oMoveObj.numStepsRequired){
 					//keep moving
 					//change character's rotation first
-					var deltaX = oMoveObj.moveTo.x - oMoveObj.currentPosition.x;
-					var deltaY = oMoveObj.moveTo.y - oMoveObj.currentPosition.y;
-					var newRot = Math.atan(deltaY/deltaX);
-					if(deltaX < 0){
-						newRot += Math.PI;
-					}
-					//otherCharacter.skin.rotation.z = newRot + otherCharacter.baseRotationZ;
-					var oldRot = otherCharacter.oldRot;
-					var diff = newRot - oldRot;
-					otherCharacter.oldRot = newRot;
-					otherCharacter.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
+					otherCharacter.lookAt(oMoveObj.moveTo);
 					
 					//then move
 					oMoveObj.currentPosition.x += oMoveObj.moveDistEach.x;
@@ -218,15 +208,15 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	
 	this.weaponType = weaponType;
 	this.weapon = new weapon(weaponType);
-	this.entity.add(this.weapon.entity);
+	this.skin.add(this.weapon.entity);
 	
 	this.changeWeapon = function(newType,itemId){
 		//removes old weapon and replaces with new
 		var newWeapon = new weapon(newType);
 		this.weaponType = newType;
-		this.entity.remove(this.weapon.entity);
+		this.skin.remove(this.weapon.entity);
 		this.weapon = newWeapon;
-		this.entity.add(this.weapon.entity);
+		this.skin.add(this.weapon.entity);
 		
 		//change wieldBox picture if this is me
 		if(id == connectionNum){
@@ -244,6 +234,19 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 				}
 			}
 		}
+	}
+	
+	this.lookAt = function(position){
+		var deltaX = position.x - this.moveObj.currentPosition.x;
+		var deltaY = position.y - this.moveObj.currentPosition.y;
+		var newRot = Math.atan(deltaY/deltaX);
+		if(deltaX < 0){
+			newRot += Math.PI;
+		}
+		//otherCharacter.skin.rotation.z = newRot + otherCharacter.baseRotationZ;
+		var diff = newRot - this.oldRot;
+		this.oldRot = newRot;
+		this.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
 	}
 	
 	this.state = new Object();

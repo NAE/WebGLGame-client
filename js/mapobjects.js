@@ -353,7 +353,6 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 			red += increaseAmount;
 			green += increaseAmount;
 			blue += increaseAmount;
-			//color.setRGB(Math.random(),Math.random(),Math.random());
 			color.setRGB(red,green,blue);
 			
 			f.vertexColors[ j ] = color;
@@ -362,11 +361,6 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 	var planeMaterial = new THREE.MeshLambertMaterial( 
     { shading: THREE.SmoothShading, 
     vertexColors: THREE.VertexColors, map: texture } );
-	//geometry.materials.push(planeMaterial);
-	/*for( var i in geometry.faces ) {
-		var face = geometry.faces[i];
-		face.materialIndex = i%geometry.materials.length;
-	}*/
 	
 	//for vertices/heightmap, add more params to three.planegeometry
 	this.entity = new THREE.Mesh(geometry, planeMaterial);
@@ -375,7 +369,6 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 	this.entity.receiveShadow = true;
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
-	this.entity.poop = 5;
 }
 
 var invisiblePlane = function(width,height,posX,posY){

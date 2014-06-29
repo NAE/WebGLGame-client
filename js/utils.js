@@ -12,16 +12,6 @@ function onDocumentMouseDown( event ) {
 		projector.unprojectVector(vector,worldCamera.entity);
 
 		var raycaster = new THREE.Raycaster( worldCamera.entity.position,vector.sub( worldCamera.entity.position ).normalize() );
-
-		//first see if ray intersects any characters - OLD
-		/*var intersectsChars = ray.intersectObjects(otherCharEntityList);
-		if(intersectsChars.length > 0){
-			//we only want the top one
-			var characterHit = intersectsChars[0].object;
-			var charNum = characterHit.connectionNum; //pulling from character.entity
-			addParticleMoveEvent(characterHit);
-			return;
-		}*/
 		
 		//see if the ray intersects the ground if it did not intersect any characters
 		var intersects = raycaster.intersectObject(worldPlane.entity);
@@ -78,6 +68,7 @@ function onDocumentMouseDown( event ) {
 			}else if(whichClick == 3){
 				if(!holdingCtrl){
 					//right click, so add a particle movement to that spot
+					otherCharacterList[connectionNum].lookAt(intersects[0].point);
 					addParticleMoveEvent(intersects[0]);
 					return;
 				}else{
