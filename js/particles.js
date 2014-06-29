@@ -12,7 +12,24 @@ function addParticleMoveEvent(pointObj){
 }
 
 function makeParticleSystem(data){
+	//create a particle system and cause its creator to appear to fire it
 	var moveObj = data.moveObj;
+	
+	var firer = data.firer;
+	var firerType = data.firerType;
+	if(data.firerType == PLAYER_CONST){
+		//the character could potentially be gone
+		if(otherCharacterList[firer]){
+			otherCharacterList[firer].lookAt(moveObj.moveTo);
+			otherCharacterList[firer].weapon.cock();
+		}
+	}else if(data.firerType == NPC_CONST){
+		//the npc could potentially be gone
+		if(npcArray[firer]){
+			npcArray[firer].lookAt(moveObj.moveTo);
+		}
+	}
+	
 	var particleType = data.particleType;
 	var particleInfo = particleProperties[particleType];
 	var system = new particleSystem(moveObj,7,particleInfo.color);

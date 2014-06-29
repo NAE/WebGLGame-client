@@ -182,10 +182,6 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	this.skin.scale.x = this.skin.scale.y = this.skin.scale.z = 3.5;
 	this.oldRot = 0;
 	
-	THREE.AnimationHandler.add(this.skin.geometry.animations[0]);
-	var animation = new THREE.Animation(this.skin, "Action", THREE.AnimationHandler.CATMULLROM);
-	animation.play();
-	
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;
 	this.entity.rotation.x += Math.PI/2; //make it vertical
@@ -245,8 +241,10 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 		}
 		//otherCharacter.skin.rotation.z = newRot + otherCharacter.baseRotationZ;
 		var diff = newRot - this.oldRot;
-		this.oldRot = newRot;
-		this.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
+		if(!isNaN(diff)){
+			this.oldRot = newRot;
+			this.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
+		}
 	}
 	
 	this.state = new Object();

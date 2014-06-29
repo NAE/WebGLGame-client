@@ -92,7 +92,9 @@ var npcPlane = function(bundleData){
 		}
 		//otherCharacter.skin.rotation.z = newRot + otherCharacter.baseRotationZ;
 		var diff = newRot - this.oldRot;
-		this.oldRot = newRot;
-		this.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
+		if(!isNaN(diff)){
+			this.oldRot = newRot;
+			this.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
+		}
 	}
 }

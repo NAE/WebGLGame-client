@@ -80,12 +80,13 @@ function socketGlobalParticleUpdate(data){
 		}, loadRetryTime);
 		return;
 	}
-	
 	var system = makeParticleSystem(data.particles);
 	particleSystemList.push(system);
 }
 
 function socketParticleHits(data){
+	//there is something wrong with how this handles setting health / energy.
+	//it sometimes sets the wrong player, until they move.
 	if(!loaded){
 		setTimeout(function(){
 			socketParticleHits(data);

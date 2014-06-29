@@ -68,8 +68,6 @@ function onDocumentMouseDown( event ) {
 			}else if(whichClick == 3){
 				if(!holdingCtrl){
 					//right click, so add a particle movement to that spot
-					otherCharacterList[connectionNum].lookAt(intersects[0].point);
-					otherCharacterList[connectionNum].weapon.cock();
 					addParticleMoveEvent(intersects[0]);
 					return;
 				}else{
