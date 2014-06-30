@@ -30,10 +30,15 @@ var weapon = function(type){
 	this.entity = new THREE.Mesh(new THREE.BoxGeometry(wepProperty.width, wepProperty.length, wepProperty.width, 1, 1, 1), this.materialWeapon);
 	this.entity.scale.x = this.entity.scale.y = this.entity.scale.z = .25;
 	this.entity.rotateAroundWorldAxis(new THREE.Vector3(0,0,1), Math.PI/2);
-	this.entity.position.y = 12;
 	this.entity.position.z = 3;
-	this.entity.position.x = 3;
+	if(type != 0){
+		this.entity.position.y = 12;
+		this.entity.position.x = 3;
+	}else{
+		this.entity.position.y = 10;
+	}
 	this.entity.rotation.z += Math.PI/8;
+	this.basePositionY = this.entity.position.y;
 	this.baseRotationZ = this.entity.rotation.z;
 	this.type = type;
 	
@@ -48,7 +53,7 @@ var weapon = function(type){
 	});
 	
 	this.pVariation = {x: wepProperty.width, y: wepProperty.length * .85, z: wepProperty.width};
-	this.pMax = {x: 0, y: (wepProperty.length / 2) + 3, z: 0};
+	this.pMax = {x: 0, y: wepProperty.length / 2 + 3, z: 0};
 	for(var p=0;p<numParticles;p++){
 		var pX = Math.random() * this.pVariation.x - this.pMax.x;
 		var pY = Math.random() * this.pVariation.y - this.pMax.y;
@@ -85,7 +90,7 @@ var weapon = function(type){
 			this.entity.position.y = 10;
 			this.entity.rotation.z -= cockDistance;
 			setTimeout(function(){
-				wepRef.entity.position.y = 12;
+				wepRef.entity.position.y = wepRef.basePositionY;
 				wepRef.entity.rotation.z = wepRef.baseRotationZ;
 			}, cockTime);
 		}
