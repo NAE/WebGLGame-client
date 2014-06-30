@@ -67,7 +67,7 @@ var weapon = function(type){
 	this.entity.add(this.particleSystem);
 	
 	this.cock = function(){
-		var cockTime = 200;
+		var cockTime = 250;
 		var cockDistance = Math.PI/8;
 		
 		//first change particles

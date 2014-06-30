@@ -30,10 +30,11 @@ var invItemMenu = function(type,id){
 }
 
 var wieldedBoxMenu = function(type){
+	//type is type of item
 	if(type > 0){
 		var menuArray = new Array();
-		var itemName = itemProperties[type].name;
-		menuArray.push("<div id='unWieldClick' class='clickableOption' onMouseDown='changeCharacterWeapon(" + type + "," + -1 + ");'>Unwield " + itemName + "</div");
+		var weaponName = itemProperties[weaponProperties[type].item].name;
+		menuArray.push("<div id='unWieldClick' class='clickableOption' onMouseDown='changeCharacterWeapon(" + type + "," + -1 + ");'>Unwield " + weaponName + "</div");
 		return menuArray;
 	}
 }
