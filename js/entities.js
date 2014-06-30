@@ -172,8 +172,11 @@ function moveAllWeaponParticles(){
 	pMoveIndex++;
 	if(pMoveIndex > 5){
 		for(var i=0;i<otherCharacterList.length;i++){
-			var thisWeapon = otherCharacterList[i].weapon;
-			thisWeapon.moveParticles();
+			//they could have logged off
+			if(otherCharacterList[i]){
+				var thisWeapon = otherCharacterList[i].weapon;
+				thisWeapon.moveParticles();
+			}
 		}
 		pMoveIndex = 0;
 	}

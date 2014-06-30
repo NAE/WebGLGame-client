@@ -285,7 +285,6 @@ function socketOtherCharacterChangeWeapon(data){
 		}, loadRetryTime);
 		return;
 	}
-	
 	changeOtherCharacterWeapon(data.newType,data.connectionNum);
 }
 

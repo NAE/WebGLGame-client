@@ -19,7 +19,9 @@ var invItemMenu = function(type,id){
 		var itemName = itemProperties[type].name;
 		if(itemProperties[type].weapon >= 0){
 			//it's a weapon
-			menuArray.push("<div id='wieldClick' class='clickableOption' onMouseDown='changeCharacterWeapon(" + type + "," + id +  ");'>Wield " + itemName + "</div>");
+			//type is type of the item, so find the weapon type
+			var weaponType = itemProperties[type].weapon;
+			menuArray.push("<div id='wieldClick' class='clickableOption' onMouseDown='changeCharacterWeapon(" + weaponType + "," + id +  ");'>Wield " + itemName + "</div>");
 		}
 		menuArray.push("<div id='sellClick' class='clickableOption' onMouseDown='sellItem(" + type + "," + id + ");'>Sell " + itemName + "</div>");
 		menuArray.push("<div id='dropClick' class='clickableOption' onMouseDown='dropInventoryItem(" + id + ");'>Drop " + itemName + "</div>");
@@ -56,6 +58,7 @@ var inventoryItem = function(id,bgUrl,stackable,quantity,type){
 }
 
 var wieldedBox = function(initialType){
+	console.log(initialType);
 	//initialType 0 is empty
 	var correspondingItem = weaponProperties[initialType].item;
 	var bgImg = "";
