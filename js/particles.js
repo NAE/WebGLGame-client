@@ -1,3 +1,6 @@
+//preload the texture for particles so that it doesn't have to be done every time
+var particleTexture = THREE.ImageUtils.loadTexture("img/textures/particle2.png");
+
 function addParticleMoveEvent(pointObj){
 	var energyAmount = parseInt(document.getElementById("energy").innerHTML);
 	//need client-side check for this to keep energy count correct
@@ -54,7 +57,7 @@ function moveAllParticles(){
 					systemMoveObj.currentPosition.y += systemMoveObj.moveDistEach.y;
 					system.entity.position.x = systemMoveObj.currentPosition.x;
 					system.entity.position.y = systemMoveObj.currentPosition.y;
-					system.entity.position.z -= (otherCharacterList[connectionNum].entity.position.z/systemMoveObj.numStepsRequired);
+					system.entity.position.z -= (otherCharacterList[connectionNum].weapon.entity.position.y/systemMoveObj.numStepsRequired);
 					systemMoveObj.numStepsSoFar++;
 				}else{
 					//we reached the destination
@@ -86,12 +89,9 @@ function moveAllParticles(){
 	}
 }
 
-//preload the texture for particles so that it doesn't have to be done every time
-var particleTexture = THREE.ImageUtils.loadTexture("img/textures/particle2.png");
-
 var particleSystem = function(moveObj,rad,color){
 	this.rad = rad;
-	this.particleCount = 40;
+	this.particleCount = 30;
 	this.particles = new THREE.Geometry();
 	this.pMaterial = new THREE.ParticleBasicMaterial({
 		color: color,
@@ -119,7 +119,7 @@ var particleSystem = function(moveObj,rad,color){
 	this.entity = new THREE.ParticleSystem(this.particles,this.pMaterial);
 	this.entity.position.x = moveObj.currentPosition.x;
 	this.entity.position.y = moveObj.currentPosition.y;
-	this.entity.position.z = otherCharacterList[connectionNum].entity.position.z;
+	this.entity.position.z = otherCharacterList[connectionNum].weapon.entity.position.y + otherCharacterList[connectionNum].entity.position.z + 9;
 	this.doneExploding = false;
 	this.explodeIncrease = .2;
 	this.explodingStepsSoFar = 0;

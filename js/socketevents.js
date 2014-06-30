@@ -44,6 +44,10 @@ socket.on('otherCharacterChangeWeapon', function(data) {
 	socketOtherCharacterChangeWeapon(data);
 });
 
+socket.on('selectionUpdate', function(data) {
+	socketSelectionUpdate(data);
+});
+
 socket.on('mapObjectAdd', function(data) {
 	socketMapObjectAdd(data);
 });
@@ -283,6 +287,17 @@ function socketOtherCharacterChangeWeapon(data){
 	}
 	
 	changeOtherCharacterWeapon(data.newType,data.connectionNum);
+}
+
+function socketSelectionUpdate(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketSelectionUpdate(data);
+		}, loadRetryTime);
+		return;
+	}
+	
+	//TODO - implement
 }
 
 function socketMapObjectAdd(data){

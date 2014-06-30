@@ -97,6 +97,7 @@ function animate(lastTime, angularSpeed, three){
 		moveAllCharacters();
 		rotate();
 		moveAllParticles();
+		moveAllWeaponParticles();
 		moveAllNPCs();
 		//update energy display
 		document.getElementById('energy').innerHTML = otherCharacterList[connectionNum].state.energy;

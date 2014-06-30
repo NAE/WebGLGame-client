@@ -75,6 +75,9 @@ function switchParticleSelection(id){
 	var newClassName = selectedItem.className.slice(0,selectedItem.className.length-" selectedParticle".length);
 	selectedItem.className = newClassName;
 	document.getElementById(id).className += " selectedParticle";
+	
+	//update weapon particles
+	otherCharacterList[connectionNum].weapon.setParticleColor(particleProperties[particleSelection].color);
 }
 
 function switchTab(currentTab){

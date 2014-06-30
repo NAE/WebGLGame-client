@@ -15,8 +15,10 @@ function createMoveEvent(pointObj){
 	return destination;
 }
 
+var weaponParticleTexture = THREE.ImageUtils.loadTexture("img/textures/particle2.png");
 var weapon = function(type){
 	var wepProperty = weaponProperties[type];
+	this.wepProperty = wepProperty;
 	this.weaponTexture = THREE.ImageUtils.loadTexture(wepProperty.texture);
 	this.materialWeapon = new THREE.MeshBasicMaterial({
 		side: THREE.DoubleSide,
@@ -26,7 +28,6 @@ var weapon = function(type){
 	});
 	
 	this.entity = new THREE.Mesh(new THREE.BoxGeometry(wepProperty.width, wepProperty.length, wepProperty.width, 1, 1, 1), this.materialWeapon);
-	
 	this.entity.scale.x = this.entity.scale.y = this.entity.scale.z = .25;
 	this.entity.rotateAroundWorldAxis(new THREE.Vector3(0,0,1), Math.PI/2);
 	this.entity.position.y = 12;
@@ -36,19 +37,80 @@ var weapon = function(type){
 	this.baseRotationZ = this.entity.rotation.z;
 	this.type = type;
 	
+	//add particles
+	var numParticles = 15;
+	this.particles = new THREE.Geometry();
+	this.pMaterial = new THREE.ParticleBasicMaterial({
+		size: 20,
+		map: particleTexture,
+		blending: THREE.AdditiveBlending,
+		transparent: true
+	});
+	
+	this.pVariation = {x: wepProperty.width, y: wepProperty.length * .85, z: wepProperty.width};
+	this.pMax = {x: 0, y: (wepProperty.length / 2) + 3, z: 0};
+	for(var p=0;p<numParticles;p++){
+		var pX = Math.random() * this.pVariation.x - this.pMax.x;
+		var pY = Math.random() * this.pVariation.y - this.pMax.y;
+		var pZ = Math.random() * this.pVariation.z - this.pMax.z;
+		var particle = new THREE.Vector3(pX, pY, pZ);
+		this.particles.vertices.push(particle);
+	}
+	
+	this.particleSystem = new THREE.ParticleSystem(this.particles, this.pMaterial);
+	this.particleSystem.sortParticles = true;
+	this.entity.add(this.particleSystem);
+	
 	this.cock = function(){
+		var cockTime = 200;
 		var cockDistance = Math.PI/8;
+		
+		//first change particles
+		var matIncrease = 10;
+		var varYIncrease = 30;
+		var maxYIncrease = 30;
+		this.pMaterial.size += matIncrease;
+		this.pVariation.y += varYIncrease;
+		this.pMax.y += maxYIncrease;
+		
+		var wepRef = this;
+		setTimeout(function(){
+			wepRef.pMaterial.size -= matIncrease;
+			wepRef.pVariation.y -= varYIncrease;
+			wepRef.pMax.y -= maxYIncrease;
+		}, cockTime);
+		
 		//only cock if its not already cocked
 		if(this.entity.rotation.z == this.baseRotationZ){
-			this.entity.position.y = 14;
-			this.entity.rotation.z += cockDistance;
-			var wepRef = this;
+			this.entity.position.y = 10;
+			this.entity.rotation.z -= cockDistance;
 			setTimeout(function(){
 				wepRef.entity.position.y = 12;
 				wepRef.entity.rotation.z = wepRef.baseRotationZ;
-			},200);
+			}, cockTime);
 		}
 	}
+	
+	this.moveParticles = function(){
+		var pVertices = this.particles.vertices;
+		for(var n=0;n<pVertices.length;n++){
+			var vert = pVertices[n];
+			var pX = Math.random() * this.pVariation.x - this.pMax.x;
+			var pY = Math.random() * this.pVariation.y - this.pMax.y;
+			var pZ = Math.random() * this.pVariation.z - this.pMax.z;
+			vert.set(pX, pY, pZ);
+		}
+		Math.random()
+		this.pMaterial.opacity = Math.random() * (1- .5) + .5;
+		this.particleSystem.geometry.verticesNeedUpdate = true;
+	}
+	
+	this.setParticleColor = function(newColor){
+		this.pMaterial.color.setHex("0x" + newColor.toString(16));
+	}
+	
+	//initially set the appropriate color of the particles based on the currently selected firing particle
+	this.setParticleColor(particleProperties[particleSelection].color);
 }
 
 var healthPlane = function(health,maxHealth){
@@ -97,5 +159,17 @@ var healthPlane = function(health,maxHealth){
 	this.newHealth = function(newHealth){
 		//sets health bar size based on newHealth
 		this.currentHealth = newHealth;
+	}
+}
+
+var pMoveIndex = 0;
+function moveAllWeaponParticles(){
+	pMoveIndex++;
+	if(pMoveIndex > 5){
+		for(var i=0;i<otherCharacterList.length;i++){
+			var thisWeapon = otherCharacterList[i].weapon;
+			thisWeapon.moveParticles();
+		}
+		pMoveIndex = 0;
 	}
 }
