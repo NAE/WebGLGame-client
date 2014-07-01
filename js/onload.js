@@ -97,6 +97,9 @@ function onLoad(data){
 	
 	worldLight = new directionalLight(1, 1, 1, 1);
 	scene.add(worldLight.entity);
+	
+	//create minimap
+	map = new minimap();
 
 	// create an object to carry some items to the animate method
 	var three = {

@@ -36,11 +36,27 @@ textarea {
 	background-color:rgba(18, 0, 63, 0.8);
 }
 
+#minimapContainer{
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	background: black;
+	border-bottom-right-radius: 30px;
+	opacity: .9;
+	overflow: hidden;
+	border-bottom: 3px ridge gray;
+	border-right: 3px ridge gray;
+}
+
+#minimapCanvas{
+	border-bottom-right-radius: 30px;
+	overflow: hidden;
+}
+
 #chatContainer{
 	position: absolute;
 	bottom: 0;
 	box-shadow: 0.0em 0.0em 0.2em black;
-	
 }
 #chatBox{
 	color: white;

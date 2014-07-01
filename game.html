@@ -26,6 +26,7 @@ html,body {
 <script type="text/javascript" src="js/players.js"></script>
 <script type="text/javascript" src="js/items.js"></script>
 <script type="text/javascript" src="js/chunks.js"></script>
+<script type="text/javascript" src="js/minimap.js"></script>
 <script type="text/javascript" src="js/rendering.js"></script>
 
 <script type="text/javascript" src="js/onload.js"></script>
@@ -58,6 +59,10 @@ $(document).ready(function(){
 <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body oncontextmenu="return false">
+<div id="minimapContainer">
+<canvas id="minimapCanvas">
+</canvas>
+</div>
 <div id="chatContainer">
 <textarea id="chatBox">
 

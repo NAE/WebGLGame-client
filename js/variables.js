@@ -12,7 +12,7 @@ var worldCamera;
 var worldLight;
 var controls;
 var holdingCtrl = false;
-var loader = new THREE.ColladaLoader();
+var map;
 var JSONLoader = new THREE.JSONLoader();
 
 //IN-GAME OBJECTS
