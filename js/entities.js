@@ -16,7 +16,7 @@ function createMoveEvent(pointObj){
 }
 
 var weaponParticleTexture = THREE.ImageUtils.loadTexture("img/textures/particle2.png");
-var weapon = function(type){
+var weapon = function(type, weaponParticleSelection){
 	var wepProperty = weaponProperties[type];
 	this.wepProperty = wepProperty;
 	this.weaponTexture = THREE.ImageUtils.loadTexture(wepProperty.texture);
@@ -115,7 +115,9 @@ var weapon = function(type){
 	}
 	
 	//initially set the appropriate color of the particles based on the currently selected firing particle
-	this.setParticleColor(particleProperties[particleSelection].color);
+	//sometimes this can be undefined
+	weaponParticleSelection = weaponParticleSelection ? weaponParticleSelection : 0;
+	this.setParticleColor(particleProperties[weaponParticleSelection].color);
 }
 
 var healthPlane = function(health,maxHealth){

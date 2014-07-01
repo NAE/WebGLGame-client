@@ -77,7 +77,7 @@ function switchParticleSelection(id){
 	document.getElementById(id).className += " selectedParticle";
 	
 	//update weapon particles
-	otherCharacterList[connectionNum].weapon.setParticleColor(particleProperties[particleSelection].color);
+	socket.emit("ParticleSelectionEvent", {selection: particleSelection});
 }
 
 function switchTab(currentTab){

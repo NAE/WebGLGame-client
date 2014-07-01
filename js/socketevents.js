@@ -296,7 +296,11 @@ function socketSelectionUpdate(data){
 		return;
 	}
 	
-	//TODO - implement
+	var playerId = data.id;
+	var otherChar = otherCharacterList[playerId];
+	if(otherChar){
+		otherChar.updateWeaponColor(data.selection);
+	}
 }
 
 function socketMapObjectAdd(data){

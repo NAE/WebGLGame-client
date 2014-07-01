@@ -17,7 +17,7 @@ function updateOtherChar(data){
 	
 	if(otherCharacterList[otherConnectionNum] == undefined){
 		//add a new character
-		var character2 = new characterPlane(otherMoveObj.currentPosition.x,otherMoveObj.currentPosition.y,data.img,otherConnectionNum,data.weaponType);
+		var character2 = new characterPlane(otherMoveObj.currentPosition.x,otherMoveObj.currentPosition.y,data.img,otherConnectionNum,data.weaponType,data.particleSelection);
 		character2.moveObj = data.moveObj;
 		character2.state.health = data.state.health;
 		character2.state.maxHealth = data.state.maxHealth;
@@ -40,6 +40,7 @@ function updateOtherChar(data){
 		otherCharacter.state.health = data.state.health;
 		otherCharacter.state.maxHealth = data.state.maxHealth;
 		otherCharacter.state.energy = data.state.energy;
+		otherCharacter.updateWeaponColor(data.particleSelection);
 		otherCharacter.healthPlane.remainingEntity.scale.x = otherCharacter.state.health/otherCharacter.state.maxHealth;
 		var thisChunk = getChunk(data.moveObj.currentChunk);
 		if(thisChunk.players.indexOf(otherConnectionNum) < 0){
@@ -167,7 +168,9 @@ function moveAllCharacters(){
 	}
 }
 
-var characterPlane = function(posX,posY,texturePath,id,weaponType){
+//TODO - cleanup ... variables are assigned outside of this function to this object, then
+//referred to inside this object.
+var characterPlane = function(posX,posY,texturePath,id,weaponType,newParticleSelection){
 	this.texturePath = texturePath;
 	this.charTexture = THREE.ImageUtils.loadTexture(texturePath);
 	this.materialChar = new THREE.MeshLambertMaterial({
@@ -188,6 +191,7 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	this.entity.castShadow = false;
 	this.entity.connectionNum = id;
 	this.id = id;
+	this.particleSelection = newParticleSelection;
 	this.editMode = false;
 	this.chatElemId = "";
 	
@@ -203,12 +207,12 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 	this.healthPlane.entity.position.y += 35;
 	
 	this.weaponType = weaponType;
-	this.weapon = new weapon(weaponType);
+	this.weapon = new weapon(weaponType, this.particleSelection);
 	this.skin.add(this.weapon.entity);
 	
 	this.changeWeapon = function(newType,itemId){
 		//removes old weapon and replaces with new
-		var newWeapon = new weapon(newType);
+		var newWeapon = new weapon(newType, this.particleSelection);
 		this.weaponType = newType;
 		this.skin.remove(this.weapon.entity);
 		this.weapon = newWeapon;
@@ -230,6 +234,11 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType){
 				}
 			}
 		}
+	}
+	
+	this.updateWeaponColor = function(newParticleSelection){
+		this.particleSelection = newParticleSelection;
+		this.weapon.setParticleColor(particleProperties[newParticleSelection].color);
 	}
 	
 	this.lookAt = function(position){
