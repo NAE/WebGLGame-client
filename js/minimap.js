@@ -5,7 +5,6 @@ var minimap = function(){
 	this.minimapWidth = 200;
 	this.minimapHeight = 200;
 	
-	
 	this.meColor = "green";
 	this.itemColor = "red";
 	this.playerColor = "white";
@@ -38,7 +37,7 @@ var minimap = function(){
 		var ctx = this.context;
 		ctx.beginPath();
 		ctx.clearRect(0, 0, this.minimapWidth, this.minimapHeight);
-		ctx.fillStyle = "yellow";
+		ctx.fillStyle = "#576724";
 		ctx.fillRect(0, 0, this.minimapWidth, this.minimapHeight);
 	}
 	

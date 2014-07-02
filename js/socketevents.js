@@ -1,9 +1,4 @@
-/* TODO
- * Socket events here are being received prior to everything being loaded.
- * Implement a sort of 'queue' to retain the data that has been received
- * but not do anything with it until everything has been loaded (loaded == true)
- */
-
+/* Most of the socket.on blocks are no longer in use, but keep anyway in case emergency events are sent */
 socket.on('otherCharMove', function(data) {
 	socketOtherCharMove(data);
 });
@@ -60,9 +55,72 @@ socket.on('clientDisconnect', function(data) {
 	socketClientDisconnect(data);
 });
 
-socket.on('consoleLog',function(data) {
+socket.on('consoleLog', function(data) {
 	socketConsoleLog(data);
 });
+
+socket.on('event', function(data) {
+	//data is an array of events
+	for(var i=0;i<data.length;i++){
+		var event = data[i];
+		handleEvent(event);
+	}
+});
+
+function handleEvent(event){
+	var eventName = event.eventName;
+	//based on the event name, handle the event accordingly
+	switch(eventName){
+		case "otherCharMove":
+			socketOtherCharMove(event);
+			break;
+		case "globalParticleUpdate":
+			socketGlobalParticleUpdate(event);
+			break;
+		case "particleHits":
+			socketParticleHits(event);
+			break;			
+		case "npcUpdate":
+			socketNpcUpdate(event);
+			break;			
+		case "chatUpdate":
+			socketChatUpdate(event);
+			break;			
+		case "inventoryUpdate":
+			socketInventoryUpdate(event);
+			break;			
+		case "droppedItems":
+			socketDroppedItems(event);
+			break;
+		case "charLeaveChunk":
+			socketCharLeaveChunk(event);
+			break;
+		case "charEnterChunk":
+			socketCharEnterChunk(event);
+			break;
+		case "otherCharacterChangeWeapon":
+			socketOtherCharacterChangeWeapon(event);
+			break;
+		case "selectionUpdate":
+			socketSelectionUpdate(event);
+			break;
+		case "mapObjectAdd":
+			socketMapObjectAdd(event);
+			break;
+		case "mapObjectRemove":
+			socketMapObjectRemove(event);
+			break;
+		case "clientDisconnect":
+			socketClientDisconnect(event);
+			break;
+		case "consoleLog":
+			socketConsoleLog(event);
+			break;
+		default:
+			//do nothing
+			break;
+	}
+}
 
 /* Socket functions handle the data retrieved from the socket */
 
