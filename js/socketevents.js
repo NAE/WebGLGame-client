@@ -66,8 +66,10 @@ socket.on('event', function(data) {
 		handleEvent(event);
 	}
 });
-
+var totalBytes = 0;
 function handleEvent(event){
+	totalBytes += JSON.stringify(event).length;
+	console.log(totalBytes);
 	var eventName = event.eventName;
 	//based on the event name, handle the event accordingly
 	switch(eventName){
