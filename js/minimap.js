@@ -6,7 +6,7 @@ var minimap = function(){
 	this.minimapWidth = 200;
 	this.minimapHeight = 200;
 	
-	var viewRatio = 20;
+	var viewRatio = 25;
 	
 	var itemColor = "red";
 	var playerColor = "white";
@@ -26,6 +26,10 @@ var minimap = function(){
 	var circleRadius = 2;
 	var camPointerLength = 20;
 	
+	this.getWorldPosition = function(minimapPos){
+		return {x: minimapPos.x * viewRatio + this.translateX, y: minimapPos.y * viewRatio + this.translateX};
+	}
+	
 	function correctPosition(pos){
 		var newY = chunkProperties[0][0].CHUNK_SIZE * MAP_HEIGHT - pos.y;
 		return {x: pos.x / viewRatio, y: newY / viewRatio};
@@ -37,6 +41,17 @@ var minimap = function(){
 		var circlePos = correctPosition(position);
 		ctx.arc(circlePos.x - this.translateX, circlePos.y - this.translateY, circleRadius, 0, Math.PI * 2);
 		ctx.fillStyle = color;
+		ctx.fill();
+	}
+	
+	function drawNorthPointer(){
+		ctx.fillStyle = "rgba(255, 0, 0, 0.5)";;
+		ctx.beginPath();
+		ctx.moveTo(100, 0);
+		ctx.lineTo(96, 6);
+		ctx.lineTo(104, 6);
+		ctx.lineTo(100, 0);
+		ctx.closePath();
 		ctx.fill();
 	}
 
@@ -144,6 +159,7 @@ var minimap = function(){
 		drawItems();
 		drawNPCs();
 		drawPlayers();
+		drawNorthPointer();
 		ctx.translate(100,100);
 		rotateTo(-theta);
 		ctx.translate(-100,-100);

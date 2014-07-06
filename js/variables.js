@@ -69,7 +69,7 @@ var currentPosition = {x:0,y:0};
 //CHAT VARIABLES
 var chatMessage = "";
 var chatFontSize = 14;
-var chatDisappearDelay = 20000;
+var chatDisappearDelay = 4000;
 var chatVisibleDistance = 3000;
 
 //SELECTION VARIABLES

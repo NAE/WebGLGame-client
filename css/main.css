@@ -16,7 +16,6 @@ textarea {
 
 #contextMenu {
 	position: absolute;
-	background: #50310D;
 	background-color:rgba(18, 0, 63, 0.65);
 	color: white;
 	font-weight: bold;
@@ -45,7 +44,7 @@ textarea {
 	opacity: .8;
 	overflow: hidden;
 	border: 1px solid gray;
-	box-shadow: 0em 0em 1em black;
+	box-shadow: 0em 0em .5em .05em black;
 }
 
 #minimapCanvas{
