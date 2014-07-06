@@ -1,5 +1,4 @@
 function updateOverlay(){
-	document.bgColor = "#" + fogColor.toString(16); //int to hex;
 	var chatContainer = document.getElementById("chatContainer");
 	var chatBox = document.getElementById("chatBox");
 	var chatLine = document.getElementById("message");

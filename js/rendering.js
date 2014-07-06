@@ -133,6 +133,9 @@ function createRenderer(){
 	renderer.shadowMapWidth = mapSize;
 	renderer.shadowMapHeight = mapSize;*/
 	//shadow stuff end
+	
+	//set page background and size
+	renderer.setClearColorHex(fogColor, 1);
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 	window.addEventListener( 'resize', onWindowResize, false );
