@@ -8,13 +8,11 @@ var minimap = function(){
 	
 	var viewRatio = 20;
 	
-	var meColor = "green";
 	var itemColor = "red";
 	var playerColor = "white";
 	var npcColor = "yellow";
 	var mapObjectColor = "#563115";
-	var camPointerColor = "white";
-	var playerPointerColor = "orange";
+	var treeColor = "green";
 	
 	this.canvas = document.getElementById("minimapCanvas");
 	this.context = this.canvas.getContext('2d');
@@ -88,7 +86,12 @@ var minimap = function(){
 						correctedBounds[side] = bounds[side] / viewRatio;
 					}
 				}
-				ctx.fillStyle = mapObjectColor;
+				//mapObject fillcolor for normal map objects, green fillcolor for trees
+				if(thisObj.correspondingObject instanceof tree){
+					ctx.fillStyle = treeColor;
+				}else{
+					ctx.fillStyle = mapObjectColor;
+				}
 				var objWidth = correctedBounds.right + correctedBounds.left;
 				var objHeight = correctedBounds.bottom + correctedBounds.top;
 				ctx.fillRect(pos.x - correctedBounds.left - this.translateX, pos.y - correctedBounds.top - this.translateY, objWidth, objHeight);
@@ -103,7 +106,6 @@ var minimap = function(){
 		var diffX = pos.x - this.translateX;
 		var diffY = pos.y - this.translateY;
 		ctx.beginPath();
-		//ctx.translate(diffX, diffY);
 		ctx.closePath();
 		this.translateX = pos.x;
 		this.translateY = pos.y;
@@ -133,10 +135,15 @@ var minimap = function(){
 		ctx.beginPath();
 		ctx.clearRect(0, 0, 200, 200);
 		ctx.closePath();
+		//draw in an order such that the priority of visible entities on the minimap is:
+		// 1. Players
+		// 2. NPCs
+		// 3. Items
+		// 4. Map objects
 		drawMapObjects();
-		drawPlayers();
-		drawNPCs();
 		drawItems();
+		drawNPCs();
+		drawPlayers();
 		ctx.translate(100,100);
 		rotateTo(-theta);
 		ctx.translate(-100,-100);
