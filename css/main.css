@@ -136,6 +136,7 @@ textarea {
 
 .inventoryItemQuantity {
 	font-size: 8;
+	pointer-events:none;
 	text-shadow:
     -.5px -.5px 0 #003399,
     .5px -.5px 0 #003399,

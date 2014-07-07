@@ -263,6 +263,97 @@ var cobblePath = function(posX,posY,rot){
 	return new path(posX,posY,rot,"img/textures/cobblePath2.jpg");
 }
 
+var bush = function(posX,posY,rot,color){
+	this.entity = new THREE.Object3D();
+	this.entity.position.x = posX;
+	this.entity.position.y = posY;
+	this.entity.rotation.y = Math.PI/2;
+	this.entity.rotation.z = rot;
+	
+	this.texture = THREE.ImageUtils.loadTexture("img/textures/bush.png");
+	this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping;
+	this.texture.repeat.set(1,1);
+	
+	this.material = new THREE.MeshBasicMaterial({
+		map: this.texture,
+		color: color,
+		side: THREE.DoubleSide
+	});
+	
+	var numSpokes = 20;
+	for(var i=0;i<numSpokes;i++){
+		var randomLength = getRandomDecimal(30,50);
+		var randomWidth = getRandomDecimal(2,5);
+		var spoke = new THREE.Mesh(new THREE.PlaneGeometry(randomLength,randomWidth),this.material);
+		var randomRotZ = getRandomDecimal(.75 * Math.PI, Math.PI * 1.25);
+		var randomRotY = getRandomDecimal(.75 * Math.PI, Math.PI * 1.25);
+		var randomRotX = getRandomDecimal(0, Math.PI);
+		spoke.rotation.z = randomRotZ;
+		spoke.rotation.y = randomRotY;
+		spoke.rotation.x = randomRotX;
+		this.entity.add(spoke);
+	}
+}
+
+var greenBush = function(posX,posY,rot){
+	return new bush(posX, posY, rot, 0x24401F);
+}
+
+var deadBush = function(posX,posY,rot){
+	return new bush(posX, posY, rot, 0xB2AD66);
+}
+
+var purpleBush = function(posX,posY,rot){
+	return new bush(posX, posY, rot, 0x210942);
+}
+
+var rock = function(posX,posY,rot,color){
+	var rockWidth = 15;
+	this.entity = new THREE.Object3D();
+	this.entity.position.x = posX;
+	this.entity.position.y = posY;
+	this.entity.rotation.z = rot;
+	
+	//TODO - ditch PlaneGeometry and just make the rock manually
+	var geom = new THREE.PlaneGeometry(rockWidth, rockWidth, 3, 3);
+	
+	this.material = new THREE.MeshBasicMaterial({
+		color: color,
+		side: THREE.DoubleSide
+	});
+	
+	var mesh = new THREE.Mesh(geom, this.material);
+	this.entity.add(mesh);
+}
+
+var granite = function(posX,posY,rot){
+	return new rock(posX,posY,rot,0x99BDC9);
+}
+
+var basalt = function(posX,posY,rot){
+	return new rock(posX,posY,rot,0x3B3D3D);
+}
+
+var obsidian = function(posX,posY,rot){
+	return new rock(posX,posY,rot,0x000000);
+}
+
+var sandStone = function(posX,posY,rot){
+	return new rock(posX,posY,rot,0xE1C675);
+}
+
+var quartz = function(posX,posY,rot){
+	return new rock(posX,posY,rot,0xDCD6C5);
+}
+
+var clay = function(posX,posY,rot){
+	return new rock(posX,posY,rot,0x897C53);
+}
+
+var coal = function(posX,posY,rot){
+	return new rock(posX,posY,rot,0x1A1607);
+}
+
 var groundPlane = function(width,height,posX,posY,pathToTexture){
 	var texture = THREE.ImageUtils.loadTexture(pathToTexture);
 	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;

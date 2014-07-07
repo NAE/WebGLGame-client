@@ -11,3 +11,7 @@ Math.seededRandom = function(min, max){
 	
 	return min + rnd * (max - min);
 }
+
+function getRandomDecimal(min, max){
+	return min + (Math.random() * (max - min));
+}
