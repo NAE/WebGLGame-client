@@ -36,3 +36,4 @@ This is the client portion of a multiplayer, browser-based WebGL game developed 
 * Greatly improve existing models.
 * Implement bumpy terrain. This needs to remain consistent across server-restart. Was thinking of somehow storing keys in each chunk that generate a different heightmap which is used to generate the terrain.
 * Update three.js to its newest version. It has a variety of issues when doing so, need to work these out.
+* Use prototype methods so that they are only loaded once into memory.
