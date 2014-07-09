@@ -130,6 +130,8 @@ function moveAllCharacters(){
 					
 					oMoveObj.numStepsSoFar++;
 					
+					otherCharacter.animation.update(.1);
+					
 					//camera is automatically removed in the rotate method
 				}else{
 					//we reached the destination
@@ -184,6 +186,18 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType,newParticleSel
 	this.entity.add(this.skin);
 	this.skin.scale.x = this.skin.scale.y = this.skin.scale.z = 3.5;
 	this.oldRot = 0;
+	
+	//anim
+	this.skin.geometry.animation.name = "poopsicle"
+	THREE.AnimationHandler.add(this.skin.geometry.animation);
+	
+	this.animation = new THREE.Animation(
+		this.skin,
+		'poopsicle',
+		THREE.AnimationHandler.CATMULLROM
+	);
+	
+	this.animation.play();
 	
 	this.entity.position.x = posX;
 	this.entity.position.y = posY;

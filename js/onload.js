@@ -119,7 +119,9 @@ function loadModels(){
 			var materials = skinnedMesh.material.materials;
 			for(var k in materials){
 				materials[k].skinning = true;
+				materials[k].side = THREE.DoubleSide;
 			}
+			skinnedMesh.geometry.animation = skinnedMesh.geometry.animations[0];
 			console.log(skinnedMesh);
 			z++;
 			if(z == objs.length){
