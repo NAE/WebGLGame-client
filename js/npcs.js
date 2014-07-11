@@ -16,7 +16,11 @@ function moveAllNPCs(){
 				npcMoveObj.numStepsSoFar++;
 				
 				npc.lookAt(npcMoveObj.moveTo);
+				
+				//determine the diagonal length of the distance moved x and y (total length moved)
+				npc.playWalk(npcMoveObj.speed / 100);
 			}else{
+				npc.stopAnimation();
 				npcMoveObj.moving = false;
 			}
 		}
@@ -60,7 +64,6 @@ var npcPlane = function(bundleData){
 	//determine type
 	var name = npcProperties[bundleData.type].name;
 	var cloneRef = window[name];
-	
 	this.skin = cloneRef.clone();
 	this.entity.add(this.skin);
 	this.skin.scale.x = this.skin.scale.y = this.skin.scale.z = 3.5;
@@ -82,6 +85,8 @@ var npcPlane = function(bundleData){
 	
 	this.healthPlane = new healthPlane(this.state.health,this.state.maxHealth);
 	this.entity.add(this.healthPlane.entity);
+	
+	this.changeAnimation("walk");
 }
 
 npcPlane.prototype = new LivingBeing();

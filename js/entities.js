@@ -52,10 +52,20 @@ LivingBeing.prototype.isPerforming = function(animName){
 }
 
 LivingBeing.prototype.stopAnimation = function(){
+	//stops the animation, resets, and prepares it again
 	this.animation.stop();
 	this.animation.reset();
 	this.animation.play();
 	this.animation.update(.01);
+}
+
+LivingBeing.prototype.playWalk = function(animAmount){
+	//sets this LivingBeing's animation to walk, if not already set, and animates a little bit
+	//check if the animation is set to walk, if not, set it
+	if(!this.isPerforming("walk") || !this.animation.isPlaying){
+		this.changeAnimation("walk");
+	}
+	this.animation.update(animAmount);
 }
 
 /* end LivingBeing */

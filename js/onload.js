@@ -121,11 +121,12 @@ function loadModels(){
 				materials[k].skinning = true;
 				materials[k].side = THREE.DoubleSide;
 			}
-			if(str == "man"){
+			/*if(str == "man"){
 				skinnedMesh.geometry.animation = skinnedMesh.geometry.animations[1];
 			}else{
 				skinnedMesh.geometry.animation = skinnedMesh.geometry.animations[0];
-			}
+			}*/
+			skinnedMesh.geometry.animation = skinnedMesh.geometry.animations[1];
 			THREE.AnimationHandler.add(skinnedMesh.geometry.animation);
 			console.log(skinnedMesh);
 			z++;

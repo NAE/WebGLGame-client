@@ -129,13 +129,7 @@ function moveAllCharacters(){
 					otherCharacter.entity.position.z = zPos;
 					
 					oMoveObj.numStepsSoFar++;
-					
-					//anim stuff
-					//check if the animation is set to walk, if not, set it
-					if(!otherCharacter.isPerforming("walk") || !otherCharacter.animation.isPlaying){
-						otherCharacter.changeAnimation("walk");
-					}
-					otherCharacter.animation.update(.1);
+					otherCharacter.playWalk(oMoveObj.speed / 100);
 					
 					//camera is automatically removed in the rotate method
 				}else{
