@@ -126,6 +126,7 @@ function loadModels(){
 			}else{
 				skinnedMesh.geometry.animation = skinnedMesh.geometry.animations[0];
 			}
+			THREE.AnimationHandler.add(skinnedMesh.geometry.animation);
 			console.log(skinnedMesh);
 			z++;
 			if(z == objs.length){

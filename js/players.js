@@ -135,7 +135,9 @@ function moveAllCharacters(){
 					if(!otherCharacter.isPerforming("walk") || !otherCharacter.animation.isPlaying){
 						otherCharacter.changeAnimation("walk");
 					}
-					otherCharacter.animation.update(.1);
+					if(otherCharacter.animation){
+						otherCharacter.animation.update(.1);
+					}
 					
 					//camera is automatically removed in the rotate method
 				}else{
@@ -151,10 +153,12 @@ function moveAllCharacters(){
 					otherCharacter.entity.position.z = zPos;
 					
 					//stop the animation & reset
-					otherCharacter.animation.stop();
-					otherCharacter.animation.reset();
-					otherCharacter.animation.play();
-					otherCharacter.animation.update(.01);
+					if(otherCharacter.animation){
+						otherCharacter.animation.stop();
+						otherCharacter.animation.reset();
+						otherCharacter.animation.play();
+						otherCharacter.animation.update(.01);
+					}
 					
 					if(i == connectionNum){
 						//if we're moving my character, remove the moveCursor from the screen
@@ -226,20 +230,9 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType,newParticleSel
 	this.currentAnimationNameGeneric = "";
 	//define animation names for this character
 	this.animationNames = {
-		walk : "walk" + Math.random().toString(36).substring(7),
-		shoot : "shoot" + Math.random().toString(36).substring(7)
+		walk : "walk",
+		shoot : "shoot"
 	};
-	
-	this.initAnimations = function(){
-		//go through the animations and assign their names
-		for(var i=0;i<this.skin.geometry.animations.length;i++){
-			//assign its new name depending on its current name
-			var thisAnim = this.skin.geometry.animations[i];
-			var currentName = thisAnim.name;
-			thisAnim.name = this.animationNames[currentName];
-		}
-	}
-	this.initAnimations();
 	
 	this.changeWeapon = function(newType,itemId){
 		//removes old weapon and replaces with new
@@ -288,7 +281,6 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType,newParticleSel
 	}
 	
 	this.changeAnimationRealName = function(newAnimName){
-		//newAnimName must be from this.animationNames
 		//search for the animation among the model's animations
 		var animIndex = 0;
 		for(var i=0;i<this.skin.geometry.animations.length;i++){
@@ -299,22 +291,21 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType,newParticleSel
 			}
 		}
 		this.skin.geometry.animation = this.skin.geometry.animations[animIndex];
-		THREE.AnimationHandler.add(this.skin.geometry.animation);
 		
 		this.animation = new THREE.Animation(
 			this.skin,
 			this.skin.geometry.animation.name,
-			THREE.AnimationHandler.CATMULLROM
+			THREE.AnimationHandler.LINEAR
 		);
 		
 		this.animation.reset();
 		this.animation.play();
 	}
 	
-	this.changeAnimation = function(newAnimNameGeneric){
+	this.changeAnimation = function(newAnimName){
 		//changes the animation based on a generic animation name, i.e. 'walk'
-		this.currentAnimationNameGeneric = newAnimNameGeneric;
-		this.changeAnimationRealName(this.animationNames[newAnimNameGeneric]);
+		this.currentAnimationNameGeneric = newAnimName;
+		this.changeAnimationRealName(this.animationNames[newAnimName]);
 	}
 	
 	this.isPerforming = function(animNameGeneric){
