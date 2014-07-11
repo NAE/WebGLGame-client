@@ -129,7 +129,7 @@ function moveAllCharacters(){
 					otherCharacter.entity.position.z = zPos;
 					
 					oMoveObj.numStepsSoFar++;
-					otherCharacter.playWalk(oMoveObj.speed / 100);
+					otherCharacter.playWalk(oMoveObj.speed / 60);
 					
 					//camera is automatically removed in the rotate method
 				}else{

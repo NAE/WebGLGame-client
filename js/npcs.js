@@ -18,7 +18,7 @@ function moveAllNPCs(){
 				npc.lookAt(npcMoveObj.moveTo);
 				
 				//determine the diagonal length of the distance moved x and y (total length moved)
-				npc.playWalk(npcMoveObj.speed / 100);
+				npc.playWalk(npcMoveObj.speed / 60);
 			}else{
 				npc.stopAnimation();
 				npcMoveObj.moving = false;
