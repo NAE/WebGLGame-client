@@ -82,19 +82,6 @@ var npcPlane = function(bundleData){
 	
 	this.healthPlane = new healthPlane(this.state.health,this.state.maxHealth);
 	this.entity.add(this.healthPlane.entity);
-	
-	this.lookAt = function(position){
-		var deltaX = position.x - this.moveObj.currentPosition.x;
-		var deltaY = position.y - this.moveObj.currentPosition.y;
-		var newRot = Math.atan(deltaY/deltaX);
-		if(deltaX < 0){
-			newRot += Math.PI;
-		}
-		//otherCharacter.skin.rotation.z = newRot + otherCharacter.baseRotationZ;
-		var diff = newRot - this.oldRot;
-		if(!isNaN(diff)){
-			this.oldRot = newRot;
-			this.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
-		}
-	}
 }
+
+npcPlane.prototype = new LivingBeing();

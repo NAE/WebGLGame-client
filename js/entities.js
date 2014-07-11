@@ -1,3 +1,65 @@
+/* LivingBeing */
+var LivingBeing = function(){
+	this.currentAnimationName = "";
+}
+
+LivingBeing.prototype.lookAt = function(position){
+	var deltaX = position.x - this.moveObj.currentPosition.x;
+	var deltaY = position.y - this.moveObj.currentPosition.y;
+	var newRot = Math.atan(deltaY/deltaX);
+	if(deltaX < 0){
+		newRot += Math.PI;
+	}
+	//otherCharacter.skin.rotation.z = newRot + otherCharacter.baseRotationZ;
+	var diff = newRot - this.oldRot;
+	if(!isNaN(diff)){
+		this.oldRot = newRot;
+		this.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
+	}
+}
+
+LivingBeing.prototype.changeAnimationRealName = function(newAnimName){
+	//search for the animation among the model's animations
+	var animIndex = 0;
+	for(var i=0;i<this.skin.geometry.animations.length;i++){
+		var thisAnim = this.skin.geometry.animations[i];
+		if(thisAnim.name == newAnimName){
+			animIndex = i;
+			break;
+		}
+	}
+	this.skin.geometry.animation = this.skin.geometry.animations[animIndex];
+	
+	this.animation = new THREE.Animation(
+		this.skin,
+		this.skin.geometry.animation.name,
+		THREE.AnimationHandler.LINEAR
+	);
+	
+	this.animation.reset();
+	this.animation.play();
+}
+	
+LivingBeing.prototype.changeAnimation = function(newAnimName){
+	//changes the animation based on a generic animation name, i.e. 'walk'
+	this.currentAnimationName = newAnimName;
+	this.changeAnimationRealName(newAnimName);
+}
+	
+LivingBeing.prototype.isPerforming = function(animName){
+	//returns if this animation is doing the action specified
+	return this.currentAnimationName == animName;
+}
+
+LivingBeing.prototype.stopAnimation = function(){
+	this.animation.stop();
+	this.animation.reset();
+	this.animation.play();
+	this.animation.update(.01);
+}
+
+/* end LivingBeing */
+
 var moveObj = function(){
 	this.moving = false;
 	this.moveTo = {x:0,y:0};

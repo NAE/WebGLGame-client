@@ -135,9 +135,7 @@ function moveAllCharacters(){
 					if(!otherCharacter.isPerforming("walk") || !otherCharacter.animation.isPlaying){
 						otherCharacter.changeAnimation("walk");
 					}
-					if(otherCharacter.animation){
-						otherCharacter.animation.update(.1);
-					}
+					otherCharacter.animation.update(.1);
 					
 					//camera is automatically removed in the rotate method
 				}else{
@@ -153,12 +151,7 @@ function moveAllCharacters(){
 					otherCharacter.entity.position.z = zPos;
 					
 					//stop the animation & reset
-					if(otherCharacter.animation){
-						otherCharacter.animation.stop();
-						otherCharacter.animation.reset();
-						otherCharacter.animation.play();
-						otherCharacter.animation.update(.01);
-					}
+					otherCharacter.stopAnimation();
 					
 					if(i == connectionNum){
 						//if we're moving my character, remove the moveCursor from the screen
@@ -227,13 +220,6 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType,newParticleSel
 	this.weapon = new weapon(weaponType, this.particleSelection);
 	this.skin.add(this.weapon.entity);
 	
-	this.currentAnimationNameGeneric = "";
-	//define animation names for this character
-	this.animationNames = {
-		walk : "walk",
-		shoot : "shoot"
-	};
-	
 	this.changeWeapon = function(newType,itemId){
 		//removes old weapon and replaces with new
 		var newWeapon = new weapon(newType, this.particleSelection);
@@ -265,59 +251,12 @@ var characterPlane = function(posX,posY,texturePath,id,weaponType,newParticleSel
 		this.weapon.setParticleColor(particleProperties[newParticleSelection].color);
 	}
 	
-	this.lookAt = function(position){
-		var deltaX = position.x - this.moveObj.currentPosition.x;
-		var deltaY = position.y - this.moveObj.currentPosition.y;
-		var newRot = Math.atan(deltaY/deltaX);
-		if(deltaX < 0){
-			newRot += Math.PI;
-		}
-		//otherCharacter.skin.rotation.z = newRot + otherCharacter.baseRotationZ;
-		var diff = newRot - this.oldRot;
-		if(!isNaN(diff)){
-			this.oldRot = newRot;
-			this.skin.rotateAroundWorldAxis(new THREE.Vector3(0,1,0), diff);
-		}
-	}
-	
-	this.changeAnimationRealName = function(newAnimName){
-		//search for the animation among the model's animations
-		var animIndex = 0;
-		for(var i=0;i<this.skin.geometry.animations.length;i++){
-			var thisAnim = this.skin.geometry.animations[i];
-			if(thisAnim.name == newAnimName){
-				animIndex = i;
-				break;
-			}
-		}
-		this.skin.geometry.animation = this.skin.geometry.animations[animIndex];
-		
-		this.animation = new THREE.Animation(
-			this.skin,
-			this.skin.geometry.animation.name,
-			THREE.AnimationHandler.LINEAR
-		);
-		
-		this.animation.reset();
-		this.animation.play();
-	}
-	
-	this.changeAnimation = function(newAnimName){
-		//changes the animation based on a generic animation name, i.e. 'walk'
-		this.currentAnimationNameGeneric = newAnimName;
-		this.changeAnimationRealName(this.animationNames[newAnimName]);
-	}
-	
-	this.isPerforming = function(animNameGeneric){
-		//returns if this animation is doing the action specified
-		return this.currentAnimationNameGeneric == animNameGeneric;
-	}
-	
 	//anim
 	this.changeAnimation("walk");
-	
 	this.state = new Object();
 }
+
+characterPlane.prototype = new LivingBeing();
 
 function changeOtherCharacterWeapon(newType,otherConnNum){
 	var character = otherCharacterList[otherConnNum];
