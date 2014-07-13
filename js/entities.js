@@ -61,12 +61,22 @@ LivingBeing.prototype.stopAnimation = function(){
 }
 
 LivingBeing.prototype.playWalk = function(animAmount){
-	//sets this LivingBeing's animation to walk, if not already set, and animates a little bit
+	//sets this LivingBeing's animation to walk, if not already set, and animates by the animAmount
 	//check if the animation is set to walk, if not, set it
 	if(!this.isPerforming("walk") || !this.animation.isPlaying){
 		this.changeAnimation("walk");
 	}
 	this.animation.update(animAmount);
+}
+
+LivingBeing.prototype.playShoot = function(){
+	//sets this LivingBeing's animation to shoot, if not already set, and animates a little bit to prepare for movement which
+	//is taken care of in moveAllAnimations
+	//check if the animation is set to shoot, if not, set it
+	if(!this.isPerforming("shoot") || !this.animation.isPlaying){
+		this.changeAnimation("shoot");
+	}
+	this.animation.update(.01);
 }
 
 /* end LivingBeing */

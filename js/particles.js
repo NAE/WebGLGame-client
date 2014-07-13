@@ -30,6 +30,7 @@ function makeParticleSystem(data){
 		//the npc could potentially be gone
 		if(npcArray[firer]){
 			npcArray[firer].lookAt(moveObj.moveTo);
+			npcArray[firer].playShoot();
 		}
 	}
 	

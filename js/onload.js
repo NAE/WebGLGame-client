@@ -70,14 +70,13 @@ function onLoad(data){
 	
 	//issue right here...
 	loadCurrentChunks(data.moveEvents[connectionNum].moveObj.currentChunk);
-	
-	transferNPCData(data.npcArray);
-	
+
 	itemProperties = data.itemProperties;
 	
-	//wait to add objects & items, otherwise it won't be able to find the correct z coordinate for them
+	//wait to add objects, npcs, & items, otherwise it won't be able to find the correct z coordinate for them
 	setTimeout(function(){
 		updateDroppedItems(data.itemArray, new Date().getTime());
+		transferNPCData(data.npcArray);
 		addObjects(data.objectArray);
 		//set loaded to true to indicate that we are all done loading
 		loaded = true;
