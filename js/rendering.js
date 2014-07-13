@@ -54,6 +54,7 @@ function rotate(){
 	worldCamera.entity.position.x = rotationRadius * Math.cos( theta ) + otherCharacterList[connectionNum].moveObj.currentPosition.x;
 	worldCamera.entity.position.y = -rotationRadius * Math.sin( theta ) + otherCharacterList[connectionNum].moveObj.currentPosition.y;
 	if(otherCharacterList[connectionNum].entity.position){
+		worldCamera.entity.position.z = otherCharacterList[connectionNum].entity.position.z + cameraElevation;
 		worldLight.entity.position.x = otherCharacterList[connectionNum].entity.position.x;
 		worldLight.entity.position.y = otherCharacterList[connectionNum].entity.position.y;
 	}

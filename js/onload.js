@@ -49,7 +49,7 @@ function onLoad(data){
 	scene = new THREE.Scene();
 	
 	// camera
-	worldCamera = new directionalCamera(0,-450,250);
+	worldCamera = new directionalCamera(0,-450,cameraElevation);
 	worldCamera.entity.rotation.x = 65 * (Math.PI / 180);
 	
 	//now that scene has been initialized, can load other characters into scene

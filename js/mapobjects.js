@@ -380,7 +380,17 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 	var peaks = [];
 	for(var i=0;i<numPeaks;i++){
 		//choose a peak height and location
-		var peakHeight = Math.seededRandom(minPeakHeight, maxPeakHeight);
+		var maxPeak = Math.seededRandom(0, 1);
+		//if maxPeak, then don't use peakHeight
+		var peakHeight;
+		if(maxPeak < extremePeakChance){
+			//do a maxPeak
+			peakHeight = Math.seededRandom(-extremePeakHeight, extremePeakHeight);
+			console.log(peakHeight);
+		}else{
+			//normal peak
+			peakHeight = Math.seededRandom(minPeakHeight, maxPeakHeight);
+		}
 		//choose a random coordinate between chunk coords
 		var randomX = Math.seededRandom(minPoint, maxPoint);
 		var randomY = Math.seededRandom(minPoint, maxPoint);

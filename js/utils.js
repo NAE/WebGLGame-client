@@ -30,7 +30,17 @@ function onDocumentMouseDown( event ) {
 			}
 		}
 		
+		//find intersections on players for right click menu purposes (clean first)
+		var cleanPlayerEntityArray = [];
+		for(var i=0;i<otherCharEntityList.length;i++){
+			var thisEntity = otherCharEntityList[i];
+			if(thisEntity != undefined){
+				cleanPlayerEntityArray.push(thisEntity);
+			}
+		}
+		
 		var objectHit = raycaster.intersectObjects(cleanMapObjectsEntityArray, true);
+		var playerHit = raycaster.intersectObjects(cleanPlayerEntityArray, true);
 		
 		var stillDoMove = false;
 		if(objectHit.length > 0){

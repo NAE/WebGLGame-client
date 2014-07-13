@@ -35,7 +35,8 @@ var zVariation = 5;
 var chunkSplits = 50;
 var maxPeaks = 50;
 var maxPeakHeight = 20;
-var extremePeakHeight = 60;
+var extremePeakChance = .1;
+var extremePeakHeight = 210;
 var minPeakHeight = -10;
 var peakSlope = .01;
 
@@ -46,6 +47,7 @@ var MAP_WIDTH;
 var MAP_HEIGHT;
 var fog = true;
 var fogDistance = 4500;
+var cameraElevation = 240;
 //1A061A
 //0x104B7B
 //0x8AA2CF
