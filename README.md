@@ -1,7 +1,8 @@
 WebGLGame-client
 ================
 
-#### [Multiplayer Demo](http://www.youtube.com/watch?v=P07f2FKpRB8) ####
+#### [Game Demo](http://www.elderwind.com/Game/game.html) ####
+#### [Multiplayer Demo Video](http://www.youtube.com/watch?v=P07f2FKpRB8) ####
 
 #### Description ####
 This is the client portion of a multiplayer, browser-based WebGL game developed using [three.js](https://github.com/mrdoob/three.js/). The client uses socket.io to communicate with the server. The server (not included), is written in Java and uses [netty-socketio](https://github.com/mrniko/netty-socketio) for communication using socket.io.
