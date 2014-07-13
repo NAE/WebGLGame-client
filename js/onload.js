@@ -121,13 +121,13 @@ function loadModels(){
 				materials[k].skinning = true;
 				materials[k].side = THREE.DoubleSide;
 			}
-			/*if(str == "man"){
-				skinnedMesh.geometry.animation = skinnedMesh.geometry.animations[1];
-			}else{
-				skinnedMesh.geometry.animation = skinnedMesh.geometry.animations[0];
-			}*/
-			skinnedMesh.geometry.animation = skinnedMesh.geometry.animations[1];
-			THREE.AnimationHandler.add(skinnedMesh.geometry.animation);
+			for(var animIndex in skinnedMesh.geometry.animations){
+				//change the anim name to animname-<modeltype> , example: "walk-dog", or "shoot-man"
+				var anim = skinnedMesh.geometry.animations[animIndex];
+				anim.name += "-" + str;
+				THREE.AnimationHandler.add(anim);
+			}
+			skinnedMesh.geometry.animation = skinnedMesh.geometry.animations[0];
 			console.log(skinnedMesh);
 			z++;
 			if(z == objs.length){

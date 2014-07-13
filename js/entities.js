@@ -42,8 +42,9 @@ LivingBeing.prototype.changeAnimationRealName = function(newAnimName){
 	
 LivingBeing.prototype.changeAnimation = function(newAnimName){
 	//changes the animation based on a generic animation name, i.e. 'walk'
+	//real animation name will be something like "walk-dog"
 	this.currentAnimationName = newAnimName;
-	this.changeAnimationRealName(newAnimName);
+	this.changeAnimationRealName(newAnimName + "-" + this.modelType);
 }
 	
 LivingBeing.prototype.isPerforming = function(animName){

@@ -175,6 +175,7 @@ function moveAllCharacters(){
 //TODO - cleanup ... variables are assigned outside of this function to this object, then
 //referred to inside this object.
 var characterPlane = function(posX,posY,texturePath,id,weaponType,newParticleSelection){
+	this.modelType = "man";
 	this.texturePath = texturePath;
 	this.charTexture = THREE.ImageUtils.loadTexture(texturePath);
 	this.materialChar = new THREE.MeshLambertMaterial({

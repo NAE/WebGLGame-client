@@ -91,4 +91,4 @@ var mapObjectEventTypes;
 //MODELS
 var man;
 var dog;
-var objs = ["man","dog"];
+var objs = ["man", "dog", "blob", "goblin", "beanman", "sniper"];

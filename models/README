@@ -6,6 +6,6 @@ http://devmatrix.wordpress.com/2013/02/27/creating-skeletal-animation-in-blender
 
 to paint:
 add material
-select 'use vertex colors'
+select 'use vertex colors' in the threejs panel and the materials panel
 paint
 export

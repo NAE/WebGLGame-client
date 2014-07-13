@@ -63,6 +63,7 @@ var npcPlane = function(bundleData){
 	
 	//determine type
 	var name = npcProperties[bundleData.type].name;
+	this.modelType = name;
 	var cloneRef = window[name];
 	this.skin = cloneRef.clone();
 	this.entity.add(this.skin);
