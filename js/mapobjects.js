@@ -386,7 +386,6 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 		if(maxPeak < extremePeakChance){
 			//do a maxPeak
 			peakHeight = Math.seededRandom(-extremePeakHeight, extremePeakHeight);
-			console.log(peakHeight);
 		}else{
 			//normal peak
 			peakHeight = Math.seededRandom(minPeakHeight, maxPeakHeight);

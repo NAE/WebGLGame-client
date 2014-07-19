@@ -14,7 +14,16 @@ function onDocumentMouseDown( event ) {
 		var raycaster = new THREE.Raycaster( worldCamera.entity.position,vector.sub( worldCamera.entity.position ).normalize() );
 		
 		//see if the ray intersects the ground if it did not intersect any characters
-		var intersects = raycaster.intersectObject(worldPlane.entity);
+		//to do this, make a filtered list of currently loaded chunks (removing the undefined ones and adding only the entities)
+		var filteredChunks = [];
+		for(var i=0;i<currentlyLoadedChunks.length;i++){
+			var thisChunk = currentlyLoadedChunks[i];
+			if(thisChunk != undefined){
+				filteredChunks.push(thisChunk.entity);
+			}
+		}
+		var intersects = raycaster.intersectObjects(filteredChunks);
+		
 		//check if it intersects any items on the ground
 		var itemHit = raycaster.intersectObjects(itemEntityArray);
 		
