@@ -36,7 +36,7 @@ function makeParticleSystem(data){
 	
 	var particleType = data.particleType;
 	var particleInfo = particleProperties[particleType];
-	var system = new particleSystem(moveObj,7,particleInfo.color);
+	var system = new particleSystem(moveObj,7,particleInfo.color,firer,firerType);
 	system.explodingSteps = particleInfo.radius/3;
 	system.explodeIncrease = system.explodingSteps/particleInfo.radius;
 	system.moveObj = moveObj;
@@ -56,9 +56,11 @@ function moveAllParticles(){
 					//keep moving
 					systemMoveObj.currentPosition.x += systemMoveObj.moveDistEach.x;
 					systemMoveObj.currentPosition.y += systemMoveObj.moveDistEach.y;
+					systemMoveObj.currentPosition.z += systemMoveObj.moveDistEach.z;
 					system.entity.position.x = systemMoveObj.currentPosition.x;
 					system.entity.position.y = systemMoveObj.currentPosition.y;
-					system.entity.position.z -= (otherCharacterList[connectionNum].weapon.entity.position.y/systemMoveObj.numStepsRequired);
+					system.entity.position.z = systemMoveObj.currentPosition.z;
+					
 					systemMoveObj.numStepsSoFar++;
 				}else{
 					//we reached the destination
@@ -66,7 +68,7 @@ function moveAllParticles(){
 						//do the explosion, by changing the scale of the particle systems
 						system.entity.scale.x += system.explodeIncrease;
 						system.entity.scale.y += system.explodeIncrease;
-						system.pMaterial.opacity -= (.5/system.explodingSteps);
+						system.pMaterial.opacity -= (.5 / system.explodingSteps);
 						system.explodingStepsSoFar++;
 						if(system.explodingStepsSoFar >= system.explodingSteps){
 							system.doneExploding = true;
@@ -90,15 +92,25 @@ function moveAllParticles(){
 	}
 }
 
-var particleSystem = function(moveObj,rad,color){
+var particleSystem = function(moveObj,rad,color,firer,firerType){
 	this.rad = rad;
 	this.particleCount = 30;
+	this.firer = firer;
+	this.firerType = firerType;
+	this.firerBeing;
+	
+	if(firerType == PLAYER_CONST){
+		this.firerBeing = otherCharacterList[firer];
+	}else if(firerType == NPC_CONST){
+		this.firerBeing = npcArray[firer];
+	}
+	
 	this.particles = new THREE.Geometry();
 	this.pMaterial = new THREE.ParticleBasicMaterial({
 		color: color,
 		size: 25,
 		map: particleTexture,
-		blending: THREE.AdditiveBlending,
+		blending: THREE.AdditiveAlphaBlending,
 		depthTest: false,
 		transparent: true
 	});
@@ -117,10 +129,17 @@ var particleSystem = function(moveObj,rad,color){
 		this.particles.vertices.push(particle);
 	}
 	this.moveObj = moveObj;
+	
+	//modify the moveObj moveDistEach for a z coordinate
+	var startPosZ = this.firerBeing.entity.position.z + 20;
+	var endPosZ = getZFromPosition(moveObj.moveTo);
+	moveObj.currentPosition.z = startPosZ;
+	moveObj.moveDistEach.z = (endPosZ - startPosZ) / moveObj.numStepsRequired;
+	
 	this.entity = new THREE.ParticleSystem(this.particles,this.pMaterial);
 	this.entity.position.x = moveObj.currentPosition.x;
 	this.entity.position.y = moveObj.currentPosition.y;
-	this.entity.position.z = otherCharacterList[connectionNum].weapon.entity.position.y + otherCharacterList[connectionNum].entity.position.z + 9;
+	this.entity.position.z = startPosZ;
 	this.doneExploding = false;
 	this.explodeIncrease = .2;
 	this.explodingStepsSoFar = 0;
