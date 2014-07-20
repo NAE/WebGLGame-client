@@ -46,7 +46,9 @@ function createObjectContextMenu(position, objectId){
 	for(var i=0;i<eventTypes.length;i++){
 		var eventType = eventTypes[i];
 		var eventTypeNice = eventType[0].toUpperCase() + eventType.slice(1).toLowerCase();
-		menuArray.push("<div id='mapObjectOption" + eventType +"' data-event='" + eventType + "' data-event-index='" + i + "' data-objectid='" + objectId + "' class='clickableOption mapObjectOption'>" + eventTypeNice + "</div>");
+		var mapObjName = objectProperties[mapObjectEntity.type].name;
+		var mapObjNameNice = mapObjName[0].toUpperCase() + mapObjName.slice(1);
+		menuArray.push("<div id='mapObjectOption" + eventType +"' data-event='" + eventType + "' data-event-index='" + i + "' data-objectid='" + objectId + "' class='clickableOption mapObjectOption'>" + eventTypeNice + " " + mapObjNameNice + "</div>");
 	}
 	//if the player is in editmode, add a remove option to the MapObject
 	var me = otherCharacterList[connectionNum];

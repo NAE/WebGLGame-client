@@ -443,11 +443,16 @@ function socketPlayerInteract(data){
 	var animStallTime = 100;
 	//call the animation
 	setTimeout(function(){
-		thisPlayer[animFuncName]();
+		if(thisPlayer){
+			thisPlayer.lookAt(mapObj.entity.position);
+			thisPlayer[animFuncName]();
+		}
 	}, animStallTime);
 	
 	setTimeout(function(){
-		thisPlayer.stopAnimation();
+		if(thisPlayer){
+			thisPlayer.stopAnimation();
+		}
 	}, yieldTime + animStallTime);
 	
 }
