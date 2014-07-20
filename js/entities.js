@@ -53,8 +53,9 @@ LivingBeing.prototype.isPerforming = function(animName){
 }
 
 LivingBeing.prototype.stopAnimation = function(){
-	//stops the animation, resets, and prepares it again
+	//stops the animation, changes to walk, resets, and prepares it again
 	this.animation.stop();
+	this.changeAnimation("walk");
 	this.animation.reset();
 	this.animation.play();
 	this.animation.update(.01);
@@ -75,6 +76,20 @@ LivingBeing.prototype.playShoot = function(){
 	//check if the animation is set to shoot, if not, set it
 	if(!this.isPerforming("shoot") || !this.animation.isPlaying){
 		this.changeAnimation("shoot");
+	}
+	this.animation.update(.01);
+}
+
+LivingBeing.prototype.playChop = function(){
+	if(!this.isPerforming("chop") || !this.animation.isPlaying){
+		this.changeAnimation("chop");
+	}
+	this.animation.update(.01);
+}
+
+LivingBeing.prototype.playSearch = function(){
+	if(!this.isPerforming("search") || !this.animation.isPlaying){
+		this.changeAnimation("search");
 	}
 	this.animation.update(.01);
 }

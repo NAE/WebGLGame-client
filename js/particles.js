@@ -110,7 +110,7 @@ var particleSystem = function(moveObj,rad,color,firer,firerType){
 		color: color,
 		size: 25,
 		map: particleTexture,
-		blending: THREE.AdditiveAlphaBlending,
+		blending: THREE.NormalBlending,
 		depthTest: false,
 		transparent: true
 	});

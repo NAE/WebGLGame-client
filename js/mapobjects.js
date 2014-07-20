@@ -64,6 +64,7 @@ function interactWithClickedObject(mapEntity, option){
 	var mapObject = mapEntity.correspondingObject;
 	var objId = mapObject.id;
 	var eventTypeInt = mapObjectEventTypes[eventType];
+	
 	socket.emit("InteractEvent", {objectHitNum: objId, eventType: eventTypeInt});
 }
 

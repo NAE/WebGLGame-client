@@ -51,6 +51,10 @@ socket.on('mapObjectRemove', function(data) {
 	socketMapObjectRemove(data);
 });
 
+socket.on('playerInteract', function(data) {
+	socketPlayerInteract(data);
+});
+
 socket.on('clientDisconnect', function(data) {
 	socketClientDisconnect(data);
 });
@@ -393,6 +397,59 @@ function socketMapObjectRemove(data){
 	var chunkObjs = chunk.objects;
 	var indexOfObjId = chunkObjs.indexOf(data.removedObjectIds[0]);
 	chunkObjs.splice(indexOfObjId,1);
+}
+
+function socketPlayerInteract(data){
+	if(!loaded){
+		setTimeout(function(){
+			socketPlayerInteract(data);
+		}, loadRetryTime);
+		return;
+	}
+	
+	var playerId = data.id;
+	var objId = data.objId;
+	var eventType = data.eventType;
+	
+	//figure out which event name this is
+	var eventName;
+	for(var eName in mapObjectEventTypes){
+		if(mapObjectEventTypes[eName] == eventType){
+			eventName = eName.toLowerCase();
+			break;
+		}
+	}
+	
+	//if we didn't find the right event then just return
+	if(!eventName) return;
+	
+	//find out how long to play the animation for, using objId
+	var mapObj = mapObjectsArray[objId];
+	if(!mapObj) return;
+	var objProp = objectProperties[mapObj.entity.type];
+	var yieldTime;
+	if(objProp.yields[0]){
+		yieldTime = objProp.yields[0].yieldTime;
+	}
+	//don't bother doing anything if yieldTime is 0 & if the object has no yields
+	if(!yieldTime) return;
+	
+	var thisPlayer = otherCharacterList[playerId];
+	if(!thisPlayer) return;
+	
+	var animFuncName = "play" + eventName.charAt(0).toUpperCase() + eventName.slice(1);
+	
+	//need to wait just a bit for the walk animation to stop before changing to a new one
+	var animStallTime = 100;
+	//call the animation
+	setTimeout(function(){
+		thisPlayer[animFuncName]();
+	}, animStallTime);
+	
+	setTimeout(function(){
+		thisPlayer.stopAnimation();
+	}, yieldTime + animStallTime);
+	
 }
 
 function socketClientDisconnect(data){
