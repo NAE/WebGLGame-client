@@ -107,6 +107,11 @@ function animate(lastTime, angularSpeed, three){
 	}
 	
 	lastTime = time;
+	
+	//update fog color
+	if(lastTime % 60 == 0){
+		updateCurrentFogTimeColor();
+	}
 
 	//render
 	renderer.render(three.scene, worldCamera.entity);
@@ -141,6 +146,23 @@ function createRenderer(){
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 	window.addEventListener( 'resize', onWindowResize, false );
+}
+
+function updateCurrentFogTimeColor(){
+	var minute = new Date().getMinutes();
+	//perform a sunlight cycle
+	var proportion = Math.abs(30 - minute) / 30;
+	var clr = new THREE.Color(1 - (1*proportion), .7 - (.7 * proportion), 0);
+	fogColor = parseInt(clr.getHex());
+	updateFogColor(fogColor);
+}
+
+function updateFogColor(newFogColor){
+	//takes fogColor and updates the fog accordingly
+	if(fog){
+		scene.fog = new THREE.Fog( newFogColor, 1 ,fogDistance);
+	}
+	renderer.setClearColorHex(newFogColor, 1);
 }
 
 function onWindowResize(event) {

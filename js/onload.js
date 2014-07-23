@@ -55,10 +55,8 @@ function onLoad(data){
 	//now that scene has been initialized, can load other characters into scene
 	loadCharacters(data.moveEvents);
 	updateInventory(data.moveEvents[connectionNum].inventory.inventory);
-	//with fog or not?
-	if(fog){
-		scene.fog = new THREE.Fog( fogColor,1,fogDistance);
-	}
+	
+	updateCurrentFogTimeColor();
 	
 	var chunkSize = chunkProperties[0][0].CHUNK_SIZE;
 	//worldPlane (invisible) is for player to click to move to without having to factor in different chunk planes being loaded

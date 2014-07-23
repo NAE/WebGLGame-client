@@ -34,11 +34,11 @@ var previouslyLoadedChunks = new Array(); //holds old groundPlanes
 var zVariation = 15;
 var chunkSplits = 50;
 var maxPeaks = 60;
-var maxPeakHeight = 30;
+var maxPeakHeight = 50;
 var extremePeakChance = .05;
-var extremePeakHeight = 300;
+var extremePeakHeight = maxPeakHeight * 8;
 var minPeakHeight = 0;
-var minPeakSlope = .05;
+var minPeakSlope = .01;
 var maxPeakSlope = 1;
 
 //GAME STATE/OPTIONS VARIABLES
@@ -47,7 +47,7 @@ var mapSize;
 var MAP_WIDTH;
 var MAP_HEIGHT;
 var fog = true;
-var fogDistance = 4500;
+var fogDistance = 5000;
 var cameraElevation = 240;
 //1A061A
 //0x104B7B

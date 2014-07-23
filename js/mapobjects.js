@@ -454,8 +454,8 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 			var blue = northFactor;
 			
 			var z = p.z;
-			var zAboveZero = z + zVariation;
-			var increaseAmount = (zAboveZero + .01) / (zVariation * 2);
+			var zAboveZero = z;
+			var increaseAmount = (zAboveZero + .01) / (maxPeakHeight * 1.5);
 			red += increaseAmount;
 			green += increaseAmount;
 			blue += increaseAmount;
@@ -466,9 +466,8 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 	var planeMaterial = new THREE.MeshLambertMaterial({
 		shading: THREE.SmoothShading, 
 		vertexColors: THREE.VertexColors,
-		map: texture,
-		ambient: 0xACCE99}
-	);
+		map: texture
+	});
     //0xACCE99
 	
 	//for vertices/heightmap, add more params to three.planegeometry
