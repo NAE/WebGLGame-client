@@ -360,11 +360,7 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 	//normal is 375
 	texture.repeat.set(width/300, height/300);
-
-	var materialPlane = new THREE.MeshLambertMaterial({
-		map: texture,
-		ambient: 0x6CAFE3
-	});
+	//old - 0x6CAFE3
 	
 	var geometry = new THREE.PlaneGeometry(width, height, chunkSplits, chunkSplits);
 	
@@ -386,7 +382,7 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 		var peakHeight;
 		if(maxPeak < extremePeakChance){
 			//do a maxPeak
-			peakHeight = Math.seededRandom(-extremePeakHeight, extremePeakHeight);
+			peakHeight = Math.seededRandom(minPeakHeight, extremePeakHeight);
 		}else{
 			//normal peak
 			peakHeight = Math.seededRandom(minPeakHeight, maxPeakHeight);
@@ -423,15 +419,18 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 			distancesToPeaks[n] = dist;
 		}
 		
-		
 		var smallestDist = Array.min(distancesToPeaks);
 		var heightOfNearestPeak = peaks[distancesToPeaks.indexOf(smallestDist)].z;
 		
+		var peakSlope = Math.seededRandom(minPeakSlope, maxPeakSlope);
 		vert.z = heightOfNearestPeak - (peakSlope * smallestDist);
 		if(vert.z < minPeakHeight){
 			vert.z = minPeakHeight;
 		}
 	}
+	
+	//determine height of the map
+	var totalMapHeight = MAP_HEIGHT * chunkProperties[0][0].CHUNK_SIZE;
 	
 	//color vertices (darker for lower, lighter for higher)
 	var faceIndices = ['a','b','c','d'];
@@ -444,9 +443,15 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 			//based on p's z value, give it a different color
 			color = new THREE.Color( 0xffffff );
 			//possibly change the colors based on how far north it is?
-			var red = .6;
-			var green = .6;
-			var blue = 0;
+			
+			//NORTH - Lots of blue, no green
+			//SOUTH - Lots of green, no blue
+			
+			var northFactor = (posY + p.y) / (totalMapHeight * 1.25);
+			
+			var red = .8 * northFactor;
+			var green = 1 - northFactor;
+			var blue = northFactor;
 			
 			var z = p.z;
 			var zAboveZero = z + zVariation;
@@ -455,13 +460,16 @@ var groundPlane = function(width,height,posX,posY,pathToTexture){
 			green += increaseAmount;
 			blue += increaseAmount;
 			color.setRGB(red,green,blue);
-			
 			f.vertexColors[ j ] = color;
 		}
 	}
-	var planeMaterial = new THREE.MeshLambertMaterial( 
-    { shading: THREE.SmoothShading, 
-    vertexColors: THREE.VertexColors, map: texture } );
+	var planeMaterial = new THREE.MeshLambertMaterial({
+		shading: THREE.SmoothShading, 
+		vertexColors: THREE.VertexColors,
+		map: texture,
+		ambient: 0xACCE99}
+	);
+    //0xACCE99
 	
 	//for vertices/heightmap, add more params to three.planegeometry
 	this.entity = new THREE.Mesh(geometry, planeMaterial);

@@ -101,7 +101,7 @@ function loadCurrentChunks(chunkId){
 				previouslyLoadedChunks[adjacentChunks[i]] = undefined;
 			}else{
 				//create a new chunk
-				thisPlane = new groundPlane(thisChunk.CHUNK_SIZE,thisChunk.CHUNK_SIZE,planePosX,planePosY,'img/regularGround.jpg',true);
+				thisPlane = new groundPlane(thisChunk.CHUNK_SIZE,thisChunk.CHUNK_SIZE,planePosX,planePosY,'img/regularGround3.jpg',true);
 			}
 			scene.add(thisPlane.entity);
 			//we really don't need to remove old planes, I think it would take more proecessing power than to just leave them there

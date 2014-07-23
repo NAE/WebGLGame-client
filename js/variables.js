@@ -31,14 +31,15 @@ var currentlyLoadedChunks = new Array(); //holds physical planes
 var previouslyLoadedChunks = new Array(); //holds old groundPlanes
 
 //MAP OBJECT VARS
-var zVariation = 5;
+var zVariation = 15;
 var chunkSplits = 50;
-var maxPeaks = 50;
-var maxPeakHeight = 20;
-var extremePeakChance = .1;
-var extremePeakHeight = 210;
-var minPeakHeight = -10;
-var peakSlope = .01;
+var maxPeaks = 60;
+var maxPeakHeight = 30;
+var extremePeakChance = .05;
+var extremePeakHeight = 300;
+var minPeakHeight = 0;
+var minPeakSlope = .05;
+var maxPeakSlope = 1;
 
 //GAME STATE/OPTIONS VARIABLES
 var MPF = 17; // TODO - Load this value from server in case it changes for some reason
