@@ -46,7 +46,7 @@ function rotate(){
 		}
 	}
 	
-	if(rotating != 0){
+	if(rotating != 0 || rotatingVertical != 0){
 		updateChatBoxPositions();
 	}
 	
@@ -142,7 +142,7 @@ function createRenderer(){
 	//shadow stuff end
 	
 	//set page background and size
-	renderer.setClearColorHex(fogColor, 1);
+	renderer.setClearColor(new THREE.Color(fogColor), 1);
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 	window.addEventListener( 'resize', onWindowResize, false );
@@ -162,7 +162,7 @@ function updateFogColor(newFogColor){
 	if(fog){
 		scene.fog = new THREE.Fog( newFogColor, 1 ,fogDistance);
 	}
-	renderer.setClearColorHex(newFogColor, 1);
+	renderer.setClearColor(new THREE.Color(newFogColor), 1);
 }
 
 function onWindowResize(event) {
