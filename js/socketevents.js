@@ -445,7 +445,9 @@ function socketPlayerInteract(data){
 	setTimeout(function(){
 		if(thisPlayer){
 			thisPlayer.lookAt(mapObj.entity.position);
-			thisPlayer[animFuncName]();
+			if(thisPlayer[animFuncName]){
+				thisPlayer[animFuncName]();
+			}
 		}
 	}, animStallTime);
 	

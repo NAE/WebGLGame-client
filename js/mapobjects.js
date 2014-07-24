@@ -243,6 +243,8 @@ var hut = function(posX,posY,rot){
 	this.entity.rotation.z = rot;
 }
 
+/* paths */
+
 var path = function(posX,posY,rot,imgPath){
 	//used by path types, not directly
 	this.texture = THREE.ImageUtils.loadTexture(imgPath);
@@ -263,6 +265,51 @@ var path = function(posX,posY,rot,imgPath){
 var cobblePath = function(posX,posY,rot){
 	return new path(posX,posY,rot,"img/textures/cobblePath2.jpg");
 }
+
+/* misc */
+
+var craftingBench = function(posX,posY,rot){
+	var baseLength = 40;
+	var baseDepth = 20;
+	var baseHeight = 20;
+	
+	this.entity = new THREE.Object3D();
+	this.entity.position.x = posX;
+	this.entity.position.y = posY;
+	this.entity.position.z = baseHeight / 2 + 3;
+	this.entity.rotation.z = rot;
+	
+	var materialBase = new THREE.MeshBasicMaterial({
+		map: THREE.ImageUtils.loadTexture('img/textures/craftingBenchBase.png')
+	});
+	
+	var materialBackFront = new THREE.MeshBasicMaterial({
+		map: THREE.ImageUtils.loadTexture('img/textures/craftingBenchBackFront.png')
+	});
+	
+	var materialBackBack = new THREE.MeshBasicMaterial({
+		map: THREE.ImageUtils.loadTexture('img/textures/craftingBenchBackBack.png')
+	});
+	
+	//add base & back
+	this.base = new THREE.Mesh(new THREE.BoxGeometry(baseLength, baseDepth, baseHeight, 1, 1, 1), materialBase);
+	this.back = new THREE.Object3D();
+	//2 sides to back, need 2 textures
+	this.backFront = new THREE.Mesh(new THREE.PlaneGeometry(baseLength, baseHeight * 1.5), materialBackFront);
+	this.backBack = new THREE.Mesh(new THREE.PlaneGeometry(baseLength, baseHeight * 1.5), materialBackBack);
+	this.backBack.rotation.y = Math.PI;
+	
+	this.back.add(this.backFront);
+	this.back.add(this.backBack);
+	this.back.rotation.x = Math.PI / 2;
+	this.back.position.z = baseHeight / 6;
+	this.back.position.y = baseDepth / 2 + 1;
+	
+	this.entity.add(this.base);
+	this.entity.add(this.back);
+}
+
+/* bushes */
 
 var bush = function(posX,posY,rot,color){
 	this.entity = new THREE.Object3D();
@@ -307,6 +354,8 @@ var deadBush = function(posX,posY,rot){
 var purpleBush = function(posX,posY,rot){
 	return new bush(posX, posY, rot, 0x210942);
 }
+
+/* rocks */
 
 var rock = function(posX,posY,rot,color){
 	var rockWidth = 15;
