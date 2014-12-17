@@ -2,13 +2,31 @@ var modelsLoaded = false;
 var loaded = false;
 
 window.onload = function(){
+	initSocketEvents();
+};
+
+function login(playNow){
+	var sendData = {username: $("#username").val(), password: $("#password").val(), playNow: playNow};
+	socket.emit("LoginEvent", sendData);
+	//the response is handled in socketevents
+}
+
+function loadGame(data){
+	//get rid of the front page first
+	$("#firstScreenOverlay").fadeOut(250, function(){
+		$(this).remove();
+		ready(data);
+	});
+}
+
+function ready(data){
+	document.onkeydown = checkKey;
+	document.onkeyup = checkStop;
+	document.onmousedown = onDocumentMouseDown;
 	loadPanelData();
 	loadModels();
-	socket.on('connectionInfo', function (data) {
-		//check if all the models are loaded
-		waitForLoad(data);
-	});
-};
+	waitForLoad(data);
+}
 
 function waitForLoad(data){
 	if(modelsLoaded){

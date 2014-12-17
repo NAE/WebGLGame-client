@@ -19,6 +19,7 @@ html,body {
 <script>
 	//stuff to do in between loading libs and my code
 </script>
+<script type="text/javascript" src="js/logout.js"></script>
 <script type="text/javascript" src="js/utils/seededRandom.js"></script>
 <script type="text/javascript" src="js/utils.js"></script>
 <script type="text/javascript" src="js/keys.js"></script>
@@ -44,10 +45,6 @@ html,body {
 <script type="text/javascript" src="js/socketevents.js"></script>
 <script type="text/javascript">
 //stuff that has to be done after everything has loaded
-	
-document.onkeydown = checkKey;
-document.onkeyup = checkStop;
-document.onmousedown = onDocumentMouseDown;
 
 //jQuery stuff
 $(document).ready(function(){
@@ -60,6 +57,27 @@ $(document).ready(function(){
 <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body oncontextmenu="return false">
+<div class="screenOverlay" id="firstScreenOverlay">
+	<div class="centerContainer">
+		<div class="loginContainer">
+			<form id="loginForm">
+				<label for="username">Username:</label>
+				<input type="text" class="niceTextBox" id="username" name="username" />
+				<br>
+				<label for="password">Password:</label>
+				<input type="password" class="niceTextBox" id="password" name="password" /><br>
+				<input type="button" class="niceButton" value="Login" id="loginButton" onClick="login(false);" />
+			</form>
+		</div>
+		
+		<div class="demoContainer">
+			<input type="button" class="niceButton" id="playNow" value="play now and signup later" onClick="login(true);" />
+		</div>
+	</div>
+</div>
+<div id="logout">
+
+</div>
 <div id="minimapContainer">
 <canvas id="minimapCanvas">
 </canvas>

@@ -1,75 +1,86 @@
 /* Most of the socket.on blocks are no longer in use, but keep anyway in case emergency events are sent */
-socket.on('otherCharMove', function(data) {
-	socketOtherCharMove(data);
-});
 
-socket.on('globalParticleUpdate', function(data) {
-	socketGlobalParticleUpdate(data);
-});
+function initSocketEvents(){
+	socket.on('loginResponse', function(data) {
+		socketLoginResponse(data);
+	});
+	
+	socket.on('otherCharMove', function(data) {
+		socketOtherCharMove(data);
+	});
 
-socket.on('particleHits', function(data) {
-	socketParticleHits(data);
-});
+	socket.on('globalParticleUpdate', function(data) {
+		socketGlobalParticleUpdate(data);
+	});
 
-socket.on('npcUpdate',function(data) {
-	socketNpcUpdate(data);
-});
+	socket.on('particleHits', function(data) {
+		socketParticleHits(data);
+	});
 
-socket.on('chatUpdate', function(data) {
-	socketChatUpdate(data);
-});
+	socket.on('npcUpdate',function(data) {
+		socketNpcUpdate(data);
+	});
 
-socket.on('inventoryUpdate', function(data) {
-	socketInventoryUpdate(data);
-});
+	socket.on('chatUpdate', function(data) {
+		socketChatUpdate(data);
+	});
 
-socket.on('droppedItems', function(data) {
-	socketDroppedItems(data);
-});
+	socket.on('inventoryUpdate', function(data) {
+		socketInventoryUpdate(data);
+	});
 
-socket.on('charLeaveChunk',function(data) {
-	socketCharLeaveChunk(data);
-});
+	socket.on('droppedItems', function(data) {
+		socketDroppedItems(data);
+	});
 
-socket.on('charEnterChunk',function(data) {
-	socketCharEnterChunk(data);
-});
+	socket.on('charLeaveChunk',function(data) {
+		socketCharLeaveChunk(data);
+	});
 
-socket.on('otherCharacterChangeWeapon', function(data) {
-	socketOtherCharacterChangeWeapon(data);
-});
+	socket.on('charEnterChunk',function(data) {
+		socketCharEnterChunk(data);
+	});
 
-socket.on('selectionUpdate', function(data) {
-	socketSelectionUpdate(data);
-});
+	socket.on('otherCharacterChangeWeapon', function(data) {
+		socketOtherCharacterChangeWeapon(data);
+	});
 
-socket.on('mapObjectAdd', function(data) {
-	socketMapObjectAdd(data);
-});
+	socket.on('selectionUpdate', function(data) {
+		socketSelectionUpdate(data);
+	});
 
-socket.on('mapObjectRemove', function(data) {
-	socketMapObjectRemove(data);
-});
+	socket.on('mapObjectAdd', function(data) {
+		socketMapObjectAdd(data);
+	});
 
-socket.on('playerInteract', function(data) {
-	socketPlayerInteract(data);
-});
+	socket.on('mapObjectRemove', function(data) {
+		socketMapObjectRemove(data);
+	});
 
-socket.on('clientDisconnect', function(data) {
-	socketClientDisconnect(data);
-});
+	socket.on('playerInteract', function(data) {
+		socketPlayerInteract(data);
+	});
 
-socket.on('consoleLog', function(data) {
-	socketConsoleLog(data);
-});
+	socket.on('clientDisconnect', function(data) {
+		socketClientDisconnect(data);
+	});
 
-socket.on('event', function(data) {
-	//data is an array of events
-	for(var i=0;i<data.length;i++){
-		var event = data[i];
-		handleEvent(event);
-	}
-});
+	socket.on('consoleLog', function(data) {
+		socketConsoleLog(data);
+	});
+	
+	socket.on('disconnect', function(){
+        //should re-show the login screen on disconnect
+    });
+
+	socket.on('event', function(data) {
+		//data is an array of events
+		for(var i=0;i<data.length;i++){
+			var event = data[i];
+			handleEvent(event);
+		}
+	});
+}
 var totalBytes = 0;
 function handleEvent(event){
 	totalBytes += JSON.stringify(event).length;
@@ -77,6 +88,9 @@ function handleEvent(event){
 	var eventName = event.eventName;
 	//based on the event name, handle the event accordingly
 	switch(eventName){
+		case "loginResponse":
+			socketLoginResponse(event);
+			break;
 		case "otherCharMove":
 			socketOtherCharMove(event);
 			break;
@@ -129,6 +143,21 @@ function handleEvent(event){
 }
 
 /* Socket functions handle the data retrieved from the socket */
+
+function socketLoginResponse(data){
+	//don't need to wait for load here
+	console.log(data);
+	var successfulLogin = data.success;
+	var failMessage = data.message;
+	
+	if(successfulLogin){
+		//the data is all the inital data (formerly handled in connectionInfo socket event)
+		loadGame(data);
+	}else{
+		//display the fail message to the user
+		alert('bad login');
+	}
+}
 
 function socketOtherCharMove(data){
 	if(!loaded){
@@ -215,7 +244,7 @@ function socketChatUpdate(data){
 		//show the message above the player's head
 		addChatToPlayer(data.message, data.sender);
 		//show the chat in the form of name: message
-		updateChatBox("Client " + data.sender + ": " + data.message);
+		updateChatBox(data.username + ": " + data.message);
 	}else{
 		//just print the message
 		updateChatBox(data.message);

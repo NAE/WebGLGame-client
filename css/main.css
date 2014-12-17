@@ -14,6 +14,114 @@ textarea {
 	border: 0;
 }
 
+@-webkit-keyframes animatedBackground {
+	0% {background-color: #000000;} 50% {background-color: #0A0610;} 100% {background-color: #150B21;} 
+}
+
+@-webkit-keyframes playNowAnimation {
+	0% {background-color: #000000;} 100% {background-color: #36254C;}
+}
+
+.centerContainer {
+	margin-top: 10%;
+	margin-left: auto;
+	margin-right: auto;
+	color: white;
+	text-align: center;
+	background-color: #383838;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid black;
+	box-shadow: 0em 0em .2em black;
+	padding: 10px;
+	width: 700px;
+	border-radius: 2px;
+	text-shadow: 0 -1px 0 black;
+	font-variant: small-caps;
+}
+
+.screenOverlay {
+	background: black;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+	top: 0;
+	left: 0;
+	position: fixed;
+	-webkit-animation: animatedBackground 10s infinite alternate;
+	border-bottom: 4px ridge #D1D1D1;
+}
+
+.loginContainer {
+	margin-bottom: 10px;
+	border-bottom: 2px ridge #19181B;
+}
+
+.demoContainer {
+	padding-bottom: 20px;
+}
+
+#loginForm {
+	width: 500px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+}
+
+#loginButton {
+	width: 100px;
+	margin-top: 10px;
+}
+
+#playNow {
+	font-size: 16pt;
+	-webkit-animation: playNowAnimation 1250ms infinite alternate;
+}
+
+.niceTextBox {
+	border: 1px solid #c4c4c4;
+	border-radius: 2px;
+	width: 200px;
+	margin-top: 5px;
+	box-shadow: 0em 0em .2em black;
+	padding: 2px;
+}
+
+.niceButton {
+	padding:5px;
+	background-color: #36254C;
+	border: 1px solid black;
+	color:#000;
+	text-decoration:none;
+	color: white;
+	font-weight: bold;
+	box-shadow: 0em 0em .1em black;
+	text-shadow: 0em 0em .2em black;
+	font-variant: small-caps;
+}
+
+.niceButton:active {
+	box-shadow: 0em 0em .2em black inset;
+}
+
+#logout {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	background-image: url('../img/icons/exit.png');
+	z-index: 500;
+	opacity: .5;
+}
+
+#logout:hover {
+	opacity: .75;
+}
+
+#logout:active {
+	opacity: 1;
+}
+
 #contextMenu {
 	position: absolute;
 	background-color:rgba(18, 0, 63, 0.65);
