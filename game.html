@@ -61,17 +61,79 @@ $(document).ready(function(){
 	<div class="centerContainer">
 		<div class="loginContainer">
 			<form id="loginForm">
-				<label for="username">Username:</label>
-				<input type="text" class="niceTextBox" id="username" name="username" />
-				<br>
-				<label for="password">Password:</label>
-				<input type="password" class="niceTextBox" id="password" name="password" /><br>
-				<input type="button" class="niceButton" value="Login" id="loginButton" onClick="login(false);" />
+				<table class="layoutTable">
+					<tr>
+						<td>
+							<label for="username">Username:</label>
+						</td>
+						<td>
+							<input type="text" class="niceTextBox" id="username" name="username" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="password">Password:</label>
+						</td>
+						<td>
+							<input type="password" class="niceTextBox" id="password" name="password" />
+						</td>
+					</tr>
+				</table>
+				<input type="button" class="niceButton" value="login" id="loginButton" onClick="login();" />
+				<div id="loginError" class="errorBox">l</div>
 			</form>
 		</div>
 		
 		<div class="demoContainer">
-			<input type="button" class="niceButton" id="playNow" value="play now and signup later" onClick="login(true);" />
+			<input type="button" class="niceButton" id="playNow" value="play now and signup later" onClick="signup(true);" />
+			<br>
+			or
+			<br>
+			<input type="button" class="niceButton" id="signupNow" value="signup now" onClick="toggleSignup(true);" />
+		</div>
+		
+		<div class="signupDiv">
+			<input type="button" class="niceButton" value="< back" onClick="toggleSignup(false);" />
+			
+			<form id="signupForm">
+				<table class="layoutTable">
+					<tr>
+						<td>
+							<label for="desiredUsername">Desired Username:</label>
+						</td>
+						<td>
+							<input type="text" class="niceTextBox" id="desiredUsername" name="desiredUsername" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="desiredPassword">Password:</label>
+						</td>
+						<td>
+							<input type="password" class="niceTextBox" id="desiredPassword" name="desiredPassword" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="confirmPassword">Confirm Password:</label>
+						</td>
+						<td>
+							<input type="password" class="niceTextBox" id="confirmPassword" name="confirmPassword" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="email">Email:</label>
+						</td>
+						<td>
+							<input type="text" class="niceTextBox" id="email" name="email" />
+						</td>
+					</tr>
+				</table>
+				<input type="button" class="niceButton" value="sign up" id="signupButton" onClick="signup(false);" />
+				<div id="signupError" class="errorBox">l</div>
+			</form>
+			
 		</div>
 	</div>
 </div>
@@ -83,9 +145,9 @@ $(document).ready(function(){
 </canvas>
 </div>
 <div id="chatContainer">
-<textarea id="chatBox">
+<div id="chatBox">
 
-</textarea>
+</div>
 <input type="text" id="message" autocomplete="off" />
 </div>
 <div id="menu">

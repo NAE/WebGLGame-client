@@ -1,3 +1,6 @@
+body {
+	background: black;
+}
 
 body,html {
 	cursor: default;
@@ -15,11 +18,11 @@ textarea {
 }
 
 @-webkit-keyframes animatedBackground {
-	0% {background-color: #000000;} 50% {background-color: #0A0610;} 100% {background-color: #150B21;} 
+	0% {background-color: #000000;} 100% {background-color: #09050E;} 
 }
 
 @-webkit-keyframes playNowAnimation {
-	0% {background-color: #000000;} 100% {background-color: #36254C;}
+	0% {box-shadow: 0em 0em .4em gray;} 100% {box-shadow: 0em 0em .4em black;}
 }
 
 .centerContainer {
@@ -51,6 +54,7 @@ textarea {
 	position: fixed;
 	-webkit-animation: animatedBackground 10s infinite alternate;
 	border-bottom: 4px ridge #D1D1D1;
+	font-weight: bold;
 }
 
 .loginContainer {
@@ -58,8 +62,20 @@ textarea {
 	border-bottom: 2px ridge #19181B;
 }
 
+.layoutTable {
+	margin-left: auto;
+	margin-right: auto;
+	color: white;
+	font-weight: bold;
+	font-variant: small-caps;
+}
+
 .demoContainer {
 	padding-bottom: 20px;
+}
+
+.signupDiv {
+	display: none;
 }
 
 #loginForm {
@@ -74,12 +90,27 @@ textarea {
 	margin-top: 10px;
 }
 
+.errorBox {
+	visibility: hidden;
+	color: #FF3A3A;
+}
+
+.successBox {
+	visibility: hidden;
+	color: green;
+}
+
 #playNow {
 	font-size: 16pt;
-	-webkit-animation: playNowAnimation 1250ms infinite alternate;
+	-webkit-animation: playNowAnimation 1000ms infinite alternate;
+}
+
+#signupNow {
+	font-size: 14pt;
 }
 
 .niceTextBox {
+	font-weight: bold;
 	border: 1px solid #c4c4c4;
 	border-radius: 2px;
 	width: 200px;
@@ -88,9 +119,12 @@ textarea {
 	padding: 2px;
 }
 
+.errorTextBox {
+	border: 1px solid red;
+}
+
 .niceButton {
 	padding:5px;
-	background-color: #36254C;
 	border: 1px solid black;
 	color:#000;
 	text-decoration:none;
@@ -99,10 +133,17 @@ textarea {
 	box-shadow: 0em 0em .1em black;
 	text-shadow: 0em 0em .2em black;
 	font-variant: small-caps;
+	background: -webkit-linear-gradient(#101010, #3C2954);
+	background: -moz-linear-gradient(#101010, #3C2954);
 }
 
 .niceButton:active {
 	box-shadow: 0em 0em .2em black inset;
+}
+
+.niceButton:hover {
+	background: -webkit-linear-gradient(#373637, #3C2954);
+	background: -moz-linear-gradient(#373637, #3C2954);
 }
 
 #logout {
@@ -173,6 +214,7 @@ textarea {
 	overflow-y: scroll;
 	overflow-x: hidden;
 	font-size: 10pt;
+	padding-left: 3px;
 }
 #message{
 	color: white;
@@ -330,4 +372,9 @@ textarea {
 	text-shadow: .1em .1em 0em black;
 	max-width: 400px;
 	text-align: center;
+}
+
+.adminChat {
+	color: #FF2929;
+	text-shadow: 0em 0em .1em black;
 }

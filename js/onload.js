@@ -5,18 +5,31 @@ window.onload = function(){
 	initSocketEvents();
 };
 
-function login(playNow){
-	var sendData = {username: $("#username").val(), password: $("#password").val(), playNow: playNow};
+function login(){
+	if(!socket.socket.connected){
+		//first retry the connection
+		reconnectSocket();
+		//tell them server is offline right now
+		$("#loginError").html("Unable to connect to server. Try again in a few minutes.");
+		$("#loginError").css("visibility", "visible");
+	}
+	
+	var sendData = {username: $("#username").val(), password: $("#password").val()};
 	socket.emit("LoginEvent", sendData);
 	//the response is handled in socketevents
 }
 
 function loadGame(data){
 	//get rid of the front page first
+	savedFrontPage = $("#firstScreenOverlay").clone();
 	$("#firstScreenOverlay").fadeOut(250, function(){
 		$(this).remove();
 		ready(data);
 	});
+}
+
+function restoreFrontPage(){
+	$("body").append(savedFrontPage);
 }
 
 function ready(data){
@@ -151,4 +164,54 @@ function loadModels(){
 			}
 		});
 	});
+}
+
+function toggleSignup(open){
+	if(open){
+		$(".loginContainer").slideUp();
+		$(".demoContainer").slideUp();
+		$(".signupDiv").slideDown();
+	}else{
+		$(".loginContainer").slideDown();
+		$(".demoContainer").slideDown();
+		$(".signupDiv").slideUp();
+	}
+}
+
+function signup(temporary){
+	if(!socket.socket.connected){
+		//first retry the connection
+		reconnectSocket();
+		//tell them server is offline right now
+		$("#signupError").html("Unable to connect to server. Try again in a few minutes.");
+		$("#signupError").css("visibility", "visible");
+	}
+	
+	if(temporary){
+		//see if they already have temporary credentials stored
+		var hasCredentials = localStorage.getItem("tempAccount");
+		if(hasCredentials){
+			var tempUsername = localStorage.getItem("tempUsername");
+			var tempPassword = localStorage.getItem("tempPassword");
+			$("#username").val(tempUsername);
+			$("#password").val(tempPassword);
+			$("#loginButton").click();
+			return;
+		}
+		//otherwise continue to create a new temporary account
+	}
+	
+	var username = $("#desiredUsername").val();
+	var password = $("#desiredPassword").val();
+	var confirmPassword = $("#confirmPassword").val();
+	var email = $("#email").val();
+	
+	var data = {};
+	data.username = username;
+	data.password = password;
+	data.confirmPassword = confirmPassword;
+	data.email = email;
+	data.temporary = temporary;
+	
+	socket.emit("SignupEvent", data);
 }

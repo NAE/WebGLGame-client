@@ -1,8 +1,18 @@
 /* Most of the socket.on blocks are no longer in use, but keep anyway in case emergency events are sent */
 
+function reconnectSocket(){
+	socket.socket.connect();
+}
+
 function initSocketEvents(){
+	socket = io.connect('http://' + document.domain + ':3000');
+	
 	socket.on('loginResponse', function(data) {
 		socketLoginResponse(data);
+	});
+	
+	socket.on('signupResponse', function(data) {
+		socketSignupResponse(data);
 	});
 	
 	socket.on('otherCharMove', function(data) {
@@ -70,7 +80,17 @@ function initSocketEvents(){
 	});
 	
 	socket.on('disconnect', function(){
-        //should re-show the login screen on disconnect
+        //refresh the page, the login page should show that the
+		updateChatBox("Lost connection to server. Logging out in 3 seconds...");
+		setTimeout(function(){
+			updateChatBox("2 seconds...");
+		}, 1000);
+		setTimeout(function(){
+			updateChatBox("1 second...");
+		}, 2000);
+        setTimeout(function(){
+			history.go(0);
+		}, 3000);
     });
 
 	socket.on('event', function(data) {
@@ -90,6 +110,9 @@ function handleEvent(event){
 	switch(eventName){
 		case "loginResponse":
 			socketLoginResponse(event);
+			break;
+		case "signupResponse":
+			socketSignupResponse(event);
 			break;
 		case "otherCharMove":
 			socketOtherCharMove(event);
@@ -146,7 +169,6 @@ function handleEvent(event){
 
 function socketLoginResponse(data){
 	//don't need to wait for load here
-	console.log(data);
 	var successfulLogin = data.success;
 	var failMessage = data.message;
 	
@@ -155,7 +177,62 @@ function socketLoginResponse(data){
 		loadGame(data);
 	}else{
 		//display the fail message to the user
-		alert('bad login');
+		$("#loginError").html(failMessage);
+		$("#loginError").css("visibility", "visible");
+	}
+}
+
+function socketSignupResponse(data){
+	if(data.providedUsername != undefined){
+		//it was a temporary account signup
+		localStorage.setItem("tempAccount", true);
+		localStorage.setItem("tempUsername", data.providedUsername);
+		localStorage.setItem("tempPassword", data.providedPassword);
+		//recall signup so it logs them in
+		signup(true);
+		return;
+	}
+	if(!data.success){
+		$("#signupError").addClass("errorBox");
+		$("#signupError").removeClass("successBox");
+		var failMessage = "";
+		
+		if(!data.username){
+			$("#desiredUsername").addClass("errorTextBox");
+			failMessage += "* username already taken or is not allowed.<br>";
+		}else{
+			$("#desiredUsername").removeClass("errorTextBox");
+		}
+		
+		if(!data.password){
+			$("#desiredPassword").addClass("errorTextBox");
+			failMessage += "* passwords must be at least 8 characters long.<br>";
+		}else{
+			$("#desiredPassword").removeClass("errorTextBox");
+		}
+		
+		if(!data.confirmPassword){
+			$("#confirmPassword").addClass("errorTextBox");
+			failMessage += "* passwords do not match.<br>";
+		}else{
+			$("#confirmPassword").removeClass("errorTextBox");
+		}
+		
+		if(!data.email){
+			$("#email").addClass("errorTextBox");
+			failMessage += "* email is invalid.<br>";
+		}else{
+			$("#email").removeClass("errorTextBox");
+		}
+		
+		$("#signupError").html(failMessage);
+		$("#signupError").css("visibility", "visible");
+	}else{
+		//signup was successful
+		$("#signupError").addClass("successBox");
+		$("#signupError").removeClass("errorBox");
+		$("#signupError").html("You were successfully signed up.");
+		$("#signupError").css("visibility", "visible");
 	}
 }
 
@@ -244,6 +321,22 @@ function socketChatUpdate(data){
 		//show the message above the player's head
 		addChatToPlayer(data.message, data.sender);
 		//show the chat in the form of name: message
+		
+		//capitalize username's first letter
+		data.username = data.username.charAt(0).toUpperCase() + data.username.slice(1);
+		
+		//display the name in red if the player is an admin
+		
+		var isAdmin = false;
+		var thisPlayer = otherCharacterList[data.sender];
+		if(thisPlayer != undefined){
+			isAdmin = thisPlayer.admin;
+		}
+		
+		if(isAdmin){
+			data.username = "<span class='adminChat'>" + data.username + "</span>";
+		}
+				
 		updateChatBox(data.username + ": " + data.message);
 	}else{
 		//just print the message

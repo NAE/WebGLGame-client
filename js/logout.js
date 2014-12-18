@@ -1,5 +1,6 @@
 function doLogout(e){
-	window.location.href = "/WebglGame/Website/index.php/user/logout";
+	//for now, just refresh the page, it will log them out
+	history.go(0);
 }
 
 $(document).ready(function(){

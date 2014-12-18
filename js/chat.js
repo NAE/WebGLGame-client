@@ -29,7 +29,7 @@ function updateChatBox(message){
 			chatBox.value += "\n";
 		}
 	}*/ //this is from old version, TODO - delete
-	chatBox.value += "\n" + message;
+	chatBox.innerHTML += " <br>" + message;
 	chatBox.scrollTop = chatBox.scrollHeight;
 }
 

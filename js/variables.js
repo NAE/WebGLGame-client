@@ -1,7 +1,8 @@
 //global variables
+var savedFrontPage;
 
 //CONNECTION VARIABLES
-var socket = io.connect('http://' + document.domain + ':3000');
+var socket;
 var connectionNum;
 var loadRetryTime = 500;
 
