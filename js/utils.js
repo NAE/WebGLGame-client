@@ -124,7 +124,19 @@ THREE.Object3D.prototype.rotateAroundWorldAxis = function(axis, radians) {
     this.position.setFromMatrixPosition( this.matrix );
 }
 
-function toScreenXY (objectPosition){
+function enterCheck(event){
+	var elementID = event.target.id;
+	var key = event.keyCode;
+	if(key != 13) return;
+	
+	if(elementID == 'username'){
+		$("#password").focus();
+	}else if(elementID == 'password'){
+		login();
+	}
+}
+
+function toScreenXY(objectPosition){
 	var clonedPosition = new THREE.Vector3(objectPosition.x, objectPosition.y, objectPosition.z);
 	var widthHalf = window.innerWidth / 2;
 	var heightHalf = window.innerHeight / 2;

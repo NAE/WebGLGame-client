@@ -174,6 +174,7 @@ function socketLoginResponse(data){
 	
 	if(successfulLogin){
 		//the data is all the inital data (formerly handled in connectionInfo socket event)
+		$("#loginForm").find("input[type=text], input[type=password]").val("");
 		loadGame(data);
 	}else{
 		//display the fail message to the user
@@ -229,10 +230,22 @@ function socketSignupResponse(data){
 		$("#signupError").css("visibility", "visible");
 	}else{
 		//signup was successful
+		if(data.removeTempAccount){
+			localStorage.removeItem("tempAccount");
+			localStorage.removeItem("tempUsername");
+			localStorage.removeItem("tempPassword");
+			$("#playNow").val("play now and signup later");
+			$("#useTemporary").prop("checked", false);
+			$("#tempUser").html("");
+			$("#useTemporaryRow").hide();
+		}
+		
+		$("#signupForm").find("input[type=text], input[type=password]").val("");
 		$("#signupError").addClass("successBox");
 		$("#signupError").removeClass("errorBox");
 		$("#signupError").html("You were successfully signed up.");
 		$("#signupError").css("visibility", "visible");
+		$("#signupForm").slideUp();
 	}
 }
 

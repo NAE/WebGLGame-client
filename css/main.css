@@ -90,6 +90,10 @@ textarea {
 	margin-top: 10px;
 }
 
+#useTemporaryRow {
+	display: none;
+}
+
 .errorBox {
 	visibility: hidden;
 	color: #FF3A3A;

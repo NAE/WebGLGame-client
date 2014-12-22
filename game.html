@@ -67,7 +67,7 @@ $(document).ready(function(){
 							<label for="username">Username:</label>
 						</td>
 						<td>
-							<input type="text" class="niceTextBox" id="username" name="username" />
+							<input type="text" class="niceTextBox" id="username" name="username" onKeyDown="enterCheck(event);" />
 						</td>
 					</tr>
 					<tr>
@@ -75,7 +75,7 @@ $(document).ready(function(){
 							<label for="password">Password:</label>
 						</td>
 						<td>
-							<input type="password" class="niceTextBox" id="password" name="password" />
+							<input type="password" class="niceTextBox" id="password" name="password" onKeyDown="enterCheck(event);" />
 						</td>
 					</tr>
 				</table>
@@ -97,6 +97,14 @@ $(document).ready(function(){
 			
 			<form id="signupForm">
 				<table class="layoutTable">
+					<tr id="useTemporaryRow">
+						<td>
+							<label for="useTemporary">I want to sign up the account<br>that I have been playing on (<span id="tempUser"></span>):</label>
+						</td>
+						<td>
+							<input type="checkBox" id="useTemporary" name="useTemporary" />
+						</td>
+					</tr>
 					<tr>
 						<td>
 							<label for="desiredUsername">Desired Username:</label>
@@ -131,9 +139,8 @@ $(document).ready(function(){
 					</tr>
 				</table>
 				<input type="button" class="niceButton" value="sign up" id="signupButton" onClick="signup(false);" />
-				<div id="signupError" class="errorBox">l</div>
 			</form>
-			
+			<div id="signupError" class="errorBox">l</div>
 		</div>
 	</div>
 </div>

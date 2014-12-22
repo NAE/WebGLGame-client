@@ -3,6 +3,15 @@ var loaded = false;
 
 window.onload = function(){
 	initSocketEvents();
+	
+	//check if they have an temporary account stored, in order to modify parts of the login page
+	var credentials = getTempAccount();
+	if(credentials != undefined){
+		$("#playNow").val($("#playNow").val() + " (" + credentials.username +")");
+		$("#useTemporary").prop("checked", true);
+		$("#tempUser").html(credentials.username);
+		$("#useTemporaryRow").show();
+	}
 };
 
 function login(){
@@ -170,6 +179,7 @@ function toggleSignup(open){
 	if(open){
 		$(".loginContainer").slideUp();
 		$(".demoContainer").slideUp();
+		$("#signupForm").show();
 		$(".signupDiv").slideDown();
 	}else{
 		$(".loginContainer").slideDown();
@@ -189,12 +199,10 @@ function signup(temporary){
 	
 	if(temporary){
 		//see if they already have temporary credentials stored
-		var hasCredentials = localStorage.getItem("tempAccount");
-		if(hasCredentials){
-			var tempUsername = localStorage.getItem("tempUsername");
-			var tempPassword = localStorage.getItem("tempPassword");
-			$("#username").val(tempUsername);
-			$("#password").val(tempPassword);
+		var credentials = getTempAccount();
+		if(credentials != undefined){
+			$("#username").val(credentials.username);
+			$("#password").val(credentials.password);
 			$("#loginButton").click();
 			return;
 		}
@@ -213,5 +221,28 @@ function signup(temporary){
 	data.email = email;
 	data.temporary = temporary;
 	
+	if($("#useTemporary").is(":checked")){
+		//they are trying to sign up their temporary account
+		var credentials = getTempAccount();
+		if(credentials != undefined){
+			data.previousUsername = credentials.username;
+			data.previousPassword = credentials.password;
+		}
+	}
+	
 	socket.emit("SignupEvent", data);
+}
+
+function getTempAccount(){
+	//returns undefined if there is no temp account
+	var hasCredentials = localStorage.getItem("tempAccount");
+	if(hasCredentials){
+		var credentials = {
+			username: localStorage.getItem("tempUsername"),
+			password: localStorage.getItem("tempPassword")
+		};
+		return credentials;
+	}else{
+		return undefined;
+	}
 }
